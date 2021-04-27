@@ -2,6 +2,7 @@ const gridContainer = document.querySelector('#container');
 const gridSize = 8;
 const gridHeight = '100px';
 const gridWidth = '100px';
+let userSelectedColor = '#000';
 
 for (let i = 0; i < gridSize; i++) {
   let rowContainer = document.createElement('div');
@@ -14,3 +15,10 @@ for (let i = 0; i < gridSize; i++) {
 
   gridContainer.appendChild(rowContainer);
 }
+
+const gridSquaresNodeList = document.querySelectorAll('.grid-square');
+gridSquaresNodeList.forEach(square => {
+  square.addEventListener('mouseover', () => {
+    square.style.background = userSelectedColor;
+  });
+});
