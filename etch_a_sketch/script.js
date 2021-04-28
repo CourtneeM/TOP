@@ -1,11 +1,17 @@
 const mainContainer = document.querySelector('#etch-a-sketch-container');
 const gridContainer = document.querySelector('#grid-container');
-const gridContainerWidth = gridContainer.offsetWidth;
+const gridContainerWidth = gridContainer.offsetHeight;
 let gridSize = 16;
-const squareDimensions = `${Math.ceil(gridContainerWidth / 2 / gridSize)}px`;
 let userSelectedColor = '#000';
 
+(function initialLoad() {
+  generateNav();
+  generateGrid();
+})();
+
 function generateGrid() {
+  const squareDimensions = `${Math.ceil(gridContainerWidth / gridSize)}px`;
+
   for (let i = 0; i < gridSize; i++) {
     let rowContainer = document.createElement('div');
     for (let i = 0; i < gridSize; i++) {
@@ -13,6 +19,7 @@ function generateGrid() {
       gridSquare.classList.add("grid-square");
       gridSquare.style.cssText = `border: 1px solid #000; height: ${squareDimensions}; width: ${squareDimensions};`;
       rowContainer.appendChild(gridSquare);
+
     }
 
     gridContainer.appendChild(rowContainer);
@@ -20,31 +27,29 @@ function generateGrid() {
 
   changeSquareColor();
   mainContainer.appendChild(gridContainer);
-
-  (function generateNav() {
-    const nav = document.createElement('nav');
-    const resetBtn = document.createElement('button');
-    resetBtn.textContent = "Reset";
-    resetBtn.classList.add("reset-btn");
-    resetBtn.addEventListener('click', resetGrid);
-    
-    nav.appendChild(resetBtn);
-    mainContainer.appendChild(nav);
-  })();
 };
 
-generateGrid();
+function generateNav() {
+  const nav = document.createElement('nav');
+  const resetBtn = document.createElement('button');
+  resetBtn.textContent = "Reset";
+  resetBtn.classList.add("reset-btn");
+  resetBtn.addEventListener('click', resetGrid);
+  
+  nav.appendChild(resetBtn);
+  mainContainer.appendChild(nav);
+}
 
 function resetGrid() {
   let newGridSize = 0;
   while (newGridSize < 1 || newGridSize > 99) {
-    newGridSize = prompt("How large would you like the grid to be? Enter any number between 1 and 100.");
-    console.log(newGridSize);
+    newGridSize = prompt("How large would you like the grid to be? Enter any number between 1 and 99.");
   }
 
   gridSize = newGridSize;
 
   clearGrid();
+  generateNav();
   generateGrid();
 };
 
@@ -56,11 +61,7 @@ function clearGrid() {
   }
 
   mainContainer.removeChild(nav);
-
-  console.log(mainContainer.childNodes)
 }
-
-
 
 function changeSquareColor() {
   const gridSquaresNodeList = document.querySelectorAll('.grid-square');
@@ -70,4 +71,3 @@ function changeSquareColor() {
     });
   });
 }
-

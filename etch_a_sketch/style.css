@@ -13,10 +13,11 @@ body {
 }
 
 #grid-container {
+  height: 620px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5em 0;
+  margin: 5em 0;
 }
 
 button {
