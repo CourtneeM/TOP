@@ -1,24 +1,73 @@
-const gridContainer = document.querySelector('#container');
-const gridSize = 8;
-const gridHeight = '100px';
-const gridWidth = '100px';
+const mainContainer = document.querySelector('#etch-a-sketch-container');
+const gridContainer = document.querySelector('#grid-container');
+const gridContainerWidth = gridContainer.offsetWidth;
+let gridSize = 16;
+const squareDimensions = `${Math.ceil(gridContainerWidth / 2 / gridSize)}px`;
 let userSelectedColor = '#000';
 
-for (let i = 0; i < gridSize; i++) {
-  let rowContainer = document.createElement('div');
+function generateGrid() {
   for (let i = 0; i < gridSize; i++) {
-    const gridSquare = document.createElement('div');
-    gridSquare.classList.add("grid-square");
-    gridSquare.style.cssText = `border: 1px solid #000; height: ${gridHeight}; width: ${gridWidth};`;
-    rowContainer.appendChild(gridSquare);
+    let rowContainer = document.createElement('div');
+    for (let i = 0; i < gridSize; i++) {
+      const gridSquare = document.createElement('div');
+      gridSquare.classList.add("grid-square");
+      gridSquare.style.cssText = `border: 1px solid #000; height: ${squareDimensions}; width: ${squareDimensions};`;
+      rowContainer.appendChild(gridSquare);
+    }
+
+    gridContainer.appendChild(rowContainer);
   }
 
-  gridContainer.appendChild(rowContainer);
+  changeSquareColor();
+  mainContainer.appendChild(gridContainer);
+
+  (function generateNav() {
+    const nav = document.createElement('nav');
+    const resetBtn = document.createElement('button');
+    resetBtn.textContent = "Reset";
+    resetBtn.classList.add("reset-btn");
+    resetBtn.addEventListener('click', resetGrid);
+    
+    nav.appendChild(resetBtn);
+    mainContainer.appendChild(nav);
+  })();
+};
+
+generateGrid();
+
+function resetGrid() {
+  let newGridSize = 0;
+  while (newGridSize < 1 || newGridSize > 99) {
+    newGridSize = prompt("How large would you like the grid to be? Enter any number between 1 and 100.");
+    console.log(newGridSize);
+  }
+
+  gridSize = newGridSize;
+
+  clearGrid();
+  generateGrid();
+};
+
+function clearGrid() {
+  const nav = document.querySelector("nav");
+
+  while (gridContainer.firstChild) {
+    gridContainer.removeChild(gridContainer.firstChild);
+  }
+
+  mainContainer.removeChild(nav);
+
+  console.log(mainContainer.childNodes)
 }
 
-const gridSquaresNodeList = document.querySelectorAll('.grid-square');
-gridSquaresNodeList.forEach(square => {
-  square.addEventListener('mouseover', () => {
-    square.style.background = userSelectedColor;
+
+
+function changeSquareColor() {
+  const gridSquaresNodeList = document.querySelectorAll('.grid-square');
+  gridSquaresNodeList.forEach(square => {
+    square.addEventListener('mouseover', () => {
+      square.style.background = userSelectedColor;
+    });
   });
-});
+}
+

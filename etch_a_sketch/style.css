@@ -8,9 +8,17 @@ body {
   min-height: 100vh;
 }
 
-#container {
+#etch-a-sketch-container {
+  text-align: center;
+}
+
+#grid-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  padding: 5em 0;
+}
+
+button {
+  padding: 8px 15px;
 }
