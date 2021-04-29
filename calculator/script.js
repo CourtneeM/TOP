@@ -57,7 +57,9 @@ function storeValues(e) {
     }
 
     if (btnValue === '=') {
-      expression = calculate(expression);
+      if (expression.some(el => ["+", "-", "x", "/"].includes(el)) && Number(expression[expression.length - 1])) {
+        expression = calculate(expression);
+      }
     }
 
     if (expression.length > 0) { 
