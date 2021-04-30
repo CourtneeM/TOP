@@ -29,6 +29,7 @@ function operate(operator, a, b) {
 
 function calculate(expression) {
   let [firstOperand, operator, secondOperand] = expression.join('').split(' ');
+
   return String(operate(operator, Number(firstOperand), Number(secondOperand))).split('');
 }
 

@@ -5,6 +5,8 @@ const WIN_CONDITIONS = {
   scissors: { beat: 'paper' }
 }
 
+const ROUNDS_TO_WIN = 5;
+
 function playerPlay() {
   let randomMove = Math.floor(Math.random() * 3);
   return MOVES[randomMove];
@@ -30,7 +32,7 @@ function playRound(playerSelection, computerSelection, score) {
 function game() {
   let score = { player: 0, computer: 0 }
 
-   while (score.player < 5 && score.computer < 5) {
+   while (score.player < ROUNDS_TO_WIN && score.computer < ROUNDS_TO_WIN) {
     let playerMove = playerPlay();
     let computerMove = computerPlay();
     
@@ -38,7 +40,7 @@ function game() {
     console.log(score);
   }
   
-  if (score.player === 5) {
+  if (score.player === ROUNDS_TO_WIN) {
     return "Congrats! You won 5 rounds!"
   } else {
     return "Sorry, you lost 5 rounds!" 

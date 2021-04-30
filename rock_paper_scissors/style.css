@@ -1,0 +1,54 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: sans-serif
+}
+
+header {
+  margin-top: 50px;
+   text-align: center;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+}
+
+#choices-container {
+  display: flex;
+  justify-content: space-around;
+  width: 500px;
+  margin: 50px 0;
+}
+
+#choices-container p {
+  width: 120px;
+  height: 120px;
+  padding-top: 42px;
+  font-weight: 800;
+  text-align: center;
+  color: #fff;
+  background: mediumaquamarine;
+  border: 5px solid #777;
+  border-radius: 50%;
+}
+
+#score-container {
+  width: 300px;
+  text-align: center;
+  border: 2px solid #777;
+  border-radius: 8px;
+}
+
+#score-container #round-result,
+#score-container #score {
+  margin: 15px 0;
+}
