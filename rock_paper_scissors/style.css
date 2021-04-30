@@ -48,7 +48,7 @@ main {
   border-radius: 8px;
 }
 
-#score-container #round-result,
+#score-container #round-results,
 #score-container #score {
   margin: 15px 0;
 }

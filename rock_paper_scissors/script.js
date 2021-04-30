@@ -1,3 +1,6 @@
+const roundResultsContainer = document.querySelector('#round-results');
+const scoreContainer = document.querySelector('#score');
+
 const MOVES = ['rock', 'paper', 'scissors'];
 const WIN_CONDITIONS = {
   rock: { beat: 'scissors' },
@@ -6,11 +9,6 @@ const WIN_CONDITIONS = {
 }
 
 const ROUNDS_TO_WIN = 5;
-
-function playerPlay() {
-  let randomMove = Math.floor(Math.random() * 3);
-  return MOVES[randomMove];
-}
 
 function computerPlay() {
   let randomMove = Math.floor(Math.random() * 3);
@@ -29,22 +27,24 @@ function playRound(playerSelection, computerSelection, score) {
   }
 }
 
-function game() {
-  let score = { player: 0, computer: 0 }
-
-   while (score.player < ROUNDS_TO_WIN && score.computer < ROUNDS_TO_WIN) {
-    let playerMove = playerPlay();
+let score = { player: 0, computer: 0 }
+scoreContainer.textContent = `Player: ${score.player} | Computer: ${score.computer}`;
+function game(playerMove) {
+   if (score.player < ROUNDS_TO_WIN && score.computer < ROUNDS_TO_WIN) {
     let computerMove = computerPlay();
     
-    console.log(playRound(playerMove, computerMove, score));
-    console.log(score);
+    roundResultsContainer.textContent = playRound(playerMove, computerMove, score);
+    scoreContainer.textContent = `Player: ${score.player} | Computer: ${score.computer}`;
   }
   
   if (score.player === ROUNDS_TO_WIN) {
-    return "Congrats! You won 5 rounds!"
-  } else {
-    return "Sorry, you lost 5 rounds!" 
+    roundResultsContainer.textContent = "Congrats! You won 5 rounds!";
+  } else if (score.computer === ROUNDS_TO_WIN) {
+    roundResultsContainer.textContent = "Sorry, you lost 5 rounds!"; 
   }
 }
 
-console.log(game());
+const choices = document.querySelectorAll('#choices-container > p');
+choices.forEach(choice => {
+  choice.addEventListener('click', e => game(e.target.textContent));
+});
