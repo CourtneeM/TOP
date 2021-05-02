@@ -45,6 +45,13 @@ function displayBooks(library) {
     for (let info in book) {
       let dataContainer = document.createElement('td');
       dataContainer.textContent = book[info];
+
+      if (book[info] === 'Read') {
+        dataContainer.classList.add('read');
+      } else if (book[info] === 'Not Yet Read') {
+        dataContainer.classList.add('not-yet-read');
+      }
+
       newBookContainer.appendChild(dataContainer);
     }
 
@@ -58,12 +65,23 @@ function displayBooks(library) {
 
   bookshelfContainer.appendChild(bookshelfTable);
 
-  const removeBtns = document.querySelectorAll('.remove-book');
-  removeBtns.forEach(btn => {
-    let index = Array.from(btn.parentNode.parentNode.children).indexOf(btn.parentNode) - 1;
-    btn.addEventListener('click', () => {
-      console.log(index, myLibrary[index]);
-      removeBookFromLibrary(myLibrary[index])
+  const bookRow = document.querySelectorAll('td');
+  bookRow.forEach(book => {
+    let index = Array.from(book.parentNode.children).indexOf(book) - 1;
+    book.addEventListener('click', e => {
+      if (e.target.className === 'remove-book') {
+        removeBookFromLibrary(myLibrary[index])
+      }
+
+      if (e.target.className === 'read') {
+        e.target.textContent = "Not Yet Read";
+        e.target.classList.remove('read');
+        e.target.classList.add('not-yet-read');
+      } else if (e.target.className === 'not-yet-read') {
+        e.target.textContent = "Read";
+        e.target.classList.remove('not-yet-read');
+        e.target.classList.add('read');
+      }
     });
   });
 }
@@ -89,6 +107,10 @@ function updateBookshelf(library) {
   }
 
   displayBooks(library);
+}
+
+function toggleReadStatus() {
+
 }
 
 displayAddBookFormBtn.addEventListener('click', displayNewBookForm);
