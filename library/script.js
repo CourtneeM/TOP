@@ -16,6 +16,11 @@ function addBookToLibrary() {
   let userInputs = Array.from(document.querySelectorAll('.user-input'));
   let bookValues = userInputs.map(input => input.value);
 
+  if(!isInputValid(bookValues)) {
+    alert('Please fill out all of the fields.');
+    return;
+  }
+
   myLibrary.push(new Book(...bookValues));
   updateBookshelf(myLibrary);
 
@@ -120,15 +125,14 @@ function addBookRowEventListeners() {
   });
 }
 
+function isInputValid(bookValues) {
+  return bookValues.every(value => value);
+}
+
 displayAddBookFormBtn.addEventListener('click', displayNewBookForm);
 addBookBtn.addEventListener('click', (e) => {
   e.preventDefault();
   addBookToLibrary();
 });
-
-// test books for display
-// addBookToLibrary(new Book('Test 1', 'Ricky', '234', 'not yet read'))
-// addBookToLibrary(new Book('Test 2', 'Martha', '352', 'read'));
-// addBookToLibrary(new Book('Test 3', 'Jones', '654', 'not yet read'));
 
 displayBooks(myLibrary);
