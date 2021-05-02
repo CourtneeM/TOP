@@ -12,7 +12,6 @@ function Book(title, author, pages, readStatus) {
   this.readStatus = readStatus;
 }
 
-// this function will be called upon clicking an add book button
 function addBookToLibrary() {
   let userInputs = Array.from(document.querySelectorAll('.user-input'));
   let bookValues = userInputs.map(input => input.value);
@@ -58,6 +57,15 @@ function displayBooks(library) {
   });
 
   bookshelfContainer.appendChild(bookshelfTable);
+
+  const removeBtns = document.querySelectorAll('.remove-book');
+  removeBtns.forEach(btn => {
+    let index = Array.from(btn.parentNode.parentNode.children).indexOf(btn.parentNode) - 1;
+    btn.addEventListener('click', () => {
+      console.log(index, myLibrary[index]);
+      removeBookFromLibrary(myLibrary[index])
+    });
+  });
 }
 
 function displayNewBookForm() {
