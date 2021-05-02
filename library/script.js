@@ -65,25 +65,7 @@ function displayBooks(library) {
 
   bookshelfContainer.appendChild(bookshelfTable);
 
-  const bookRow = document.querySelectorAll('td');
-  bookRow.forEach(book => {
-    let index = Array.from(book.parentNode.children).indexOf(book) - 1;
-    book.addEventListener('click', e => {
-      if (e.target.className === 'remove-book') {
-        removeBookFromLibrary(myLibrary[index])
-      }
-
-      if (e.target.className === 'read') {
-        e.target.textContent = "Not Yet Read";
-        e.target.classList.remove('read');
-        e.target.classList.add('not-yet-read');
-      } else if (e.target.className === 'not-yet-read') {
-        e.target.textContent = "Read";
-        e.target.classList.remove('not-yet-read');
-        e.target.classList.add('read');
-      }
-    });
-  });
+  addBookRowEventListeners();
 }
 
 function displayNewBookForm() {
@@ -95,6 +77,7 @@ function displayNewBookForm() {
 }
 
 function removeBookFromLibrary(book) {
+  
   let index = myLibrary.indexOf(book);
   myLibrary.splice(index, 1);
 
@@ -109,8 +92,32 @@ function updateBookshelf(library) {
   displayBooks(library);
 }
 
-function toggleReadStatus() {
+function toggleReadStatus(e) {
+  if (e.target.className === 'read') {
+    e.target.textContent = "Not Yet Read";
+    e.target.classList.remove('read');
+    e.target.classList.add('not-yet-read');
+  } else if (e.target.className === 'not-yet-read') {
+    e.target.textContent = "Read";
+    e.target.classList.remove('not-yet-read');
+    e.target.classList.add('read');
+  }
+}
 
+function addBookRowEventListeners() {
+  const bookRow = document.querySelectorAll('td');
+  bookRow.forEach(book => {
+    let index = Array.from(book.parentNode.children).indexOf(book) - 1;
+    book.addEventListener('click', e => {
+      if (e.target.className === 'remove-book') {
+        removeBookFromLibrary(myLibrary[index])
+      }
+
+      if (e.target.className === 'read' || e.target.className === 'not-yet-read') { 
+        toggleReadStatus(e);
+      }
+    });
+  });
 }
 
 displayAddBookFormBtn.addEventListener('click', displayNewBookForm);
