@@ -22,6 +22,7 @@ function addBookToLibrary() {
   }
 
   myLibrary.push(new Book(...bookValues));
+  localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
   updateBookshelf(myLibrary);
 
   userInputs.forEach(input => input.value = '');
@@ -127,6 +128,12 @@ function addBookRowEventListeners() {
 
 function isInputValid(bookValues) {
   return bookValues.every(value => value);
+}
+
+if (!localStorage.getItem('myLibrary')) {
+  localStorage.setItem('myLibrary', myLibrary);
+} else {
+  myLibrary = JSON.parse(localStorage.getItem('myLibrary'));
 }
 
 displayAddBookFormBtn.addEventListener('click', displayNewBookForm);
