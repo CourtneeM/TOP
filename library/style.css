@@ -9,14 +9,6 @@ body {
   font-family: sans-serif;
 }
 
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 100px;
-}
-
 header {
   height: 18vh;
   background: #ddd;
@@ -37,6 +29,52 @@ header form button {
 }
 header label {
   display: block;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+}
+main div {
+  display: flex;
+  width: 80%;
+  margin-top: 40px;
+}
+main div table {
+  width: 100%;
+  margin: 0 auto;
+}
+main div table tr {
+  width: 100%;
+  height: 60px;
+  text-align: left;
+}
+main div table tr:first-child {
+  color: #fff;
+  background: #777;
+}
+main div table tr:nth-child(2n+3) {
+  background: #ddd;
+}
+main div table th {
+  text-align: center;
+}
+main div table th,
+main div table td {
+  padding: 0 10px;
+  width: 100px;
+  font-size: 14px;
+}
+main div table td:nth-child(1n+3) {
+  text-align: center;
+}
+main div table td:last-child {
+  width: 40px;
+  font-size: 18px;
+  color: red;
 }
 
 /*# sourceMappingURL=style.css.map */

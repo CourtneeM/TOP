@@ -61,9 +61,11 @@ function displayBooks(library) {
       newBookContainer.appendChild(dataContainer);
     }
 
+    let icon = document.createElement('i');
+    icon.classList.add('far', 'fa-trash-alt', 'remove-book');
+
     let dataContainer = document.createElement('td');
-    dataContainer.textContent = '[X]';
-    dataContainer.classList.add('remove-book');
+    dataContainer.appendChild(icon);
     newBookContainer.appendChild(dataContainer);
 
     bookshelfTable.appendChild(newBookContainer);
@@ -118,8 +120,7 @@ function addBookRowEventListeners() {
     let index = Array.from(book.parentNode.children).indexOf(book) - 1;
    
     book.addEventListener('click', e => {
-      console.log(index);
-      if (e.target.className === 'remove-book') {
+      if (Array.from(e.target.classList).includes('remove-book')) {
         removeBookFromLibrary(myLibrary[index])
       }
 
