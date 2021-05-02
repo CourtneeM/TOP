@@ -13,12 +13,14 @@ function Book(title, author, pages, readStatus) {
 }
 
 // this function will be called upon clicking an add book button
-function addBookToLibrary(book) {
-  // take user input and push new Book(user input) onto myLibrary.
-  // let [userInput]; // extract from DOM inputs
-  // myLibrary.push(new Book(...userInput));
+function addBookToLibrary() {
+  let userInputs = Array.from(document.querySelectorAll('.user-input'));
+  let bookValues = userInputs.map(input => input.value);
 
-  myLibrary.push(book);
+  myLibrary.push(new Book(...bookValues));
+  updateBookshelf(myLibrary);
+
+  userInputs.forEach(input => input.value = '');
 }
 
 function initializeBookshelf() {
@@ -84,12 +86,12 @@ function updateBookshelf(library) {
 displayAddBookFormBtn.addEventListener('click', displayNewBookForm);
 addBookBtn.addEventListener('click', (e) => {
   e.preventDefault();
-  // addBookToLibrary(...userinput)
-})
+  addBookToLibrary();
+});
 
 // test books for display
-addBookToLibrary(new Book('Test 1', 'Ricky', '234', 'not yet read'))
-addBookToLibrary(new Book('Test 2', 'Martha', '352', 'read'));
-addBookToLibrary(new Book('Test 3', 'Jones', '654', 'not yet read'));
+// addBookToLibrary(new Book('Test 1', 'Ricky', '234', 'not yet read'))
+// addBookToLibrary(new Book('Test 2', 'Martha', '352', 'read'));
+// addBookToLibrary(new Book('Test 3', 'Jones', '654', 'not yet read'));
 
 displayBooks(myLibrary);
