@@ -26,6 +26,7 @@ function addBookToLibrary() {
   updateBookshelf(myLibrary);
 
   userInputs.forEach(input => input.value = '');
+  hideNewBookForm();
 }
 
 function initializeBookshelf() {
@@ -79,9 +80,13 @@ function displayBooks(library) {
 function displayNewBookForm() {
   let addBookForm = document.querySelector('#add-book-form');
   addBookForm.style.display = 'flex';
-  addBookForm.style['flex-direction'] = 'column';
-  addBookForm.style['align-items'] = 'center';
   displayAddBookFormBtn.style.display = 'none';
+}
+
+function hideNewBookForm() {
+  let addBookForm = document.querySelector('#add-book-form');
+  addBookForm.style.display = 'none';
+  displayAddBookFormBtn.style.display = 'block';
 }
 
 function removeBookFromLibrary(book) {
