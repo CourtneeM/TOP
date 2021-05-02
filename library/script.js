@@ -86,6 +86,7 @@ function removeBookFromLibrary(book) {
   
   let index = myLibrary.indexOf(book);
   myLibrary.splice(index, 1);
+  localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
 
   updateBookshelf(myLibrary);
 }
@@ -111,10 +112,13 @@ function toggleReadStatus(e) {
 }
 
 function addBookRowEventListeners() {
-  const bookRow = document.querySelectorAll('td');
+  const bookRow = document.querySelectorAll('tr');
+  
   bookRow.forEach(book => {
     let index = Array.from(book.parentNode.children).indexOf(book) - 1;
+   
     book.addEventListener('click', e => {
+      console.log(index);
       if (e.target.className === 'remove-book') {
         removeBookFromLibrary(myLibrary[index])
       }
@@ -131,7 +135,7 @@ function isInputValid(bookValues) {
 }
 
 if (!localStorage.getItem('myLibrary')) {
-  localStorage.setItem('myLibrary', myLibrary);
+  localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
 } else {
   myLibrary = JSON.parse(localStorage.getItem('myLibrary'));
 }
