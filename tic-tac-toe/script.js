@@ -1,7 +1,7 @@
 const gameBoard = (() => {
-  let board = [0, 1, 2,
-               3, 4, 5,
-               6, 7, 8];
+  let board = ['', '', '',
+               '', '', '',
+               '', '', ''];
 
   return { board };
 })();
@@ -9,28 +9,48 @@ const gameBoard = (() => {
 const displayController = (() => {
   const gameBoardContainer = document.querySelector('#game-board-container');
 
-  const initializeBoard = () => {
+  const generateBoard = () => {
     gameBoard.board.forEach(square => {
       const boardSquare = document.createElement('div');
+
       boardSquare.classList.add('board-square');
       boardSquare.textContent = square;
+      boardSquare.addEventListener('click', e => {
+        let index = Array.from(e.target.parentNode.children).indexOf(e.target);
+        playGame.placeMarker(index);
+      });
+
       gameBoardContainer.appendChild(boardSquare);
     });
   }
 
-  return { initializeBoard };
+  const clearBoard = () => {
+    while(gameBoardContainer.firstChild) {
+      gameBoardContainer.removeChild(gameBoardContainer.firstChild);
+    }
+  }
+
+  return { generateBoard, clearBoard };
 })();
 
-const createPlayer = (name, marker) => {
-  return {
-    name,
-    marker
+
+const playGame = (() => {  
+  const createPlayer = (name, marker) => ({ name, marker });
+
+  const player1 = createPlayer('mark', 'X');
+  const player2 = createPlayer('sally', 'O');
+  let marker = player1.marker;
+
+  const placeMarker = (index)=> {
+    if (gameBoard.board[index]) return;
+    gameBoard.board[index] = marker;
+    displayController.clearBoard();
+    displayController.generateBoard();
+    marker === player1.marker ? marker = player2.marker : marker = player1.marker;
   }
-}
 
-let player1 = createPlayer('mark', 'X');
-let player2 = createPlayer('sally', 'O');
+  displayController.generateBoard();
 
-const playGame = (() => {
-  displayController.initializeBoard();
+  return { placeMarker };
+  
 })();
