@@ -1,9 +1,15 @@
+const createPlayer = (name, marker) => ({ name, marker });
+
 const gameBoard = (() => {
   let board = ['', '', '',
                '', '', '',
                '', '', ''];
 
-  return { board };
+  const placeMarker = (index, marker) => {
+    board[index] = marker;
+  }
+
+  return { board, placeMarker };
 })();
 
 const displayController = (() => {
@@ -17,11 +23,15 @@ const displayController = (() => {
       boardSquare.textContent = square;
       boardSquare.addEventListener('click', e => {
         let index = Array.from(e.target.parentNode.children).indexOf(e.target);
-        playGame.placeMarker(index);
+        playGame.takeTurn(index);
       });
 
       gameBoardContainer.appendChild(boardSquare);
     });
+  }
+
+  const updateBoard = (index, marker) => {
+    Array.from(gameBoardContainer.children)[index].textContent = marker;
   }
 
   const clearBoard = () => {
@@ -30,29 +40,31 @@ const displayController = (() => {
     }
   }
 
-  return { generateBoard, clearBoard };
+  const disableBoard = () => {
+    gameBoardContainer.style['pointer-events'] = 'none';
+  }
+
+  return { generateBoard, updateBoard, clearBoard, disableBoard };
 })();
 
-const createPlayer = (name, marker) => ({ name, marker });
-
-const player1 = createPlayer('mark', 'X');
-const player2 = createPlayer('sally', 'O');
-
 const playGame = (() => {  
-  let marker = player1.marker;
+  const player1 = createPlayer('mark', 'X');
+  const player2 = createPlayer('sally', 'O');
+  let currentPlayer = player1;
 
-  const placeMarker = (index)=> {
+  const takeTurn = index => {
     if (gameBoard.board[index]) return;
-    gameBoard.board[index] = marker;
-    displayController.clearBoard();
-    displayController.generateBoard();
-    marker === player1.marker ? marker = player2.marker : marker = player1.marker;
+
+    gameBoard.placeMarker(index, currentPlayer.marker);
+    displayController.updateBoard(index, currentPlayer.marker);
     checkForWin();
+
+    currentPlayer = currentPlayer === player1 ? player2 : player1;
   }
 
   const endGame = player => {
     alert(`${player.name} is the winner!`);
-    document.querySelector('#game-board-container').style['pointer-events'] = 'none';
+    displayController.disableBoard();
   }
 
   const checkForWin = () => {
@@ -72,15 +84,10 @@ const playGame = (() => {
     if (board.every(square => square)) {
       alert("It's a tie!");
     }
-
-    
   }
   
-
   displayController.generateBoard();
 
-  return { placeMarker };
+  return { takeTurn };
   
 })();
-
-// check for win, win conditions
