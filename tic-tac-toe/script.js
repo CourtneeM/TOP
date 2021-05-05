@@ -14,6 +14,7 @@ const gameBoard = (() => {
 
 const displayController = (() => {
   const gameBoardContainer = document.querySelector('#game-board-container');
+  const playerDetailsContainer = document.querySelector('#player-details-container');
 
   const generateBoard = () => {
     gameBoard.board.forEach(square => {
@@ -44,12 +45,24 @@ const displayController = (() => {
     gameBoardContainer.style['pointer-events'] = 'none';
   }
 
-  return { generateBoard, updateBoard, clearBoard, disableBoard };
+  const displayPlayers = (players) => {
+    const div = document.createElement('div');
+
+    for (let player of players) {
+      let p = document.createElement('p');
+      p.textContent = `Player ${player.marker}: ${player.name}`;
+      div.appendChild(p);
+    }
+
+    playerDetailsContainer.appendChild(div);
+  }
+
+  return { generateBoard, updateBoard, clearBoard, disableBoard, displayPlayers };
 })();
 
-const playGame = (() => {  
-  const player1 = createPlayer('mark', 'X');
-  const player2 = createPlayer('sally', 'O');
+const playGame = (() => {
+  const player1 = createPlayer(prompt('Player 1 name:'), 'X');
+  const player2 = createPlayer(prompt('Player 2 name:'), 'O');
   let currentPlayer = player1;
   let gameOver = false;
 
@@ -104,6 +117,7 @@ const playGame = (() => {
   }
   
   displayController.generateBoard();
+  displayController.displayPlayers([player1, player2]);
 
   return { takeTurn };
   

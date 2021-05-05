@@ -14,8 +14,8 @@ body {
   justify-content: center;
   align-content: center;
   width: 300px;
-  height: 100vh;
-  margin: 0 auto;
+  height: 60vh;
+  margin: 0 auto 60px;
 }
 #game-board-container .board-square {
   width: 100px;
@@ -29,6 +29,13 @@ body {
 }
 #game-board-container .board-square:nth-child(n+1):nth-child(-n+6) {
   border-bottom: 1px solid #000;
+}
+
+#player-details-container div {
+  display: flex;
+  justify-content: space-around;
+  width: 40%;
+  margin: 0 auto;
 }
 
 /*# sourceMappingURL=style.css.map */
