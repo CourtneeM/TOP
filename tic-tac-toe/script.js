@@ -9,13 +9,20 @@ const gameBoard = (() => {
     board[index] = marker;
   }
 
-  return { board, placeMarker };
+  const resetBoard = () => {
+    for (let i = 0; i < board.length; i++) {
+      board[i] = '';
+    }
+  }
+
+  return { board, placeMarker, resetBoard };
 })();
 
 const displayController = (() => {
-  const gameBoardContainer = document.querySelector('#game-board-container');
   const playerDetailsContainer = document.querySelector('#player-details-container');
+  const gameBoardContainer = document.querySelector('#game-board-container');
   const resultsContainer = document.querySelector('#results-container');
+  const gameControlsContainer = document.querySelector('#game-controls-container');
 
   const generateBoard = () => {
     gameBoard.board.forEach(square => {
@@ -37,16 +44,23 @@ const displayController = (() => {
   }
 
   const clearBoard = () => {
-    while(gameBoardContainer.firstChild) {
-      gameBoardContainer.removeChild(gameBoardContainer.firstChild);
-    }
+    Array.from(gameBoardContainer.children).forEach(square => square.textContent = '');
+    clearWinner();
+  }
+
+  const clearWinner = () => {
+    resultsContainer.style.display = 'none';
   }
 
   const disableBoard = () => {
     gameBoardContainer.style['pointer-events'] = 'none';
   }
 
-  const displayPlayers = (players) => {
+  const enableBoard = () => {
+    gameBoardContainer.style['pointer-events'] = 'auto';
+  }
+
+  const players = players => {
     const div = document.createElement('div');
 
     for (let player of players) {
@@ -58,8 +72,8 @@ const displayController = (() => {
     playerDetailsContainer.appendChild(div);
   }
 
-  const displayWinner = (player) => {
-    let p = document.createElement('p');
+  const winner = player => {
+    let p = resultsContainer.firstChild ? resultsContainer.firstChild : document.createElement('p');
 
     if (player) {
       p.textContent = `${player.name} is the winner!`;
@@ -67,11 +81,47 @@ const displayController = (() => {
       p.textContent = "It's a tie!";
     }
     
-    resultsContainer.appendChild(p);
+    if (!resultsContainer.firstChild) {
+      resultsContainer.appendChild(p);
+    }
+
     resultsContainer.style.display = 'flex';
   }
 
-  return { generateBoard, updateBoard, clearBoard, disableBoard, displayPlayers, displayWinner };
+  const gameControls = gameOver => {
+    let button;
+
+    if (!gameOver) {
+      let div = document.createElement('div');
+      button = document.createElement('button');
+      button.textContent = 'Start Game';
+      button.classList.add('controls-btn');
+      div.appendChild(button);
+      gameControlsContainer.appendChild(div);
+    }
+
+    if (gameOver) {
+      button = document.querySelector('.controls-btn');
+      button.textContent = 'Reset Game';
+      button.style.display = 'block';
+    }
+
+    button.addEventListener('click', () => {
+      button.style.display = 'none';
+
+      if (!gameOver) playGame.startGame();
+      if (gameOver) playGame.resetGame();
+    });
+  }
+
+  const initialize = (player1, player2) => {
+    generateBoard();
+    gameControls();
+    disableBoard();
+    players([player1, player2]);
+  }
+
+  return { initialize, updateBoard, clearBoard, disableBoard, enableBoard, winner, gameControls };
 })();
 
 const playGame = (() => {
@@ -79,6 +129,10 @@ const playGame = (() => {
   const player2 = createPlayer(prompt('Player 2 name:'), 'O');
   let currentPlayer = player1;
   let gameOver = false;
+
+  const startGame = () => {
+    displayController.enableBoard();
+  }
 
   const takeTurn = index => {
     if (gameBoard.board[index]) return;
@@ -91,13 +145,6 @@ const playGame = (() => {
 
   const switchPlayer = () => {
     currentPlayer = currentPlayer === player1 ? player2 : player1;
-  }
-
-  const endGame = player => {
-    displayController.disableBoard();
-    gameOver = true;
-
-    displayController.displayWinner(player);
   }
 
   const checkForWin = () => {
@@ -124,10 +171,25 @@ const playGame = (() => {
       endGame();
     }
   }
-  
-  displayController.generateBoard();
-  displayController.displayPlayers([player1, player2]);
 
-  return { takeTurn };
+  const endGame = player => {
+    displayController.disableBoard();
+    gameOver = true;
+
+    displayController.winner(player);
+    displayController.gameControls(gameOver);
+  }
+
+  const resetGame = () => {
+    currentPlayer = player1;
+    gameOver = false;
+    gameBoard.resetBoard();
+    displayController.clearBoard();
+    displayController.enableBoard();
+  }
+
+  displayController.initialize(player1, player2);  
+
+  return { startGame, takeTurn, resetGame };
   
 })();

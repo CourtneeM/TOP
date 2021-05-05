@@ -50,11 +50,22 @@ body {
   align-items: center;
   width: 250px;
   height: 100px;
-  margin: 0 auto;
+  margin: 0 auto 60px;
   font-weight: 600;
   background: teal;
   border: 5px solid #eee;
   border-radius: 8px;
+}
+
+#game-controls-container {
+  display: flex;
+  justify-content: center;
+}
+#game-controls-container button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=style.css.map */
