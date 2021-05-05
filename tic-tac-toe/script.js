@@ -51,6 +51,7 @@ const playGame = (() => {
   const player1 = createPlayer('mark', 'X');
   const player2 = createPlayer('sally', 'O');
   let currentPlayer = player1;
+  let gameOver = false;
 
   const takeTurn = index => {
     if (gameBoard.board[index]) return;
@@ -58,31 +59,47 @@ const playGame = (() => {
     gameBoard.placeMarker(index, currentPlayer.marker);
     displayController.updateBoard(index, currentPlayer.marker);
     checkForWin();
+    switchPlayer();
+  }
 
+  const switchPlayer = () => {
     currentPlayer = currentPlayer === player1 ? player2 : player1;
   }
 
   const endGame = player => {
-    alert(`${player.name} is the winner!`);
     displayController.disableBoard();
+    gameOver = true;
+
+    if (player) {
+      alert(`${player.name} is the winner!`);
+      return;
+    }
+    
+    alert("It's a tie!");
   }
 
   const checkForWin = () => {
-    const board = gameBoard.board;
-    const winConditions = [[...board.slice(0, 3)], [...board.slice(3, 6)], [...board.slice(6, 9)],
-                           [board[0], board[3], board[6]], [board[1], board[4], board[7]], [board[2], board[5], board[8]],
-                           [board[0], board[4], board[8]], [board[2], board[4], board[6]]];
-    
-    winConditions.filter(condition => {
-      if (condition.every(marker => marker === player1.marker)) {
+    const winPositions = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6]
+    ];
+
+    winPositions.forEach(group => {
+      if (group.every(position => gameBoard.board[position] === player1.marker)) {
         return endGame(player1);
-      } else if (condition.every(marker => marker === player2.marker)) {
+      } else if (group.every(position => gameBoard.board[position] === player2.marker)) {
         return endGame(player2);
       }
     });
 
-    if (board.every(square => square)) {
-      alert("It's a tie!");
+    if (gameBoard.board.every(square => square) && gameOver === false) {
+      endGame();
     }
   }
   
