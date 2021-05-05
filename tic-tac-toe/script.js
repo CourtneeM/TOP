@@ -15,6 +15,7 @@ const gameBoard = (() => {
 const displayController = (() => {
   const gameBoardContainer = document.querySelector('#game-board-container');
   const playerDetailsContainer = document.querySelector('#player-details-container');
+  const resultsContainer = document.querySelector('#results-container');
 
   const generateBoard = () => {
     gameBoard.board.forEach(square => {
@@ -57,7 +58,20 @@ const displayController = (() => {
     playerDetailsContainer.appendChild(div);
   }
 
-  return { generateBoard, updateBoard, clearBoard, disableBoard, displayPlayers };
+  const displayWinner = (player) => {
+    let p = document.createElement('p');
+
+    if (player) {
+      p.textContent = `${player.name} is the winner!`;
+    } else {
+      p.textContent = "It's a tie!";
+    }
+    
+    resultsContainer.appendChild(p);
+    resultsContainer.style.display = 'flex';
+  }
+
+  return { generateBoard, updateBoard, clearBoard, disableBoard, displayPlayers, displayWinner };
 })();
 
 const playGame = (() => {
@@ -83,12 +97,7 @@ const playGame = (() => {
     displayController.disableBoard();
     gameOver = true;
 
-    if (player) {
-      alert(`${player.name} is the winner!`);
-      return;
-    }
-    
-    alert("It's a tie!");
+    displayController.displayWinner(player);
   }
 
   const checkForWin = () => {

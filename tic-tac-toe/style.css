@@ -6,6 +6,19 @@
 
 body {
   min-height: 100vh;
+  font-family: sans-serif;
+  color: #eee;
+  background: #333;
+}
+
+#player-details-container {
+  margin-top: 60px;
+}
+#player-details-container div {
+  display: flex;
+  justify-content: space-around;
+  width: 40%;
+  margin: 0 auto;
 }
 
 #game-board-container {
@@ -14,28 +27,34 @@ body {
   justify-content: center;
   align-content: center;
   width: 300px;
-  height: 60vh;
-  margin: 0 auto 60px;
+  height: 400px;
+  margin: 0 auto;
 }
 #game-board-container .board-square {
   width: 100px;
   height: 100px;
-  padding: 30px 40px;
-  font-size: 36px;
+  padding: 22px 32px;
+  font-size: 46px;
 }
 #game-board-container .board-square:nth-child(3n+1),
 #game-board-container .board-square:nth-child(3n+2) {
-  border-right: 1px solid #000;
+  border-right: 5px solid teal;
 }
 #game-board-container .board-square:nth-child(n+1):nth-child(-n+6) {
-  border-bottom: 1px solid #000;
+  border-bottom: 5px solid teal;
 }
 
-#player-details-container div {
-  display: flex;
-  justify-content: space-around;
-  width: 40%;
+#results-container {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 100px;
   margin: 0 auto;
+  font-weight: 600;
+  background: teal;
+  border: 5px solid #eee;
+  border-radius: 8px;
 }
 
 /*# sourceMappingURL=style.css.map */
