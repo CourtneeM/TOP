@@ -26,6 +26,19 @@ body {
       margin: 0 8px;
       padding: 3px;
     }
+
+    p:nth-child(even) {
+      margin: 0 8px;
+      font-weight: 600;
+    }
+
+    p:nth-child(2) {
+      margin-right: 15px;
+    }
+    
+    p:nth-child(3) {
+      margin-left: 15px;
+    }
   }
 }
 

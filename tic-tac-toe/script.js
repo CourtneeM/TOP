@@ -66,17 +66,16 @@ const displayController = (() => {
     playerInput.id = `${player.marker.toLowerCase()}-input`;
 
     return playerInput;
-    // when hit start game, turn inputs into <p> with the input values as textContent
   }
 
   const players = players => {
     const div = document.createElement('div');
+    div.id = 'player-details';
 
     for (let player of players) {
       let p = document.createElement('p');
       p.textContent = `Player ${player.marker}:`;
       div.appendChild(p);
-      console.log(player);
       div.appendChild(playerNameInput(player));
     }
 
@@ -84,9 +83,32 @@ const displayController = (() => {
   }
 
   const getPlayerName = player => {
-    console.log(player);
+    if (player.name) return;
+    
     let playerInput = document.querySelector(`#${player.marker.toLowerCase()}-input`);
     return playerInput.value;
+  }
+
+  const displayPlayerNames = players => {
+    const playerDetailsDiv = document.querySelector('#player-details');
+    const playerDetailsDivChildren = Array.from(playerDetailsDiv.children);+
+
+    playerDetailsDivChildren.forEach((child, i) => {
+      if (child.tagName === 'INPUT') {
+        let p = document.createElement('p');
+        p.textContent = players[0].name;
+
+        playerDetailsDivChildren.splice(i, 1, p);
+        players.shift();
+      }
+
+    });
+
+    while (playerDetailsDiv.firstChild) {
+      playerDetailsDiv.removeChild(playerDetailsDiv.firstChild);
+    }
+
+    playerDetailsDivChildren.forEach(child => playerDetailsDiv.appendChild(child));
   }
 
   const winner = player => {
@@ -124,10 +146,11 @@ const displayController = (() => {
     }
 
     button.addEventListener('click', () => {
-      button.style.display = 'none';
-
-      if (!gameOver) playGame.startGame();
+      if (!gameOver) {
+        if (playGame.startGame() === false) return;
+      }
       if (gameOver) playGame.resetGame();
+      button.style.display = 'none';
     });
   }
 
@@ -138,18 +161,22 @@ const displayController = (() => {
     players([player1, player2]);
   }
 
-  return { initialize, updateBoard, clearBoard, disableBoard, enableBoard, getPlayerName, winner, gameControls };
+  return { initialize, updateBoard, clearBoard, disableBoard, enableBoard, getPlayerName, displayPlayerNames, winner, gameControls };
 })();
 
 const playGame = (() => {
-  let player1 = createPlayer('Player 1', 'X');;
-  let player2 = createPlayer('Player 2', 'O');;
+  let player1 = createPlayer('', 'X');
+  let player2 = createPlayer('', 'O');
   let currentPlayer = player1;
   let gameOver = false;
 
   const startGame = () => {
-    player1.name = displayController.getPlayerName(player1);
-    player2.name = displayController.getPlayerName(player2);
+    player1.name = player1.name || displayController.getPlayerName(player1);
+    player2.name = player2.name || displayController.getPlayerName(player2);
+
+    if (!player1.name || !player2.name) return false;
+
+    displayController.displayPlayerNames([player1, player2]);
     displayController.enableBoard();
   }
 
