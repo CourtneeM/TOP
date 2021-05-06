@@ -64,6 +64,7 @@ const displayController = (() => {
     const playerInput = document.createElement('input');
     playerInput.setAttribute('type', 'text');
     playerInput.id = `${player.marker.toLowerCase()}-input`;
+
     return playerInput;
     // when hit start game, turn inputs into <p> with the input values as textContent
   }
@@ -80,6 +81,12 @@ const displayController = (() => {
     }
 
     playerDetailsContainer.appendChild(div);
+  }
+
+  const getPlayerName = player => {
+    console.log(player);
+    let playerInput = document.querySelector(`#${player.marker.toLowerCase()}-input`);
+    return playerInput.value;
   }
 
   const winner = player => {
@@ -131,20 +138,18 @@ const displayController = (() => {
     players([player1, player2]);
   }
 
-  return { initialize, updateBoard, clearBoard, disableBoard, enableBoard, winner, gameControls };
+  return { initialize, updateBoard, clearBoard, disableBoard, enableBoard, getPlayerName, winner, gameControls };
 })();
 
 const playGame = (() => {
-  const getPlayerName = () => {
-
-  }
-
-  const player1 = createPlayer(getPlayerName('player1'), 'X');
-  const player2 = createPlayer(getPlayerName('player2'), 'O');
+  let player1 = createPlayer('Player 1', 'X');;
+  let player2 = createPlayer('Player 2', 'O');;
   let currentPlayer = player1;
   let gameOver = false;
 
   const startGame = () => {
+    player1.name = displayController.getPlayerName(player1);
+    player2.name = displayController.getPlayerName(player2);
     displayController.enableBoard();
   }
 
