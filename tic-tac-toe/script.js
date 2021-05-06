@@ -239,3 +239,25 @@ const playGame = (() => {
   return { startGame, takeTurn, resetGame };
   
 })();
+
+const computerAI = (() => {
+  /* 
+             ======= DISPLAY =======
+      put 2 radio buttons above playerDetailsContainer, * 1 Player | * 2 Players
+      If 2 players then keep as normal
+      If 1 player then change the second input to <p>Computer</p>
+  */
+
+  /*
+             ======= Gameplay =======
+      on the computer's turn, it will look through the available spots in board
+      pick a random available spot on board
+
+             ------ Smarter Offense ------
+      If the player is about to win, pick the winning player spot
+
+             ------ Smarter Defense ------
+      If the computer is about to win, pick the next win spot, if available
+  */
+  
+})();
