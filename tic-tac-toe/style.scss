@@ -14,7 +14,26 @@ body {
 #player-details-container {
   margin-top: 60px;
 
-  div {
+  #num-players-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+
+    >:nth-child(2n+1) {
+      margin: 0 5px;
+    }
+
+    >:nth-child(2) {
+      margin-right: 20px;
+    }
+    
+    >:nth-child(3) {
+      margin-left: 20px;
+    }
+  }
+
+  #player-details {
     display: flex;
     justify-content: center;
     align-items: center;

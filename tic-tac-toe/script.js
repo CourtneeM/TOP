@@ -68,7 +68,7 @@ const displayController = (() => {
     return playerInput;
   }
 
-  const players = players => {
+  const generatePlayersContainer = players => {
     const div = document.createElement('div');
     div.id = 'player-details';
 
@@ -154,11 +154,41 @@ const displayController = (() => {
     });
   }
 
+  const generateNumberOfPlayersContainer = () => {
+    const div = document.createElement('div');
+    const radio1Player = document.createElement('input');
+    const label1Player = document.createElement('label');
+    const radio2Players = document.createElement('input');
+    const label2Players = document.createElement('label');
+
+    div.id = "num-players-container";
+
+    radio1Player.setAttribute('type', 'radio');
+    radio1Player.setAttribute('id', '1-player');
+    radio1Player.setAttribute('name', 'num-players');
+    radio1Player.setAttribute('value', '1 player');
+
+    radio2Players.setAttribute('type', 'radio');
+    radio2Players.setAttribute('id', '2-players');
+    radio2Players.setAttribute('name', 'num-players');
+    radio2Players.setAttribute('value', '2 players');
+    radio2Players.checked = true;
+
+    label1Player.setAttribute('for', '1-player');
+    label1Player.textContent = '1 Player';
+    label2Players.setAttribute('for', '2-players');
+    label2Players.textContent = '2 Players';
+
+    [radio1Player, label1Player, radio2Players, label2Players].forEach(element => div.appendChild(element));
+    playerDetailsContainer.appendChild(div);
+  }
+
   const initialize = (player1, player2) => {
+    generateNumberOfPlayersContainer();
+    generatePlayersContainer([player1, player2]);
     generateBoard();
     gameControls();
     disableBoard();
-    players([player1, player2]);
   }
 
   return { initialize, updateBoard, clearBoard, disableBoard, enableBoard, getPlayerName, displayPlayerNames, winner, gameControls };
