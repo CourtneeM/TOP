@@ -16,9 +16,15 @@ body {
 }
 #player-details-container div {
   display: flex;
-  justify-content: space-around;
-  width: 40%;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
   margin: 0 auto;
+}
+#player-details-container div input {
+  width: 120px;
+  margin: 0 8px;
+  padding: 3px;
 }
 
 #game-board-container {

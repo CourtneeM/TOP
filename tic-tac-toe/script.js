@@ -60,13 +60,23 @@ const displayController = (() => {
     gameBoardContainer.style['pointer-events'] = 'auto';
   }
 
+  const playerNameInput = player => {
+    const playerInput = document.createElement('input');
+    playerInput.setAttribute('type', 'text');
+    playerInput.id = `${player.marker.toLowerCase()}-input`;
+    return playerInput;
+    // when hit start game, turn inputs into <p> with the input values as textContent
+  }
+
   const players = players => {
     const div = document.createElement('div');
 
     for (let player of players) {
       let p = document.createElement('p');
-      p.textContent = `Player ${player.marker}: ${player.name}`;
+      p.textContent = `Player ${player.marker}:`;
       div.appendChild(p);
+      console.log(player);
+      div.appendChild(playerNameInput(player));
     }
 
     playerDetailsContainer.appendChild(div);
@@ -125,8 +135,12 @@ const displayController = (() => {
 })();
 
 const playGame = (() => {
-  const player1 = createPlayer(prompt('Player 1 name:'), 'X');
-  const player2 = createPlayer(prompt('Player 2 name:'), 'O');
+  const getPlayerName = () => {
+
+  }
+
+  const player1 = createPlayer(getPlayerName('player1'), 'X');
+  const player2 = createPlayer(getPlayerName('player2'), 'O');
   let currentPlayer = player1;
   let gameOver = false;
 
@@ -188,7 +202,7 @@ const playGame = (() => {
     displayController.enableBoard();
   }
 
-  displayController.initialize(player1, player2);  
+  displayController.initialize(player1, player2);
 
   return { startGame, takeTurn, resetGame };
   
