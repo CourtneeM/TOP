@@ -244,7 +244,8 @@ const playGame = (() => {
     computerPlayer = displayController.isComputerPlayer();
 
     displayController.displayPlayerNames([player1, player2]);
-    displayController.enableBoard();(computerPlayer);
+    displayController.enableBoard();
+    displayController.disableNumberOfPlayersControls();
   }
 
   const takeTurn = index => {
