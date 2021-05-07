@@ -20,10 +20,10 @@ const gameBoard = (() => {
 
 const displayController = (() => {
   const playerDetailsContainer = document.querySelector('#player-details-container');
-  let playerDetailsDiv;
   const gameBoardContainer = document.querySelector('#game-board-container');
   const resultsContainer = document.querySelector('#results-container');
   const gameControlsContainer = document.querySelector('#game-controls-container');
+  let playerDetailsDiv;
 
   const generateBoard = () => {
     gameBoard.board.forEach(square => {
@@ -252,14 +252,23 @@ const playGame = (() => {
   const takeTurn = index => {
     if (gameBoard.board[index]) return;
 
+    if (currentPlayer === player2 && computerPlayer) {
+      index = computerAI.takeTurn();
+    }
+
     gameBoard.placeMarker(index, currentPlayer.marker);
     displayController.updateBoard(index, currentPlayer.marker);
     checkForWin();
+    if (gameOver) return;
     switchPlayer();
   }
 
   const switchPlayer = () => {
     currentPlayer = currentPlayer === player1 ? player2 : player1;
+
+    if (currentPlayer === player2 && computerPlayer) {
+      takeTurn();
+    }
   }
 
   const checkForWin = () => {
@@ -310,10 +319,16 @@ const playGame = (() => {
 })();
 
 const computerAI = (() => {
+  const takeTurn = () => {
+    let availableSpots = [];
+    gameBoard.board.forEach((square, i) => {
+      if (!square) availableSpots.push(i);
+    });
+
+    return availableSpots[Math.floor(Math.random() * availableSpots.length)];
+  }
+
   /*
-             ======= Gameplay =======
-      on the computer's turn, it will look through the available spots in board
-      pick a random available spot on board
 
              ------ Smarter Offense ------
       If the player is about to win, pick the winning player spot
@@ -321,5 +336,7 @@ const computerAI = (() => {
              ------ Smarter Defense ------
       If the computer is about to win, pick the next win spot, if available
   */
+
+  return { takeTurn }
   
 })();
