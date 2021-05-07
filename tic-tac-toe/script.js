@@ -117,6 +117,10 @@ const displayController = (() => {
     playerDetailsDivChildren.forEach(child => playerDetailsDiv.appendChild(child));
   }
 
+  const isComputerPlayer = () => {
+    return document.querySelector('input[type="radio"]:checked').value === '1 player';
+  }
+
   const winner = player => {
     let p = resultsContainer.firstChild ? resultsContainer.firstChild : document.createElement('p');
 
@@ -160,7 +164,7 @@ const displayController = (() => {
     });
   }
 
-  const generateNumberOfPlayersControls = players => {
+  const generateNumberOfPlayersControls = (players, computerPlayer) => {
     const div = document.createElement('div');
     const radio1Player = document.createElement('input');
     const label1Player = document.createElement('label');
@@ -178,7 +182,8 @@ const displayController = (() => {
         playerDetailsDiv.removeChild(playerDetailsDiv.firstChild);
       }
       players[1].name = 'Computer';
-      generatePlayersContainer(players)
+      generatePlayersContainer(players);
+      computerPlayer = true;
     });
     
     radio2Players.setAttribute('type', 'radio');
@@ -191,16 +196,14 @@ const displayController = (() => {
         playerDetailsDiv.removeChild(playerDetailsDiv.firstChild);
       }
       players.forEach(player => player.name = '');
-      generatePlayersContainer(players)
+      generatePlayersContainer(players);
+      computerPlayer = false;
     });
 
     label1Player.setAttribute('for', '1-player');
     label1Player.textContent = '1 Player';
     label2Players.setAttribute('for', '2-players');
     label2Players.textContent = '2 Players';
-
-    // add on click event for each button
-    // on click regenerate players container
 
     [radio1Player, label1Player, radio2Players, label2Players].forEach(element => div.appendChild(element));
     playerDetailsContainer.appendChild(div);
@@ -212,8 +215,8 @@ const displayController = (() => {
     numPlayersContainer.style.color = '#777';
   }
 
-  const initialize = players => {
-    generateNumberOfPlayersControls(players);
+  const initialize = (players, computerPlayer) => {
+    generateNumberOfPlayersControls(players, computerPlayer);
     generatePlayersContainer(players);
     generateBoard();
     gameControls();
@@ -221,7 +224,8 @@ const displayController = (() => {
   }
 
   return { initialize, updateBoard, clearBoard, disableBoard, enableBoard, 
-           getPlayerName, displayPlayerNames, winner, gameControls, disableNumberOfPlayersControls };
+           getPlayerName, displayPlayerNames, isComputerPlayer, winner, gameControls, 
+           disableNumberOfPlayersControls };
 })();
 
 const playGame = (() => {
@@ -229,6 +233,7 @@ const playGame = (() => {
   let player2 = createPlayer('', 'O');
   let currentPlayer = player1;
   let gameOver = false;
+  let computerPlayer = false;
 
   const startGame = () => {
     player1.name = player1.name || displayController.getPlayerName(player1);
@@ -236,9 +241,12 @@ const playGame = (() => {
 
     if (!player1.name || !player2.name) return false;
 
+    computerPlayer = displayController.isComputerPlayer();
+
     displayController.displayPlayerNames([player1, player2]);
     displayController.enableBoard();
     displayController.disableNumberOfPlayersControls();
+    console.log(computerPlayer);
   }
 
   const takeTurn = index => {
@@ -302,12 +310,6 @@ const playGame = (() => {
 })();
 
 const computerAI = (() => {
-  /* 
-             ======= DISPLAY =======
-      If 2 players then keep as normal
-      If 1 player then change the second input to <p>Computer</p>
-  */
-
   /*
              ======= Gameplay =======
       on the computer's turn, it will look through the available spots in board
