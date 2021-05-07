@@ -20,6 +20,7 @@ const gameBoard = (() => {
 
 const displayController = (() => {
   const playerDetailsContainer = document.querySelector('#player-details-container');
+  let playerDetailsDiv;
   const gameBoardContainer = document.querySelector('#game-board-container');
   const resultsContainer = document.querySelector('#results-container');
   const gameControlsContainer = document.querySelector('#game-controls-container');
@@ -64,12 +65,16 @@ const displayController = (() => {
     const playerInput = document.createElement('input');
     playerInput.setAttribute('type', 'text');
     playerInput.id = `${player.marker.toLowerCase()}-input`;
+    
+    if (player.name === 'Computer') {
+      playerInput.value = 'Computer';
+    }
 
     return playerInput;
   }
 
   const generatePlayersContainer = players => {
-    const div = document.createElement('div');
+    let div = document.querySelector('#player-details') || document.createElement('div');
     div.id = 'player-details';
 
     for (let player of players) {
@@ -79,7 +84,10 @@ const displayController = (() => {
       div.appendChild(playerNameInput(player));
     }
 
+    if (document.querySelector('#player-details')) return;
+
     playerDetailsContainer.appendChild(div);
+    playerDetailsDiv = document.querySelector('#player-details');
   }
 
   const getPlayerName = player => {
@@ -90,9 +98,7 @@ const displayController = (() => {
   }
 
   const displayPlayerNames = players => {
-    const playerDetailsDiv = document.querySelector('#player-details');
-    const playerDetailsDivChildren = Array.from(playerDetailsDiv.children);+
-
+    const playerDetailsDivChildren = Array.from(playerDetailsDiv.children);
     playerDetailsDivChildren.forEach((child, i) => {
       if (child.tagName === 'INPUT') {
         let p = document.createElement('p');
@@ -154,7 +160,7 @@ const displayController = (() => {
     });
   }
 
-  const generateNumberOfPlayersContainer = () => {
+  const generateNumberOfPlayersControls = players => {
     const div = document.createElement('div');
     const radio1Player = document.createElement('input');
     const label1Player = document.createElement('label');
@@ -167,31 +173,55 @@ const displayController = (() => {
     radio1Player.setAttribute('id', '1-player');
     radio1Player.setAttribute('name', 'num-players');
     radio1Player.setAttribute('value', '1 player');
-
+    radio1Player.addEventListener('click', () => {
+      while (playerDetailsDiv.firstChild) {
+        playerDetailsDiv.removeChild(playerDetailsDiv.firstChild);
+      }
+      players[1].name = 'Computer';
+      generatePlayersContainer(players)
+    });
+    
     radio2Players.setAttribute('type', 'radio');
     radio2Players.setAttribute('id', '2-players');
     radio2Players.setAttribute('name', 'num-players');
     radio2Players.setAttribute('value', '2 players');
     radio2Players.checked = true;
+    radio2Players.addEventListener('click', () => {
+      while (playerDetailsDiv.firstChild) {
+        playerDetailsDiv.removeChild(playerDetailsDiv.firstChild);
+      }
+      players.forEach(player => player.name = '');
+      generatePlayersContainer(players)
+    });
 
     label1Player.setAttribute('for', '1-player');
     label1Player.textContent = '1 Player';
     label2Players.setAttribute('for', '2-players');
     label2Players.textContent = '2 Players';
 
+    // add on click event for each button
+    // on click regenerate players container
+
     [radio1Player, label1Player, radio2Players, label2Players].forEach(element => div.appendChild(element));
     playerDetailsContainer.appendChild(div);
   }
 
-  const initialize = (player1, player2) => {
-    generateNumberOfPlayersContainer();
-    generatePlayersContainer([player1, player2]);
+  const disableNumberOfPlayersControls = () => {
+    const numPlayersContainer = document.querySelector('#num-players-container');
+    numPlayersContainer.style['pointer-events'] = 'none';
+    numPlayersContainer.style.color = '#777';
+  }
+
+  const initialize = players => {
+    generateNumberOfPlayersControls(players);
+    generatePlayersContainer(players);
     generateBoard();
     gameControls();
     disableBoard();
   }
 
-  return { initialize, updateBoard, clearBoard, disableBoard, enableBoard, getPlayerName, displayPlayerNames, winner, gameControls };
+  return { initialize, updateBoard, clearBoard, disableBoard, enableBoard, 
+           getPlayerName, displayPlayerNames, winner, gameControls, disableNumberOfPlayersControls };
 })();
 
 const playGame = (() => {
@@ -208,6 +238,7 @@ const playGame = (() => {
 
     displayController.displayPlayerNames([player1, player2]);
     displayController.enableBoard();
+    displayController.disableNumberOfPlayersControls();
   }
 
   const takeTurn = index => {
@@ -264,7 +295,7 @@ const playGame = (() => {
     displayController.enableBoard();
   }
 
-  displayController.initialize(player1, player2);
+  displayController.initialize([player1, player2]);
 
   return { startGame, takeTurn, resetGame };
   
@@ -273,7 +304,6 @@ const playGame = (() => {
 const computerAI = (() => {
   /* 
              ======= DISPLAY =======
-      put 2 radio buttons above playerDetailsContainer, * 1 Player | * 2 Players
       If 2 players then keep as normal
       If 1 player then change the second input to <p>Computer</p>
   */
