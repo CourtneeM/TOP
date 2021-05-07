@@ -342,8 +342,22 @@ const computerAI = (() => {
     return defaultMove();
   }
 
-  const offenseMove = () => {
+  const offenseMove = winPositions => {
+    let availableSpots = winPositions.filter(positionArr => {
+      if (positionArr.every(position => gameBoard.board[position])) return false;
 
+      let count = 0;
+      positionArr.forEach(position => {
+        if (gameBoard.board[position] === 'O') {
+          count += 1;
+        }
+      });
+      if (count === 2) return true;
+    });
+
+    if (availableSpots.length > 0) {
+      return availableSpots[Math.floor(Math.random() * availableSpots.length)].filter(index => !gameBoard.board[index])[0];
+    }
   }
 
   const defenseMove = winPositions => {
