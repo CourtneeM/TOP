@@ -259,7 +259,9 @@ const playGame = (() => {
     gameBoard.placeMarker(index, currentPlayer.marker);
     displayController.updateBoard(index, currentPlayer.marker);
     checkForWin();
+
     if (gameOver) return;
+
     switchPlayer();
   }
 
@@ -320,7 +322,38 @@ const playGame = (() => {
 
 const computerAI = (() => {
   const takeTurn = () => {
+    const winPositions = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6]
+    ];
     let availableSpots = [];
+
+    // Computer Defense Move
+
+    // Computer Offense Move
+    availableSpots = winPositions.filter(positionArr => {
+      if (positionArr.every(position => gameBoard.board[position])) return false;
+
+      let count = 0;
+      positionArr.forEach(position => {
+        if (gameBoard.board[position] === 'X') {
+          count += 1;
+        }
+      });
+      if (count === 2) return true;
+    });
+
+    if (availableSpots.length > 0) {
+      return availableSpots[Math.floor(Math.random() * availableSpots.length)].filter(index => !gameBoard.board[index])[0];
+    }
+
+    // Default random move
     gameBoard.board.forEach((square, i) => {
       if (!square) availableSpots.push(i);
     });
