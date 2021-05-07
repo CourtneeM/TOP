@@ -333,40 +333,24 @@ const computerAI = (() => {
 
     let move;
 
-    move = offenseMove(winPositions);
+    // Offense Move
+    move = strategicMove(winPositions, 'O');
     if (move || move === 0) return move;
 
-    move = defenseMove(winPositions);
+    // Defense Move
+    move = strategicMove(winPositions, 'X');
     if (move || move === 0) return move;
     
     return defaultMove();
   }
 
-  const offenseMove = winPositions => {
+  const strategicMove = (winPositions, playerMarker) => {
     let availableSpots = winPositions.filter(positionArr => {
       if (positionArr.every(position => gameBoard.board[position])) return false;
 
       let count = 0;
       positionArr.forEach(position => {
-        if (gameBoard.board[position] === 'O') {
-          count += 1;
-        }
-      });
-      if (count === 2) return true;
-    });
-
-    if (availableSpots.length > 0) {
-      return availableSpots[Math.floor(Math.random() * availableSpots.length)].filter(index => !gameBoard.board[index])[0];
-    }
-  }
-
-  const defenseMove = winPositions => {
-    let availableSpots = winPositions.filter(positionArr => {
-      if (positionArr.every(position => gameBoard.board[position])) return false;
-
-      let count = 0;
-      positionArr.forEach(position => {
-        if (gameBoard.board[position] === 'X') {
+        if (gameBoard.board[position] === playerMarker) {
           count += 1;
         }
       });
