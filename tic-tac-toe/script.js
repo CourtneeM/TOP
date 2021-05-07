@@ -244,9 +244,7 @@ const playGame = (() => {
     computerPlayer = displayController.isComputerPlayer();
 
     displayController.displayPlayerNames([player1, player2]);
-    displayController.enableBoard();
-    displayController.disableNumberOfPlayersControls();
-    console.log(computerPlayer);
+    displayController.enableBoard();(computerPlayer);
   }
 
   const takeTurn = index => {
@@ -332,12 +330,24 @@ const computerAI = (() => {
       [0, 4, 8],
       [2, 4, 6]
     ];
-    let availableSpots = [];
 
-    // Computer Defense Move
+    let move;
 
-    // Computer Offense Move
-    availableSpots = winPositions.filter(positionArr => {
+    move = offenseMove(winPositions);
+    if (move || move === 0) return move;
+
+    move = defenseMove(winPositions);
+    if (move || move === 0) return move;
+    
+    return defaultMove();
+  }
+
+  const offenseMove = () => {
+
+  }
+
+  const defenseMove = winPositions => {
+    let availableSpots = winPositions.filter(positionArr => {
       if (positionArr.every(position => gameBoard.board[position])) return false;
 
       let count = 0;
@@ -352,21 +362,21 @@ const computerAI = (() => {
     if (availableSpots.length > 0) {
       return availableSpots[Math.floor(Math.random() * availableSpots.length)].filter(index => !gameBoard.board[index])[0];
     }
+  }
 
-    // Default random move
+  const defaultMove = () => {
+    let availableSpots = [];
+
     gameBoard.board.forEach((square, i) => {
       if (!square) availableSpots.push(i);
     });
 
+    // console.log('---default move---');
     return availableSpots[Math.floor(Math.random() * availableSpots.length)];
   }
 
   /*
-
              ------ Smarter Offense ------
-      If the player is about to win, pick the winning player spot
-
-             ------ Smarter Defense ------
       If the computer is about to win, pick the next win spot, if available
   */
 
