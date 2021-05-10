@@ -27,6 +27,7 @@ header #btn-display-add-book-form {
   background: #6bd402;
   border: 1px solid #000;
   border-radius: 5px;
+  cursor: pointer;
 }
 header form {
   display: none;
@@ -58,6 +59,7 @@ header form button {
   background: #6bd402;
   border: 1px solid #000;
   border-radius: 5px;
+  cursor: pointer;
 }
 header label {
   display: block;
