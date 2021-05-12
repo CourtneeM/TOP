@@ -8,7 +8,7 @@ const heroDisplayController = (() =>{
 
   const heroText = function() {
     const h2 = document.createElement('h2');
-    h2.textContent = "Enjoy a quiet atmosphere and the aroma of fresh tea";
+    h2.textContent = "Enjoy a quiet atmosphere and an aroma of fresh tea";
     
     return h2;
   }
