@@ -3,3 +3,42 @@
   margin: 0;
   padding: 0;
 }
+
+#main-contact {
+  border-top: 1px solid #000;
+
+  h2 {
+    margin: 100px 0 60px;
+    font-size: 42px;
+    font-weight: 300;
+    text-align: center;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin: 0 auto;
+    padding: 40px 100px;
+    background: mediumspringgreen;
+    border-radius: 8px;
+
+    label {
+      margin-bottom: 5px;
+    }
+
+    input {
+      margin-bottom: 15px;
+      padding: 5px 10px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 8px;
+      font-weight: 600;
+      background: #fff;
+      border: 1px solid #000;
+      cursor: pointer;
+    }
+  }
+}

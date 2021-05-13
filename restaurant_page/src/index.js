@@ -1,6 +1,7 @@
 import header from './modules/display_controllers/header'; 
 import home from './modules/display_controllers/home';
-import menu from './modules/display_controllers/menu.js';
+import menu from './modules/display_controllers/menu';
+import contact from './modules/display_controllers/contact';
 
 const contentContainer = document.querySelector('#content');
 
@@ -19,7 +20,7 @@ switch (activePage.textContent) {
   case 'Menu':
     contentContainer.appendChild(menu);
     break;
-  // case 'Contact':
-  //   contentContainer.appendChild(contact);
-  //   break;
+  case 'Contact':
+    contentContainer.appendChild(contact);
+    break;
 }

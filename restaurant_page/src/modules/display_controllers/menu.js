@@ -45,6 +45,7 @@ const menuDisplayController = (() => {
 
   const menu = function() {
     const main = document.createElement('main');
+    main.id = 'main-menu';
     const section = document.createElement('section');
     section.id = "hero-container";
 
