@@ -5,6 +5,8 @@
 }
 
 #main-contact {
+  min-height: 93.6vh;
+  background: #333;
   border-top: 1px solid #000;
 }
 #main-contact h2 {
@@ -12,28 +14,43 @@
   font-size: 42px;
   font-weight: 300;
   text-align: center;
+  color: #fff;
 }
 #main-contact form {
   display: flex;
-  flex-direction: column;
-  width: 400px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 600px;
   margin: 0 auto;
-  padding: 40px 100px;
-  background: mediumspringgreen;
+  padding: 40px;
+  color: #333;
+  background: #ccc;
   border-radius: 8px;
 }
 #main-contact form label {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 5px;
 }
-#main-contact form input {
-  margin-bottom: 15px;
+#main-contact form label:nth-child(-n+2) {
+  flex-basis: 45%;
+}
+#main-contact form label:nth-child(3) {
+  flex-basis: 100%;
+}
+#main-contact form input,
+#main-contact form textarea {
+  margin: 5px 0 15px;
   padding: 5px 10px;
+  font-family: sans-serif;
 }
 #main-contact form button {
+  flex-basis: 100%;
   margin-top: 20px;
-  padding: 8px;
+  padding: 10px;
   font-weight: 600;
-  background: #fff;
+  color: #fff;
+  background: mediumspringgreen;
   border: 1px solid #000;
   cursor: pointer;
 }

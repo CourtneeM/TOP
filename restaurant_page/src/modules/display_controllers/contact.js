@@ -12,16 +12,29 @@ const contactDisplayController = (() => {
 
     formFields.forEach(field => {
       const label = document.createElement('label');
-      const input = document.createElement('input');
+      const input = field === 'message' ? document.createElement('textarea') : document.createElement('input');
 
       label.textContent = field[0].toUpperCase() + field.slice(1);
       label.for = field;
       input.id = field;
       input.name = 'contact';
-      field === 'email' ? input.type = "email" : input.type = 'text';
+      
+      switch (field) {
+        case 'name':
+          input.type = 'text';
+          break;
+        case 'email':
+          input.type = 'email';
+          break;
+      }
+      
+      if (field === 'message') {
+        input.cols = 15;
+        input.rows = 10;
+      }
 
+      label.appendChild(input);
       form.appendChild(label);
-      form.appendChild(input);
     });
 
     const button = document.createElement('button');
