@@ -13,7 +13,7 @@ const headerDisplayController = (() => {
       const li = document.createElement('li');
       li.textContent = item;
 
-      if (item === 'Home') {
+      if (item === 'Menu') {
         li.classList.add('active');
       }
 

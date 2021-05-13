@@ -3,3 +3,46 @@
   margin: 0;
   padding: 0;
 }
+
+main {
+  background: #333;
+}
+
+#hero-container {
+  
+  img {
+    width: 100%;
+  }
+
+  h2 {
+    font-size: 52px;
+    font-weight: 800;
+    font-style: normal;
+  }
+}
+
+#menu-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 75%;
+  margin: 0 auto;
+  padding: 40px 0;
+  text-align: center;
+
+  div {
+    margin-bottom: 40px;
+  }
+
+  h3 {
+    margin-bottom: 10px;
+    font-size: 28px;
+    text-decoration: underline;
+    color: mediumspringgreen;
+
+  }
+
+  p {
+    margin-bottom: 8px;
+    color: #fff;
+  }
+}
