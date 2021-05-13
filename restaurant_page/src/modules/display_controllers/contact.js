@@ -27,7 +27,7 @@ const contactDisplayController = (() => {
           input.type = 'email';
           break;
       }
-      
+
       if (field === 'message') {
         input.cols = 15;
         input.rows = 10;

@@ -6,6 +6,7 @@
 
 body { 
   font-family: sans-serif;
+  background: #333;
 }
 
 header {
@@ -93,17 +94,20 @@ header {
 }
 
 #about-container {
-  width: 60%;
   margin: 0 auto;
-  padding: 50px 0;
+  padding: 60px 0;
   text-align: center;
 
   h2 {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     font-size: 36px;
+    color: mediumspringgreen;
   }
 
   p {
-    line-height: 25px;
+    width: 60%;
+    margin: 0 auto;
+    line-height: 30px;
+    color: #fff;
   }
 }

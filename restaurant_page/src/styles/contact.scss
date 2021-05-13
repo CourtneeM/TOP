@@ -46,7 +46,11 @@
     textarea {
       margin: 5px 0 15px;
       padding: 5px 10px;
+    }
+
+    textarea {
       font-family: sans-serif;
+      resize: none;
     }
 
     button {

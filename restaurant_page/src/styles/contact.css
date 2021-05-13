@@ -42,7 +42,10 @@
 #main-contact form textarea {
   margin: 5px 0 15px;
   padding: 5px 10px;
+}
+#main-contact form textarea {
   font-family: sans-serif;
+  resize: none;
 }
 #main-contact form button {
   flex-basis: 100%;
