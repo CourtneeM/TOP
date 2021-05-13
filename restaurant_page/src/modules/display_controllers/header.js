@@ -13,8 +13,8 @@ const headerDisplayController = (() => {
       const li = document.createElement('li');
       li.textContent = item;
 
-      if (item === 'Contact') {
-        li.classList.add('active');
+      if (item === 'Home') {
+        li.id = 'active';
       }
 
       navContainer.appendChild(li);

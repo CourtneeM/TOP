@@ -37,11 +37,11 @@ header li:hover {
   color: #666;
   text-decoration: underline;
 }
-header .active {
+header #active {
   color: mediumspringgreen;
   text-decoration: underline mediumspringgreen;
 }
-header .active:hover {
+header #active:hover {
   color: #01a767;
   text-decoration: underline #01a767;
 }
