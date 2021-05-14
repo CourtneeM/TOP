@@ -19,6 +19,10 @@ class Project {
   editTodo(index, prop, newValue) {
     this.todos[index][prop] = newValue;
   }
+
+  toggleCompleted(index) {
+    this.todos[index].completed = !this.todos[index].completed;
+  }
 };
 
 export default Project;

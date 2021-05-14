@@ -7,7 +7,7 @@ class TodoList {
     return this.list;
   }
 
-  displayProjects() {
+  displayProjectNames() {
     return Object.keys(this.list);
   }
 
@@ -15,13 +15,13 @@ class TodoList {
     this.list[project.name] = project.todos;
   }
 
-  deleteProject(project) {
-    delete this.list[project];
+  deleteProject(projectName) {
+    delete this.list[projectName];
   }
 
-  editProjectName([project, newProjectName]) {
-    this.list[newProjectName] = this.list[project];
-    delete this.list[project];
+  editProjectName(projectName, newProjectName) {
+    this.list[newProjectName] = this.list[projectName];
+    delete this.list[projectName];
   }
 }
 
