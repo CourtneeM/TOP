@@ -1,7 +1,8 @@
 class Project {
-  constructor(name) {
+  constructor(name, defaultProject = false) {
     this.name = name;
     this.todos = [];
+    this['default project'] = defaultProject;
   }
 
   displayTodos() {
