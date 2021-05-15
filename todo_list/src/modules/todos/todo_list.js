@@ -1,6 +1,6 @@
 class TodoList {
   constructor() {
-    this.list = {};
+    this.list = [];
   }
 
   displayList() {
@@ -8,20 +8,19 @@ class TodoList {
   }
 
   displayProjectNames() {
-    return Object.keys(this.list);
+    return this.list.map(project => project.name);
   }
 
   addProject(project) {
-    this.list[project.name] = project;
+    this.list.push(project);
   }
 
-  deleteProject(projectName) {
-    delete this.list[projectName];
+  deleteProject(index) {
+    this.list.splice(index, 1);
   }
 
-  editProjectName(projectName, newProjectName) {
-    this.list[newProjectName] = this.list[projectName];
-    delete this.list[projectName];
+  editProjectName(index, newProjectName) {
+    this.list[index].name = newProjectName;
   }
 }
 

@@ -1,8 +1,7 @@
 import TodoList from './modules/todos/todo_list';
 import Project from './modules/todos/projects';
 import Todo from './modules/todos/todo';
+import mainContainer from './modules/display_controller/main_container';
 
 
-let todos = new TodoList();
-todos.addProject(new Project('default project'));
-todos.addProject(new Project('project 1'));
+
