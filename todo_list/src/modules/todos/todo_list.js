@@ -12,7 +12,7 @@ class TodoList {
   }
 
   addProject(project) {
-    this.list[project.name] = project.todos;
+    this.list[project.name] = project;
   }
 
   deleteProject(projectName) {
