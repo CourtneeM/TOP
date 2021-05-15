@@ -1,0 +1,40 @@
+.todo-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 3fr 1fr;
+  grid-template-areas: "completed title desc desc desc date date" "priority notes notes notes notes notes notes ";
+  row-gap: 15px;
+  column-gap: 5px;
+  align-items: center;
+  padding: 10px;
+}
+.todo-container p {
+  font-size: 0.8rem;
+}
+.todo-container p:nth-child(1) {
+  grid-area: title;
+  font-weight: 600;
+}
+.todo-container p:nth-child(2) {
+  grid-area: desc;
+}
+.todo-container p:nth-child(3) {
+  grid-area: date;
+  color: red;
+}
+.todo-container p:nth-child(4) {
+  grid-area: priority;
+  text-decoration: underline;
+}
+.todo-container p:nth-child(5) {
+  grid-area: notes;
+  font-style: italic;
+}
+.todo-container p:nth-child(6) {
+  grid-area: completed;
+}
+
+.todo-container:nth-child(even) {
+  background: #ddd;
+}
+
+/*# sourceMappingURL=todos.css.map */

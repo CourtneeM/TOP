@@ -5,7 +5,7 @@ import '../../styles/main/main.css';
 const mainContainer = todos => {
   const contentContainer = document.querySelector('#content-container');
   contentContainer.appendChild(projectsContainer.header(todos));
-  // contentContainer.appendChild(todosContainer);
+  contentContainer.appendChild(todosContainer.displayTodosContainer(todos));
 };
 
 export default mainContainer;
