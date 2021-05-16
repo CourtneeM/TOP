@@ -9,7 +9,7 @@ const todosContainer = (() => {
   }
 
   const displayTodos = function(todos) {
-    const currentProjectName = [...document.querySelector('#selected-project').children][0].textContent;
+    const currentProjectName = [...document.querySelector('#selected-project').children][2].textContent;
     const currentProjectTodos = todos.list.filter(project => project.name === currentProjectName)[0].todos;
 
     currentProjectTodos.forEach(todo => {

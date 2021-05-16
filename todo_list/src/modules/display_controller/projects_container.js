@@ -95,9 +95,14 @@ const projectsContianer = (() => {
 
     todos.list.forEach(project => {
       const projectContainer = document.createElement('div');
+      const checkbox = document.createElement('input');
+      const radio = document.createElement('input');
       const nameP = document.createElement('p');
       const numberTodosP = document.createElement('p');
+
       projectContainer.classList.add('project-container');
+      checkbox.setAttribute('type', 'checkbox');
+      radio.setAttribute('type', 'radio');
       nameP.textContent = project.name;
       numberTodosP.textContent = project.todos.length;
 
@@ -106,6 +111,11 @@ const projectsContianer = (() => {
         projectContainer.id = 'selected-project';
       }
 
+      checkbox.style.display = 'none';
+      radio.style.display = 'none';
+
+      projectContainer.appendChild(checkbox);
+      projectContainer.appendChild(radio);
       projectContainer.appendChild(nameP);
       projectContainer.appendChild(numberTodosP);
       projectsListContainer.appendChild(projectContainer);
