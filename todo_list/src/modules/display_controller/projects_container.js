@@ -47,19 +47,14 @@ const projectsContianer = (() => {
     return [cancelButton, addButton];
   }
 
-  const addProjectHandler = function() {
+  const addProjectContainer = function() {
     const addProjectContainer = document.createElement('div');
     const input = document.createElement('input');
-    const cancelButton = document.createElement('button');
-    const addButton = document.createElement('button');
+    const [cancelButton, addButton] = cancelAddBtns();
 
     addProjectContainer.id = 'add-project-container';
     addProjectContainer.classList.add('project-control-action-container');
     input.attributes.type = 'text';
-    cancelButton.textContent = 'Cancel';
-    cancelButton.classList.add('btn-project-control-action');
-    addButton.textContent = 'Add';
-    addButton.classList.add('btn-project-control-action');
     addProjectContainer.appendChild(input);
     addProjectContainer.appendChild(cancelButton);
     addProjectContainer.appendChild(addButton);
@@ -68,11 +63,12 @@ const projectsContianer = (() => {
     return addProjectContainer;
   }
 
-  const editProjectHandler = function() {
+  const editProjectContainer = function() {
     const editProjectContainer = document.createElement('div');
     const [cancelButton, addButton] = cancelAddBtns();
 
     editProjectContainer.id = 'edit-project-container';
+    editProjectContainer.classList.add('project-control-action-container');
     editProjectContainer.appendChild(cancelButton);
     editProjectContainer.appendChild(addButton);
 
@@ -80,11 +76,12 @@ const projectsContianer = (() => {
     return editProjectContainer;
   }
 
-  const removeProjectHandler = function() {
+  const removeProjectContainer = function() {
     const removeProjectContainer = document.createElement('div');
     const [cancelButton, addButton] = cancelAddBtns();
 
     removeProjectContainer.id = 'remove-project-container';
+    removeProjectContainer.classList.add('project-control-action-container');
     removeProjectContainer.appendChild(cancelButton);
     removeProjectContainer.appendChild(addButton);
 
@@ -115,9 +112,9 @@ const projectsContianer = (() => {
     });
     
     projectsListContainer.appendChild(projectControls());
-    projectsListContainer.appendChild(addProjectHandler());
-    projectsListContainer.appendChild(editProjectHandler());
-    projectsListContainer.appendChild(removeProjectHandler());
+    projectsListContainer.appendChild(addProjectContainer());
+    projectsListContainer.appendChild(editProjectContainer());
+    projectsListContainer.appendChild(removeProjectContainer());
 
     return projectsListContainer;
   }
