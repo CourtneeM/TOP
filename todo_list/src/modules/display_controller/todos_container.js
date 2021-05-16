@@ -1,15 +1,18 @@
 import '../../styles/todos/todos.css';
 
 const todosContainer = (() => {
+  const todosContainer = document.createElement('div');
+  todosContainer.id = 'todos-container';
+
   const todosDisplayOptions = function() {
     // add sort and filter options here
   }
 
-  const displayTodos = function(currentProject) {
-    const todosContainer = document.createElement('div');
-    todosContainer.id = 'todos-container';
+  const displayTodos = function(todos) {
+    const currentProjectName = [...document.querySelector('#selected-project').children][0].textContent;
+    const currentProjectTodos = todos.list.filter(project => project.name === currentProjectName)[0].todos;
 
-    currentProject.todos.forEach(todo => {
+    currentProjectTodos.forEach(todo => {
       const todoContainer = document.createElement('div');
       todoContainer.classList.add('todo-container');
 
@@ -31,16 +34,22 @@ const todosContainer = (() => {
     return todosContainer;
   }
 
-  const displayTodosContainer = function(todos) {
-    const currentProject = todos.list.filter(project => project['default project'])[0];
+  const clearTodos = function() {
+    const todosContainer = document.querySelector('#todos-container');
+    while(todosContainer.firstChild) {
+      todosContainer.removeChild(todosContainer.firstChild);
+    }
+  }
+  
+  const initialTodosRender = function(todos) {
     const todosContainer = document.createElement('section');
-    
-    todosContainer.appendChild(displayTodos(currentProject));
+
+    todosContainer.appendChild(displayTodos(todos));
 
     return todosContainer;
   }
 
-  return { displayTodosContainer }
+  return { initialTodosRender, displayTodos, clearTodos }
 })();
 
 export default todosContainer;
