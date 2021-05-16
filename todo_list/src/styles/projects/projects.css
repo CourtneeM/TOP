@@ -12,4 +12,22 @@ header i {
   cursor: pointer;
 }
 
+#projects-list-container {
+  display: none;
+  border-bottom: 2px solid #ddd;
+}
+#projects-list-container div {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 25px 10px 15px;
+}
+#projects-list-container div:hover {
+  background: #ddd;
+  cursor: pointer;
+}
+#projects-list-container #selected-project {
+  color: #fff;
+  background: #777;
+}
+
 /*# sourceMappingURL=projects.css.map */

@@ -13,3 +13,25 @@ header {
     cursor: pointer;
   }
 }
+
+
+#projects-list-container {
+  display: none;
+  border-bottom: 2px solid #ddd;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 25px 10px 15px;
+
+    &:hover {
+      background: #ddd;
+      cursor: pointer;
+    }
+  }
+  
+  #selected-project {
+    color: #fff;
+    background: #777;
+  }
+}
