@@ -57,7 +57,20 @@ const projectsContianer = (() => {
   }
 
   const editProjectHandler = function() {
+    const editProjectContainer = document.createElement('div');
+    const cancelButton = document.createElement('button');
+    const addButton = document.createElement('button');
 
+    editProjectContainer.id = 'edit-project-container';
+    cancelButton.textContent = 'Cancel';
+    cancelButton.classList.add('btn-project-control-action');
+    addButton.textContent = 'Add';
+    addButton.classList.add('btn-project-control-action');
+    editProjectContainer.appendChild(cancelButton);
+    editProjectContainer.appendChild(addButton);
+
+    editProjectContainer.style.display = 'none';
+    return editProjectContainer;
   }
 
   // const removeProjectHandler = function() {
@@ -88,6 +101,7 @@ const projectsContianer = (() => {
     
     projectsListContainer.appendChild(projectControls());
     projectsListContainer.appendChild(addProjectHandler());
+    projectsListContainer.appendChild(editProjectHandler());
 
     return projectsListContainer;
   }
@@ -129,7 +143,7 @@ const projectsContianer = (() => {
             // document.querySelector('#remove-project-container').style.display = 'block';
             break;
           case 'Edit':
-            // document.querySelector('#edit-project-container').style.display = 'block';
+            document.querySelector('#edit-project-container').style.display = 'flex';
             break;
           case 'Add':
             document.querySelector('#add-project-container').style.display = 'flex';
