@@ -35,6 +35,35 @@ const projectsContianer = (() => {
     return projectControls;
   }
 
+  const addProjectHandler = function() {
+    const addProjectContainer = document.createElement('div');
+    const input = document.createElement('input');
+    const cancelButton = document.createElement('button');
+    const addButton = document.createElement('button');
+
+    addProjectContainer.id = 'add-project-container';
+    addProjectContainer.classList.add('project-control-action-container');
+    input.attributes.type = 'text';
+    cancelButton.textContent = 'Cancel';
+    cancelButton.classList.add('btn-project-control-action');
+    addButton.textContent = 'Add';
+    addButton.classList.add('btn-project-control-action');
+    addProjectContainer.appendChild(input);
+    addProjectContainer.appendChild(cancelButton);
+    addProjectContainer.appendChild(addButton);
+
+    addProjectContainer.style.display = 'none';
+    return addProjectContainer;
+  }
+
+  const editProjectHandler = function() {
+
+  }
+
+  // const removeProjectHandler = function() {
+
+  // }
+
   const projectsList = function(todos) {
     const projectsListContainer = document.createElement('div');
     projectsListContainer.id = 'projects-list-container';
@@ -58,6 +87,7 @@ const projectsContianer = (() => {
     });
     
     projectsListContainer.appendChild(projectControls());
+    projectsListContainer.appendChild(addProjectHandler());
 
     return projectsListContainer;
   }
@@ -73,6 +103,9 @@ const projectsContianer = (() => {
   const projectsEventHandlers = function() {
     const projectsListContainer = document.querySelector('#projects-list-container');
     const projectContainers = [...document.querySelectorAll('.project-container')];
+    const projectControls = document.querySelector('#project-controls');
+    const projectControlActionBtns = document.querySelectorAll('.btn-project-control-action');
+
     // display projects list
     document.querySelector('#menu').addEventListener('click', () => {
       projectsListContainer.style.display = projectsListContainer.style.display === 'block' ? 'none' : 'block';
@@ -86,6 +119,35 @@ const projectsContianer = (() => {
         projectContainer.id = 'selected-project';
       });
     });
+
+    // display one of the project controls on click
+    [...projectControls.children].forEach(button => {
+      button.addEventListener('click', () => {
+        projectControls.style.display = 'none';
+        switch (button.textContent) {
+          case 'Remove':
+            // document.querySelector('#remove-project-container').style.display = 'block';
+            break;
+          case 'Edit':
+            // document.querySelector('#edit-project-container').style.display = 'block';
+            break;
+          case 'Add':
+            document.querySelector('#add-project-container').style.display = 'flex';
+            break;
+        }
+      });
+    });
+
+    // submit one of the project controls
+    [...projectControlActionBtns].forEach(button => {
+      button.addEventListener('click', () => {
+        projectControls.style.display = 'flex';
+        [...document.querySelectorAll('.project-control-action-container')].forEach(container => {
+          container.style.display = 'none';
+        });
+      });
+    });
+
   }
 
   return { projectsHandler, updateHeaderTitle, projectsEventHandlers };
