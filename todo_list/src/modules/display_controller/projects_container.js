@@ -1,6 +1,8 @@
 import '../../styles/projects/projects.css';
 
-const projectsContianer = (() => {
+const projectsContainer = (() => {
+  const projectsListContainer = document.createElement('div');
+  projectsListContainer.id = 'projects-list-container';
 
   const header = function(todos) {
     const projectsHeader = document.createElement('header');
@@ -90,9 +92,6 @@ const projectsContianer = (() => {
   }
 
   const projectsList = function(todos) {
-    const projectsListContainer = document.createElement('div');
-    projectsListContainer.id = 'projects-list-container';
-
     todos.list.forEach(project => {
       const projectContainer = document.createElement('div');
       const checkbox = document.createElement('input');
@@ -106,6 +105,7 @@ const projectsContianer = (() => {
       radio.setAttribute('type', 'radio');
       radio.classList.add('radio-default-project');
       nameP.textContent = project.name;
+      nameP.classList.add('project-name');
       numberTodosP.textContent = project.todos.length;
 
 
@@ -131,6 +131,11 @@ const projectsContianer = (() => {
     return projectsListContainer;
   }
 
+  const clearProjectsList = () => {
+    const projectContainers = [...document.querySelectorAll('.project-container')];
+    projectContainers.forEach(projectContainer => projectContainer.remove());
+  }
+
   const projectsHandler = function(todos) {
     const projectsContainer = document.createElement('section');
     projectsContainer.appendChild(header(todos));
@@ -140,7 +145,6 @@ const projectsContianer = (() => {
   }
 
   const projectsEventHandlers = function() {
-    const projectsListContainer = document.querySelector('#projects-list-container');
     const projectContainers = [...document.querySelectorAll('.project-container')];
     const projectControls = document.querySelector('#project-controls');
     const projectControlActionBtns = document.querySelectorAll('.btn-project-control-action');
@@ -172,6 +176,7 @@ const projectsContianer = (() => {
             break;
           case 'Edit':
             document.querySelector('#edit-project-container').style.display = 'flex';
+            
             [...defaultProjectRadios].forEach(radio => radio.style.display = 'inline');
             break;
           case 'Add':
@@ -197,4 +202,4 @@ const projectsContianer = (() => {
   return { projectsHandler, updateHeaderTitle, projectsEventHandlers };
 })();
 
-export default projectsContianer;
+export default projectsContainer;
