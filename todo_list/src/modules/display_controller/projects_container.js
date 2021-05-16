@@ -37,22 +37,22 @@ const projectsContainer = (() => {
     return projectControls;
   }
 
-  const cancelAddBtns = function() {
+  const cancelAddBtns = function(action) {
     const cancelButton = document.createElement('button');
-    const addButton = document.createElement('button');
+    const confirmButton = document.createElement('button');
 
     cancelButton.textContent = 'Cancel';
     cancelButton.classList.add('btn-project-control-action');
-    addButton.textContent = 'Add';
-    addButton.classList.add('btn-project-control-action');
+    confirmButton.textContent = action;
+    confirmButton.classList.add('btn-project-control-action');
 
-    return [cancelButton, addButton];
+    return [cancelButton, confirmButton];
   }
 
   const addProjectContainer = function() {
     const addProjectContainer = document.createElement('div');
     const input = document.createElement('input');
-    const [cancelButton, addButton] = cancelAddBtns();
+    const [cancelButton, addButton] = cancelAddBtns('Add');
 
     addProjectContainer.id = 'add-project-container';
     addProjectContainer.classList.add('project-control-action-container');
@@ -67,7 +67,7 @@ const projectsContainer = (() => {
 
   const editProjectContainer = function() {
     const editProjectContainer = document.createElement('div');
-    const [cancelButton, addButton] = cancelAddBtns();
+    const [cancelButton, addButton] = cancelAddBtns('Edit');
 
     editProjectContainer.id = 'edit-project-container';
     editProjectContainer.classList.add('project-control-action-container');
@@ -80,7 +80,7 @@ const projectsContainer = (() => {
 
   const removeProjectContainer = function() {
     const removeProjectContainer = document.createElement('div');
-    const [cancelButton, addButton] = cancelAddBtns();
+    const [cancelButton, addButton] = cancelAddBtns('Remove');
 
     removeProjectContainer.id = 'remove-project-container';
     removeProjectContainer.classList.add('project-control-action-container');
@@ -131,7 +131,7 @@ const projectsContainer = (() => {
     return projectsListContainer;
   }
 
-  const clearProjectsList = () => {
+  const clearProjectsList = function() {
     const projectContainers = [...document.querySelectorAll('.project-container')];
     projectContainers.forEach(projectContainer => projectContainer.remove());
   }
@@ -176,7 +176,14 @@ const projectsContainer = (() => {
             break;
           case 'Edit':
             document.querySelector('#edit-project-container').style.display = 'flex';
-            
+            projectContainers.forEach(project => {
+              const projectElements = [...project.children]
+              const input = document.createElement('input');
+              input.setAttribute('type', 'text');
+              input.value = projectElements[2].textContent;
+              project.removeChild(projectElements[2]);
+              project.insertBefore(input, projectElements[projectElements.length - 1]);
+            });
             [...defaultProjectRadios].forEach(radio => radio.style.display = 'inline');
             break;
           case 'Add':
