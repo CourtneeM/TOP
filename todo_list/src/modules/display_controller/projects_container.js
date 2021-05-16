@@ -102,7 +102,9 @@ const projectsContianer = (() => {
 
       projectContainer.classList.add('project-container');
       checkbox.setAttribute('type', 'checkbox');
+      checkbox.classList.add('checkbox-remove-project');
       radio.setAttribute('type', 'radio');
+      radio.classList.add('radio-default-project');
       nameP.textContent = project.name;
       numberTodosP.textContent = project.todos.length;
 
@@ -142,6 +144,8 @@ const projectsContianer = (() => {
     const projectContainers = [...document.querySelectorAll('.project-container')];
     const projectControls = document.querySelector('#project-controls');
     const projectControlActionBtns = document.querySelectorAll('.btn-project-control-action');
+    const removeProjectCheckboxes = document.querySelectorAll('.checkbox-remove-project');
+    const defaultProjectRadios = document.querySelectorAll('.radio-default-project');
 
     // display projects list
     document.querySelector('#menu').addEventListener('click', () => {
@@ -164,9 +168,11 @@ const projectsContianer = (() => {
         switch (button.textContent) {
           case 'Remove':
             document.querySelector('#remove-project-container').style.display = 'flex';
+            [...removeProjectCheckboxes].forEach(checkbox => checkbox.style.display = 'inline');
             break;
           case 'Edit':
             document.querySelector('#edit-project-container').style.display = 'flex';
+            [...defaultProjectRadios].forEach(radio => radio.style.display = 'inline');
             break;
           case 'Add':
             document.querySelector('#add-project-container').style.display = 'flex';
@@ -182,6 +188,7 @@ const projectsContianer = (() => {
         [...document.querySelectorAll('.project-control-action-container')].forEach(container => {
           container.style.display = 'none';
         });
+        [...removeProjectCheckboxes, ...defaultProjectRadios].forEach(input => input.style.display = 'none');
       });
     });
 
