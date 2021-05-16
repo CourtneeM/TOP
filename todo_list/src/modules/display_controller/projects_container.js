@@ -20,7 +20,7 @@ const projectsContianer = (() => {
   const updateHeaderTitle = function() {
     const selectedProject = document.querySelector('#selected-project');
     const projectsH1 = document.querySelector('header>h1');
-    projectsH1.textContent = [...selectedProject.children][0].textContent;
+    projectsH1.textContent = [...selectedProject.children][2].textContent;
   }
 
   const projectControls = function() {
