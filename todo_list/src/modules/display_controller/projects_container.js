@@ -23,6 +23,18 @@ const projectsContianer = (() => {
     projectsH1.textContent = [...selectedProject.children][0].textContent;
   }
 
+  const projectControls = function() {
+    const projectControls = document.createElement('div');
+    projectControls.id = "project-controls";
+    ['Remove', 'Edit', 'Add'].forEach(control => {
+      const p = document.createElement('p');
+      p.textContent = control;
+      projectControls.appendChild(p);
+    });
+
+    return projectControls;
+  }
+
   const projectsList = function(todos) {
     const projectsListContainer = document.createElement('div');
     projectsListContainer.id = 'projects-list-container';
@@ -31,6 +43,7 @@ const projectsContianer = (() => {
       const projectContainer = document.createElement('div');
       const nameP = document.createElement('p');
       const numberTodosP = document.createElement('p');
+      projectContainer.classList.add('project-container');
       nameP.textContent = project.name;
       numberTodosP.textContent = project.todos.length;
 
@@ -43,6 +56,8 @@ const projectsContianer = (() => {
       projectContainer.appendChild(numberTodosP);
       projectsListContainer.appendChild(projectContainer);
     });
+    
+    projectsListContainer.appendChild(projectControls());
 
     return projectsListContainer;
   }
@@ -57,13 +72,14 @@ const projectsContianer = (() => {
 
   const projectsEventHandlers = function() {
     const projectsListContainer = document.querySelector('#projects-list-container');
+    const projectContainers = [...document.querySelectorAll('.project-container')];
     // display projects list
     document.querySelector('#menu').addEventListener('click', () => {
       projectsListContainer.style.display = projectsListContainer.style.display === 'block' ? 'none' : 'block';
     });
 
     // select a project from the project list 
-    [...projectsListContainer.children].forEach(projectContainer => {
+    projectContainers.forEach(projectContainer => {
       projectContainer.addEventListener('click', () => {
         let selectedProject = document.querySelector('#selected-project');
         selectedProject.removeAttribute('id');

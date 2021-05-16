@@ -34,3 +34,25 @@ header {
     background: #777;
   }
 }
+
+div#project-controls {
+  padding: 0px;
+  border-top: 2px solid #ddd;
+
+  &:hover {
+    background: #fff;
+  }
+
+  p {
+    flex-basis: 33.33%;
+    padding: 10px 25px 10px 15px;
+    text-align: center;
+    cursor: pointer;
+
+    &:nth-child(-n+2) { border-right: 1px solid #ddd; }
+
+    &:nth-child(2):hover,
+    &:nth-child(3):hover { background: #ddd; }
+    &:nth-child(1):hover { background: red; }
+  }
+}
