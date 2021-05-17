@@ -19,7 +19,6 @@ const mainContainer = todos => {
 
   observer.observe(document.querySelector('#projects-list-container'),
                                           { subtree: true, attributes: true, attributeFilter: ['id'] });
-
   // look for a change in #selected-project
   // on change, rerender todosContainer with the selected project's todos
 };

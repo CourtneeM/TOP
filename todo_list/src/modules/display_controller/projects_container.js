@@ -27,7 +27,12 @@ const projectsContainer = (() => {
   const updateHeaderTitle = function() {
     const selectedProject = document.querySelector('#selected-project');
     const projectsH1 = document.querySelector('header>h1');
-    projectsH1.textContent = [...selectedProject.children][2].textContent;
+
+    if (selectedProject.classList.value === 'project-container') {
+      projectsH1.textContent = [...selectedProject.children][2].textContent; 
+    } else {
+      projectsH1.textContent = 'Todo List App';
+    }
   }
 
   const projectControls = function() {
@@ -180,8 +185,7 @@ const projectsContainer = (() => {
       projectContainer.addEventListener('click', () => {
         if (projectControls.style.display === 'none') return;
         
-        let selectedProject = document.querySelector('#selected-project');
-        selectedProject.removeAttribute('id');
+        document.querySelector('#selected-project').removeAttribute('id');
         projectContainer.id = 'selected-project';
       });
     });
@@ -243,6 +247,9 @@ const projectsContainer = (() => {
                 project['default project'] = false;
               }
             });
+
+            document.querySelector('#selected-project').removeAttribute('id');
+            radioBtns[newDefaultProjectIndex].parentElement.id = 'selected-project';
           }
         }
 
@@ -264,6 +271,21 @@ const projectsContainer = (() => {
             }).filter(index => index || index === 0).reverse();
             
             removeIndices.forEach(index => todos.list.splice(index, 1));
+
+            // set new default project, if any projects in list, if current one is removed
+            if (todos.list.some(todo => !todo['default project'])) {
+              if (todos.list.length > 0) {
+                todos.list[0]['default project'] = true;
+                document.querySelector('#selected-project').removeAttribute('id');
+                [...projectsListContainer.children][0].id = 'selected-project';
+              }
+            }
+
+            if (todos.list.length <= 0) {
+              document.querySelector('#selected-project').removeAttribute('id');
+              projectsListContainer.id = 'selected-project';
+            }
+            console.log(todos);
           }
         }
 

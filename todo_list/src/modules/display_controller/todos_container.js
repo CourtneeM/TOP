@@ -9,9 +9,10 @@ const todosContainer = (() => {
   }
 
   const displayTodos = function(todos) {
+    if (todos.list.length <= 0) return;
+    
     const currentProjectName = [...document.querySelector('#selected-project').children][2].textContent;
     const currentProjectTodos = todos.list.filter(project => project.name === currentProjectName)[0].todos;
-
     currentProjectTodos.forEach(todo => {
       const todoContainer = document.createElement('div');
       todoContainer.classList.add('todo-container');
