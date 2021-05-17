@@ -97,13 +97,14 @@ const projectsContainer = (() => {
   }
 
   const projectsList = function(todos) {
+    console.log(todos);
     todos.list.forEach(project => {
       const projectContainer = document.createElement('div');
       const checkbox = document.createElement('input');
       const radio = document.createElement('input');
       const nameP = document.createElement('p');
       const numberTodosP = document.createElement('p');
-
+     
       projectContainer.classList.add('project-container');
       checkbox.setAttribute('type', 'checkbox');
       checkbox.classList.add('checkbox-remove-project');
@@ -116,6 +117,7 @@ const projectsContainer = (() => {
 
       if (project['default project']) {
         projectContainer.id = 'selected-project';
+        radio.checked = true;
       }
 
       checkbox.style.display = 'none';
@@ -137,8 +139,7 @@ const projectsContainer = (() => {
   }
 
   const clearProjectsList = function() {
-    const projectContainers = [...document.querySelectorAll('.project-container')];
-    projectContainers.forEach(projectContainer => projectContainer.remove());
+    [...projectsListContainer.children].forEach(child => child.remove());
   }
 
   const projectsHandler = function(todos) {
@@ -149,7 +150,7 @@ const projectsContainer = (() => {
     return projectsContainer;
   }
 
-  const projectsEventHandlers = function() {
+  const projectsEventHandlers = function(todos) {
     const projectContainers = [...document.querySelectorAll('.project-container')];
     const projectControls = document.querySelector('#project-controls');
 
@@ -178,13 +179,13 @@ const projectsContainer = (() => {
     projectContainers.forEach(projectContainer => {
       projectContainer.addEventListener('click', () => {
         if (projectControls.style.display === 'none') return;
-
+        
         let selectedProject = document.querySelector('#selected-project');
         selectedProject.removeAttribute('id');
         projectContainer.id = 'selected-project';
       });
     });
-
+    
     // display one of the project controls on click
     [...projectControls.children].forEach(button => {
       button.addEventListener('click', () => {
@@ -216,14 +217,28 @@ const projectsContainer = (() => {
     // submit one of the project controls | hide action specifics and show action controls
     [...projectControlActionBtns, closeMenuBtn].forEach(button => {
       button.addEventListener('click', () => {
+        
         if (document.querySelector('#edit-project-container').style.display === 'flex') {
-          projectContainers.forEach(projectContainer => {
+          // change to update based off of todos array
+          projectContainers.forEach((projectContainer, i) => {
             const projectElements = [...projectContainer.children];
             const p = document.createElement('p');
-            p.textContent = projectElements[2].value;
+            p.textContent = button.textContent === 'Edit' ? projectElements[2].value : todos.list[i].name;
             projectContainer.removeChild(projectElements[2]);
             projectContainer.insertBefore(p, projectElements[projectElements.length - 1]);
           });
+        }
+
+        if (document.querySelector('#add-project-container').style.display === 'flex') {
+          if (button.textContent === 'Add') {
+            clearProjectsList();
+            [...projectsList(todos).children].forEach(projectContainer => {
+              projectsListContainer.appendChild(projectContainer);
+            });
+            projectsEventHandlers(todos);
+          } else {
+            // clear input
+          }
         }
 
         projectControls.style.display = 'flex';

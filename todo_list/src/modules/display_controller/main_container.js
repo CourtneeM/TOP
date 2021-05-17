@@ -8,7 +8,7 @@ const mainContainer = todos => {
 
   contentContainer.appendChild(todosContainer.initialTodosRender(todos));
 
-  projectsContainer.projectsEventHandlers();
+  projectsContainer.projectsEventHandlers(todos);
 
   let observer = new MutationObserver(function() {
     projectsContainer.updateHeaderTitle();
