@@ -108,6 +108,7 @@ const projectsContainer = (() => {
       checkbox.setAttribute('type', 'checkbox');
       checkbox.classList.add('checkbox-remove-project');
       radio.setAttribute('type', 'radio');
+      radio.setAttribute('name', 'default-project');
       radio.classList.add('radio-default-project');
       nameP.textContent = project.name;
       nameP.classList.add('project-name');
@@ -199,6 +200,7 @@ const projectsContainer = (() => {
             projectContainers.forEach(projectContainer => {
               const projectElements = [...projectContainer.children];
               const input = document.createElement('input');
+              input.classList.add('input-edit-project-name');
               input.setAttribute('type', 'text');
               input.value = projectElements[2].textContent;
               projectContainer.removeChild(projectElements[2]);
@@ -221,25 +223,33 @@ const projectsContainer = (() => {
 
       button.addEventListener('click', () => {
         if (editProjectContainer.style.display === 'flex') {
-          // change to update based off of todos array
-          projectContainers.forEach((projectContainer, i) => {
-            const projectElements = [...projectContainer.children];
-            const p = document.createElement('p');
-            p.textContent = button.textContent === 'Edit' ? projectElements[2].value : todos.list[i].name;
-            projectContainer.removeChild(projectElements[2]);
-            projectContainer.insertBefore(p, projectElements[projectElements.length - 1]);
-          });
+          const inputs = [...document.querySelectorAll('.input-edit-project-name')];
+          const radioBtns = [...document.querySelectorAll('.radio-default-project')];
+          if (button.textContent === 'Edit') {
+            // update todos.list project names
+            inputs.forEach((input, i) => todos.list[i].name = input.value.trim());
+
+            // update default project
+            const newDefaultProjectIndex = radioBtns.map(btn => {
+              if (btn.checked) {
+                return [...btn.parentElement.parentElement.children].indexOf(btn.parentElement);
+              }
+            }).filter(index => index || index === 0)[0];
+            
+            todos.list.forEach((project, i) => {
+              if (i === newDefaultProjectIndex) {
+                project['default project'] = true;
+              } else {
+                project['default project'] = false;
+              }
+            });
+          }
         }
 
         if (addProjectContainer.style.display === 'flex') {
+          const newProjectInput = addProjectContainer.querySelector('input');
           if (button.textContent === 'Add') {
-            clearProjectsList();
-            [...projectsList(todos).children].forEach(projectContainer => {
-              projectsListContainer.appendChild(projectContainer);
-            });
-            projectsEventHandlers(todos);
-          } else {
-            // clear input
+            // todos.addProject(new Project('project name'));
           }
         }
 
@@ -251,13 +261,17 @@ const projectsContainer = (() => {
               if (checkbox.checked) {
                 return [...(checkbox.parentElement.parentElement).children].indexOf(checkbox.parentElement);
               }
-            }).filter(el => el || el === 0).reverse();
+            }).filter(index => index || index === 0).reverse();
             
             removeIndices.forEach(index => todos.list.splice(index, 1));
-          } else {
-            // clear checkboxes
           }
         }
+
+        clearProjectsList();
+        [...projectsList(todos).children].forEach(projectContainer => {
+          projectsListContainer.appendChild(projectContainer);
+        });
+        projectsEventHandlers(todos);
 
         projectControls.style.display = 'flex';
         [...document.querySelectorAll('.project-control-action-container')].forEach(container => {
