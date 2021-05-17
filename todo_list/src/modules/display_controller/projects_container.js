@@ -97,7 +97,6 @@ const projectsContainer = (() => {
   }
 
   const projectsList = function(todos) {
-    console.log(todos);
     todos.list.forEach(project => {
       const projectContainer = document.createElement('div');
       const checkbox = document.createElement('input');
@@ -216,9 +215,12 @@ const projectsContainer = (() => {
 
     // submit one of the project controls | hide action specifics and show action controls
     [...projectControlActionBtns, closeMenuBtn].forEach(button => {
+      const addProjectContainer = document.querySelector('#add-project-container');
+      const editProjectContainer = document.querySelector('#edit-project-container');
+      const removeProjectContainer = document.querySelector('#remove-project-container');
+
       button.addEventListener('click', () => {
-        
-        if (document.querySelector('#edit-project-container').style.display === 'flex') {
+        if (editProjectContainer.style.display === 'flex') {
           // change to update based off of todos array
           projectContainers.forEach((projectContainer, i) => {
             const projectElements = [...projectContainer.children];
@@ -229,7 +231,7 @@ const projectsContainer = (() => {
           });
         }
 
-        if (document.querySelector('#add-project-container').style.display === 'flex') {
+        if (addProjectContainer.style.display === 'flex') {
           if (button.textContent === 'Add') {
             clearProjectsList();
             [...projectsList(todos).children].forEach(projectContainer => {
@@ -241,6 +243,22 @@ const projectsContainer = (() => {
           }
         }
 
+        if (removeProjectContainer.style.display === 'flex') {
+          const checkboxes = [...document.querySelectorAll('.checkbox-remove-project')];
+          if (button.textContent === 'Remove') {
+            // remove checked projects from todos array
+            const removeIndices = checkboxes.map(checkbox => {
+              if (checkbox.checked) {
+                return [...(checkbox.parentElement.parentElement).children].indexOf(checkbox.parentElement);
+              }
+            }).filter(el => el || el === 0).reverse();
+            
+            removeIndices.forEach(index => todos.list.splice(index, 1));
+          } else {
+            // clear checkboxes
+          }
+        }
+
         projectControls.style.display = 'flex';
         [...document.querySelectorAll('.project-control-action-container')].forEach(container => {
           container.style.display = 'none';
@@ -248,7 +266,6 @@ const projectsContainer = (() => {
         [...removeProjectCheckboxes, ...defaultProjectRadios].forEach(input => input.style.display = 'none');
       });
     });
-
   }
 
   return { projectsHandler, updateHeaderTitle, projectsEventHandlers };
