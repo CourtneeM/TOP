@@ -12,6 +12,10 @@ class TodoList {
   }
 
   addProject(project) {
+    if (this.list.length === 0) {
+      project['default project'] = true;
+    }
+
     this.list.push(project);
   }
 
