@@ -171,11 +171,14 @@ const projectsContainer = (() => {
       projectsListContainer.style.display = 'none';
       menu.style.display = 'block';
       closeMenuBtn.style.display = 'none';
+      [...removeProjectCheckboxes, ...defaultProjectRadios].forEach(input => input.style.display = 'none');
     });
 
     // select a project from the project list 
     projectContainers.forEach(projectContainer => {
       projectContainer.addEventListener('click', () => {
+        if (projectControls.style.display === 'none') return;
+
         let selectedProject = document.querySelector('#selected-project');
         selectedProject.removeAttribute('id');
         projectContainer.id = 'selected-project';
@@ -193,13 +196,13 @@ const projectsContainer = (() => {
             break;
           case 'Edit':
             document.querySelector('#edit-project-container').style.display = 'flex';
-            projectContainers.forEach(project => {
-              const projectElements = [...project.children]
+            projectContainers.forEach(projectContainer => {
+              const projectElements = [...projectContainer.children];
               const input = document.createElement('input');
               input.setAttribute('type', 'text');
               input.value = projectElements[2].textContent;
-              project.removeChild(projectElements[2]);
-              project.insertBefore(input, projectElements[projectElements.length - 1]);
+              projectContainer.removeChild(projectElements[2]);
+              projectContainer.insertBefore(input, projectElements[projectElements.length - 1]);
             });
             [...defaultProjectRadios].forEach(radio => radio.style.display = 'inline');
             break;
@@ -210,9 +213,19 @@ const projectsContainer = (() => {
       });
     });
 
-    // submit one of the project controls
-    [...projectControlActionBtns].forEach(button => {
+    // submit one of the project controls | hide action specifics and show action controls
+    [...projectControlActionBtns, closeMenuBtn].forEach(button => {
       button.addEventListener('click', () => {
+        if (document.querySelector('#edit-project-container').style.display === 'flex') {
+          projectContainers.forEach(projectContainer => {
+            const projectElements = [...projectContainer.children];
+            const p = document.createElement('p');
+            p.textContent = projectElements[2].value;
+            projectContainer.removeChild(projectElements[2]);
+            projectContainer.insertBefore(p, projectElements[projectElements.length - 1]);
+          });
+        }
+
         projectControls.style.display = 'flex';
         [...document.querySelectorAll('.project-control-action-container')].forEach(container => {
           container.style.display = 'none';
