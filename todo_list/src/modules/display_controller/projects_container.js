@@ -8,13 +8,18 @@ const projectsContainer = (() => {
     const projectsHeader = document.createElement('header');
     const projectsH1 = document.createElement('h1');
     const menu = document.createElement('i');
+    const closeMenuBtn = document.createElement('i');
 
     projectsH1.textContent = todos.list.filter(project => project['default project'])[0].name;
     menu.id = 'menu';
     menu.classList.add("fas", "fa-bars");
+    closeMenuBtn.id = 'close-menu-btn';
+    closeMenuBtn.classList.add("fas", "fa-times");
+    closeMenuBtn.style.display = 'none';
 
     projectsHeader.appendChild(projectsH1);
     projectsHeader.appendChild(menu);
+    projectsHeader.appendChild(closeMenuBtn);
 
     return projectsHeader
   }
@@ -147,13 +152,25 @@ const projectsContainer = (() => {
   const projectsEventHandlers = function() {
     const projectContainers = [...document.querySelectorAll('.project-container')];
     const projectControls = document.querySelector('#project-controls');
+
     const projectControlActionBtns = document.querySelectorAll('.btn-project-control-action');
+    const menu = document.querySelector('#menu');
+    const closeMenuBtn = document.querySelector('#close-menu-btn');
     const removeProjectCheckboxes = document.querySelectorAll('.checkbox-remove-project');
     const defaultProjectRadios = document.querySelectorAll('.radio-default-project');
 
     // display projects list
-    document.querySelector('#menu').addEventListener('click', () => {
-      projectsListContainer.style.display = projectsListContainer.style.display === 'block' ? 'none' : 'block';
+    menu.addEventListener('click', () => {
+      projectsListContainer.style.display = 'block';
+      menu.style.display = 'none';
+      closeMenuBtn.style.display = 'block';
+    });
+
+    // hide projects list
+    closeMenuBtn.addEventListener('click', () => {
+      projectsListContainer.style.display = 'none';
+      menu.style.display = 'block';
+      closeMenuBtn.style.display = 'none';
     });
 
     // select a project from the project list 
