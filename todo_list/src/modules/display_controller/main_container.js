@@ -6,9 +6,10 @@ const mainContainer = (todos, Project) => {
   const contentContainer = document.querySelector('#content-container');
   contentContainer.appendChild(projectsContainer.projectsHandler(todos));
 
-  contentContainer.appendChild(todosContainer.initialTodosRender(todos));
+  contentContainer.appendChild(todosContainer.todosHandler(todos));
 
   projectsContainer.projectsEventHandlers(todos, Project);
+  // todos evenHandler(todos, Todo);
 
   let observer = new MutationObserver(function() {
     projectsContainer.updateHeaderTitle();

@@ -20,7 +20,7 @@ const projectsContainer = (() => {
     projectsHeader.appendChild(projectsH1);
     projectsHeader.appendChild(menu);
     projectsHeader.appendChild(closeMenuBtn);
-
+    
     return projectsHeader
   }
 
@@ -36,15 +36,15 @@ const projectsContainer = (() => {
   }
 
   const projectControls = function() {
-    const projectControls = document.createElement('div');
-    projectControls.id = "project-controls";
+    const projectControlsContainer = document.createElement('div');
+    projectControlsContainer.id = "project-controls-container";
     ['Remove', 'Edit', 'Add'].forEach(control => {
       const p = document.createElement('p');
       p.textContent = control;
-      projectControls.appendChild(p);
+      projectControlsContainer.appendChild(p);
     });
 
-    return projectControls;
+    return projectControlsContainer;
   }
 
   const cancelAddBtns = function(action) {
@@ -149,6 +149,8 @@ const projectsContainer = (() => {
 
   const projectsHandler = function(todos) {
     const projectsContainer = document.createElement('section');
+    projectsContainer.id = 'projects-section';
+
     projectsContainer.appendChild(header(todos));
     projectsContainer.appendChild(projectsList(todos));
 
@@ -157,7 +159,7 @@ const projectsContainer = (() => {
 
   const projectsEventHandlers = function(todos, Project) {
     const projectContainers = [...document.querySelectorAll('.project-container')];
-    const projectControls = document.querySelector('#project-controls');
+    const projectControlsContainer = document.querySelector('#project-controls-container');
 
     const projectControlActionBtns = document.querySelectorAll('.btn-project-control-action');
     const menu = document.querySelector('#menu');
@@ -183,7 +185,7 @@ const projectsContainer = (() => {
     // select a project from the project list 
     projectContainers.forEach(projectContainer => {
       projectContainer.addEventListener('click', () => {
-        if (projectControls.style.display === 'none') return;
+        if (projectControlsContainer.style.display === 'none') return;
         
         document.querySelector('#selected-project').removeAttribute('id');
         projectContainer.id = 'selected-project';
@@ -191,9 +193,9 @@ const projectsContainer = (() => {
     });
     
     // display one of the project controls on click
-    [...projectControls.children].forEach(button => {
+    [...projectControlsContainer.children].forEach(button => {
       button.addEventListener('click', () => {
-        projectControls.style.display = 'none';
+        projectControlsContainer.style.display = 'none';
         switch (button.textContent) {
           case 'Remove':
             document.querySelector('#remove-project-container').style.display = 'flex';
@@ -284,7 +286,6 @@ const projectsContainer = (() => {
               document.querySelector('#selected-project').removeAttribute('id');
               projectsListContainer.id = 'selected-project';
             }
-            console.log(todos);
           }
         }
 
@@ -294,7 +295,7 @@ const projectsContainer = (() => {
         });
         projectsEventHandlers(todos, Project);
 
-        projectControls.style.display = 'flex';
+        projectControlsContainer.style.display = 'flex';
         [...document.querySelectorAll('.project-control-action-container')].forEach(container => {
           container.style.display = 'none';
         });

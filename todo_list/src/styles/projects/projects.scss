@@ -1,7 +1,12 @@
+#projects-section {
+  position: relative;
+}
+
 header { 
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: 5vh;
   padding: 15px;
   border-bottom: 2px solid #ddd;
 
@@ -15,10 +20,13 @@ header {
 }
 
 #projects-list-container {
-  position: relative;
+  position: absolute;
+  overflow-y: scroll;
+  z-index: 1;
+  width: 100%;
   display: none;
   max-height: 43vh;
-  overflow-y: scroll;
+  background: #fff;
   border-bottom: 2px solid #ddd;
 }
 
@@ -44,7 +52,7 @@ header {
   background: #777;
 }
 
-div#project-controls {
+#project-controls-container {
   position: sticky;
   bottom: 0;
   z-index: 1;

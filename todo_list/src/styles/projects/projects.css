@@ -1,7 +1,12 @@
+#projects-section {
+  position: relative;
+}
+
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: 5vh;
   padding: 15px;
   border-bottom: 2px solid #ddd;
 }
@@ -13,10 +18,13 @@ header i {
 }
 
 #projects-list-container {
-  position: relative;
+  position: absolute;
+  overflow-y: scroll;
+  z-index: 1;
+  width: 100%;
   display: none;
   max-height: 43vh;
-  overflow-y: scroll;
+  background: #fff;
   border-bottom: 2px solid #ddd;
 }
 
@@ -40,7 +48,7 @@ header i {
   background: #777;
 }
 
-div#project-controls {
+#project-controls-container {
   position: sticky;
   bottom: 0;
   z-index: 1;
@@ -52,22 +60,22 @@ div#project-controls {
   background: #fff;
   border-top: 2px solid #ddd;
 }
-div#project-controls:hover {
+#project-controls-container:hover {
   background: #fff;
 }
-div#project-controls p {
+#project-controls-container p {
   flex-basis: 33.33%;
   padding: 10px 25px 10px 15px;
   text-align: center;
   cursor: pointer;
 }
-div#project-controls p:nth-child(-n+2) {
+#project-controls-container p:nth-child(-n+2) {
   border-right: 1px solid #ddd;
 }
-div#project-controls p:nth-child(2):hover, div#project-controls p:nth-child(3):hover {
+#project-controls-container p:nth-child(2):hover, #project-controls-container p:nth-child(3):hover {
   background: #ddd;
 }
-div#project-controls p:nth-child(1):hover {
+#project-controls-container p:nth-child(1):hover {
   background: red;
 }
 

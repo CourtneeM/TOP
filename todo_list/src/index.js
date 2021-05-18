@@ -21,9 +21,8 @@ function initialLoad() {
   todos.list[0].addTodo(new Todo('Do homework', 'Finish all homework', 'today', '5', 'history, math, science, business'));
   todos.list[0].addTodo(new Todo('Pick up dog food', 'Get food for Liza', 'today', '3', 'Petfoods Depot has a sale on dog food'));
   todos.list[1].addTodo(new Todo('2', '2 desc', 'never', '1', 'notes22'));
-  console.log(todos);
 
-  mainContainer(todos, Project);
+  mainContainer(todos, Project, Todo);
 }
 
 initialLoad();

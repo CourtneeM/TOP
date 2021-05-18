@@ -37,4 +37,16 @@
   background: #ddd;
 }
 
+#todos-controls-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+#todos-control-btns-container {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+}
+
 /*# sourceMappingURL=todos.css.map */
