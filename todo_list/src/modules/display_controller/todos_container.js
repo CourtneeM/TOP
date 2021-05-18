@@ -4,35 +4,97 @@ const todosContainer = (() => {
   const todosListContainer = document.createElement('div');
   todosListContainer.id = 'todos-list-container';
 
-  const todosControls = function() {
+  const todosControlsContainers = (function() {
     const todosControlsContainer = document.createElement('div');
-    
-    // const optionsContainer = document.createElement('div');
-    // ['Filter Dates', 'Sort', 'Sort Order'].forEach(optionChoice => {
-    //   const filterDatesBy = ['Today', 'Tomorrow', 'Next 7 Days', 'Next 2 Weeks', 'This Month'];
-    //   const sortBy = ['Order', 'Priority', 'Due Date'];
-    //   const sortOrder = ['Ascending', 'Descending'];
+    todosControlsContainer.id = 'todos-controls-container';
 
-    //   const optionsDropdown = document.createElement('input');
-    //   optionsDropdown.setAttribute('type', 'dropdown');
+    const todosControls = function() {
+      // const optionsContainer = document.createElement('div');
+      // ['Filter Dates', 'Sort', 'Sort Order'].forEach(optionChoice => {
+      //   const filterDatesBy = ['Today', 'Tomorrow', 'Next 7 Days', 'Next 2 Weeks', 'This Month'];
+      //   const sortBy = ['Order', 'Priority', 'Due Date'];
+      //   const sortOrder = ['Ascending', 'Descending'];
+  
+      //   const optionsDropdown = document.createElement('input');
+      //   optionsDropdown.setAttribute('type', 'dropdown');
+  
+        // if ([].includes(optionChoice))
+  
+        // });
+  
+      const todosControlBtnsContainer = document.createElement('div');
+      todosControlBtnsContainer.id = 'todos-control-btns-container';
+      ['Remove', 'Edit', 'Add'].forEach(control => {
+        const controlP = document.createElement('p');
+        controlP.textContent = control;
+        todosControlBtnsContainer.appendChild(controlP);
+      });
+  
+      return todosControlBtnsContainer;
+    }
 
-      // if ([].includes(optionChoice))
+    const cancelAddBtns = function(action) {
+      const cancelBtn = document.createElement('button');
+      const actionBtn = document.createElement('button');
+  
+      cancelBtn.textContent = 'Cancel';
+      cancelBtn.classList.add('btn-todos-control-action');
+      actionBtn.textContent = action;
+      actionBtn.classList.add('btn-todos-control-action');
+  
+      return [cancelBtn, actionBtn];
+    }
 
-      // });
+    const removeTodoContainer = function () {
+      const removeTodoContainer = document.createElement('div');
+      const [cancelBtn, removeBtn] = cancelAddBtns('Remove');
+  
+      removeTodoContainer.id = 'remove-todo-container';
+      removeTodoContainer.classList.add('todos-control-action-container');
+      removeTodoContainer.appendChild(cancelBtn);
+      removeTodoContainer.appendChild(removeBtn);
+  
+      removeTodoContainer.style.display = 'none';
+      return removeTodoContainer;
+    }
 
-    const todosControlBtnsContainer = document.createElement('div');
-    todosControlBtnsContainer.id = 'todos-control-btns-container';
-    ['Remove', 'Edit', 'Add'].forEach(control => {
-      const controlP = document.createElement('p');
-      controlP.textContent = control;
-      todosControlBtnsContainer.appendChild(controlP);
-    });
-    
-    // todosControlsContainer.appendChild(options)
-    todosControlsContainer.appendChild(todosControlBtnsContainer);
+    const editTodoContainer = function() {
+      const editTodoContainer = document.createElement('div');
+      const [cancelBtn, editBtn] = cancelAddBtns('Edit');
+      
+      editTodoContainer.id = 'edit-todo-container';
+      editTodoContainer.classList.add('todos-control-action-container');
+      editTodoContainer.appendChild(cancelBtn);
+      editTodoContainer.appendChild(editBtn);
+  
+      editTodoContainer.style.display = 'none';
+      return editTodoContainer;
+    }
 
-    return todosControlsContainer;
-  }
+    const addTodoContainer = function() {
+      const addTodoContainer = document.createElement('div');
+      const [cancelBtn, addBtn] = cancelAddBtns('Add');
+  
+      addTodoContainer.id = 'add-todo-container';
+      addTodoContainer.classList.add('todos-control-action-container');
+      addTodoContainer.appendChild(cancelBtn);
+      addTodoContainer.appendChild(addBtn);
+  
+      addTodoContainer.style.display = 'none';
+      return addTodoContainer;
+    }
+
+    const todosControlsHandler = function() {
+      todosControlsContainer.appendChild(todosControls());
+      todosControlsContainer.appendChild(removeTodoContainer());
+      todosControlsContainer.appendChild(editTodoContainer());
+      todosControlsContainer.appendChild(addTodoContainer());
+
+      return todosControlsContainer;
+    }
+
+    return { todosControlsHandler }
+  })();
 
   const displayTodos = function(todos) {
     if (todos.list.length <= 0) return;
@@ -71,14 +133,64 @@ const todosContainer = (() => {
   const todosHandler = function(todos) {
     const todosListContainer = document.createElement('section');
     todosListContainer.id = 'todos-section';
-    
+
     todosListContainer.appendChild(displayTodos(todos));
-    todosListContainer.appendChild(todosControls());
+    todosListContainer.appendChild(todosControlsContainers.todosControlsHandler());
 
     return todosListContainer;
   }
 
-  return { todosHandler, displayTodos, clearTodos }
+  const todosEventHandlers = function(todos, Todo) {
+    const todosControlsBtnsContainer = document.querySelector('#todos-control-btns-container');
+    const todosControlBtns = [...todosControlsBtnsContainer.children];
+    const todosControlActionBtns = [...document.querySelectorAll('.btn-todos-control-action')];
+
+    // Todo Controls Buttons 
+    todosControlBtns.forEach(control => {
+      control.addEventListener('click', () => {
+        todosControlsBtnsContainer.style.display = 'none';
+        switch (control.textContent) {
+          case 'Remove':
+            document.querySelector('#remove-todo-container').style.display = 'flex';
+            break;
+          case 'Edit':
+            document.querySelector('#edit-todo-container').style.display = 'flex';
+            break;
+          case 'Add':
+            document.querySelector('#add-todo-container').style.display = 'flex';
+            break;
+        }
+      });
+    });
+
+    todosControlActionBtns.forEach(actionBtn => {
+      const removeTodoContainer = document.querySelector('#remove-todo-container');
+      const editTodoContainer = document.querySelector('#edit-todo-container');
+      const addTodoContainer = document.querySelector('#add-todo-container');
+
+      actionBtn.addEventListener('click', () => {
+        if (removeTodoContainer.style.display === 'flex') {
+          if (actionBtn.textContent === 'Remove') {
+            console.log(todos);
+          }
+        }
+        
+        if (editTodoContainer.style.display === 'flex') {
+          if (actionBtn.textContent === 'Edit') {
+            
+          }
+        }
+        
+        if (addTodoContainer.style.display === 'flex') {
+          if (actionBtn.textContent === 'Add') {
+            
+          }
+        }
+      });      
+    });
+  }
+
+  return { todosHandler, displayTodos, clearTodos, todosEventHandlers }
 })();
 
 export default todosContainer;

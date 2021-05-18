@@ -1,3 +1,7 @@
+#todos-section {
+  min-height: 88.3vh;
+}
+
 .todo-container {
   display: grid;
   grid-template-columns: 1fr 2fr 3fr 1fr;
@@ -42,13 +46,44 @@
 }
 
 #todos-controls-container {
-  position: relative;
+  position: fixed;
+  bottom: 0;
+  padding: 0px;
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  background: #fff;
+  border-top: 2px solid #ddd;
 }
 
 #todos-control-btns-container {
-  position: sticky;
-  bottom: 0;
   display: flex;
+  width: 100%;
+  text-align: center;  height: 45px;
+  border-top: 1px solid #ddd;
+
+  p {
+    flex-basis: 33.33%;
+    padding: 13px 15px 12px;
+    cursor: pointer;
+
+    &:nth-child(-n+2) {
+      border-right: 1px solid #ddd;
+    }
+
+    &:hover {
+      background: #ddd;
+    }
+  }
+}
+
+.todos-control-action-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  button {
+    padding: 3px 8px;
+  }
 }
