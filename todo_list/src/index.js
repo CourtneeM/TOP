@@ -23,7 +23,7 @@ function initialLoad() {
   todos.list[1].addTodo(new Todo('2', '2 desc', 'never', '1', 'notes22'));
   console.log(todos);
 
-  mainContainer(todos);
+  mainContainer(todos, Project);
 }
 
 initialLoad();

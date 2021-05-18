@@ -2,13 +2,13 @@ import projectsContainer from './projects_container';
 import todosContainer from './todos_container';
 import '../../styles/main/main.css';
 
-const mainContainer = todos => {
+const mainContainer = (todos, Project) => {
   const contentContainer = document.querySelector('#content-container');
   contentContainer.appendChild(projectsContainer.projectsHandler(todos));
 
   contentContainer.appendChild(todosContainer.initialTodosRender(todos));
 
-  projectsContainer.projectsEventHandlers(todos);
+  projectsContainer.projectsEventHandlers(todos, Project);
 
   let observer = new MutationObserver(function() {
     projectsContainer.updateHeaderTitle();

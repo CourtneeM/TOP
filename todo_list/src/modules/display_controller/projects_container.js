@@ -155,7 +155,7 @@ const projectsContainer = (() => {
     return projectsContainer;
   }
 
-  const projectsEventHandlers = function(todos) {
+  const projectsEventHandlers = function(todos, Project) {
     const projectContainers = [...document.querySelectorAll('.project-container')];
     const projectControls = document.querySelector('#project-controls');
 
@@ -254,9 +254,8 @@ const projectsContainer = (() => {
         }
 
         if (addProjectContainer.style.display === 'flex') {
-          const newProjectInput = addProjectContainer.querySelector('input');
           if (button.textContent === 'Add') {
-            // todos.addProject(new Project('project name'));
+            todos.addProject(new Project(addProjectContainer.querySelector('input').value));
           }
         }
 
@@ -293,7 +292,7 @@ const projectsContainer = (() => {
         [...projectsList(todos).children].forEach(projectContainer => {
           projectsListContainer.appendChild(projectContainer);
         });
-        projectsEventHandlers(todos);
+        projectsEventHandlers(todos, Project);
 
         projectControls.style.display = 'flex';
         [...document.querySelectorAll('.project-control-action-container')].forEach(container => {
