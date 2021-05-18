@@ -15,29 +15,45 @@ header {
 }
 
 #projects-list-container {
+  position: relative;
   display: none;
+  max-height: 43vh;
+  overflow-y: scroll;
   border-bottom: 2px solid #ddd;
+}
 
-  div {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 25px 10px 15px;
+.project-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 45px;
+  padding: 10px 25px 10px 15px;
 
-    &:hover {
-      background: #ddd;
-      cursor: pointer;
-    }
+  input {
+    padding: 3px 5px;
   }
-  
-  #selected-project {
-    color: #fff;
-    background: #777;
+
+  &:hover {
+    background: #ddd;
+    cursor: pointer;
   }
 }
 
+#selected-project {
+  color: #fff;
+  background: #777;
+}
+
 div#project-controls {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
   display: flex;
+  align-items: center;
+  height: 45px;
   padding: 0px;
+  background: #fff;
   border-top: 2px solid #ddd;
 
   &:hover {
@@ -55,5 +71,25 @@ div#project-controls {
     &:nth-child(2):hover,
     &:nth-child(3):hover { background: #ddd; }
     &:nth-child(1):hover { background: red; }
+  }
+}
+
+.project-control-action-container {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+  justify-content: space-around;
+  padding: 9px;
+  background: #fff;
+  border-top: 2px solid #ddd;
+
+  input {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
+  button {
+    padding: 3px 8px;
   }
 }
