@@ -1,6 +1,5 @@
 #projects-section {
   position: relative;
-  min-height: 11vh;
 }
 
 header {
@@ -65,7 +64,7 @@ header i {
 }
 #project-controls-container p {
   flex-basis: 33.33%;
-  padding: 13px 25px 12px 15px;
+  padding: 13px 15px 12px;
   text-align: center;
   cursor: pointer;
 }
