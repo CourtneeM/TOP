@@ -3,9 +3,16 @@
 }
 
 .todo-container {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.todo-info-container {
+  flex-grow: 1;
   display: grid;
   grid-template-columns: 1fr 2fr 3fr 1fr;
-  grid-template-areas: "completed title desc desc desc date date"
+  grid-template-areas: "title title desc desc desc date date"
                        "priority notes notes notes notes notes notes ";
   row-gap: 15px;
   column-gap: 5px;

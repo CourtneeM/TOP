@@ -105,18 +105,26 @@ const todosContainer = (() => {
       const todoContainer = document.createElement('div');
       todoContainer.classList.add('todo-container');
 
+      const todoInfoContainer = document.createElement('div');
+      todoInfoContainer.classList.add('todo-info-container');
       for (let prop in todo) {
         if (prop === 'completed') {
           const checkbox = document.createElement('input');
+
+          checkbox.classList.add('remove-todo-checkbox');
           checkbox.type = 'checkbox';
+          checkbox.style.display = 'none';
+
           todoContainer.appendChild(checkbox);
         } else {
           const p = document.createElement('p');
           p.textContent = todo[prop];
-          todoContainer.appendChild(p);
+
+          todoInfoContainer.appendChild(p);
         }
       }
 
+      todoContainer.appendChild(todoInfoContainer);
       todosListContainer.appendChild(todoContainer);
     });
 
@@ -124,9 +132,16 @@ const todosContainer = (() => {
   }
 
   const clearTodos = function() {
-    const todosListContainer = document.querySelector('#todos-list-container');
     while(todosListContainer.firstChild) {
       todosListContainer.removeChild(todosListContainer.firstChild);
+    }
+  }
+
+  const clearControlsContainer = function() {
+    const todosControlsContainer = document.querySelector('#todos-controls-container');
+
+    while (todosControlsContainer.firstChild) {
+      todosControlsContainer.removeChild(todosControlsContainer.firstChild);
     }
   }
   
@@ -141,6 +156,9 @@ const todosContainer = (() => {
   }
 
   const todosEventHandlers = function(todos, Todo) {
+    const todoContainers = [...todosListContainer.children];
+    const removeTodoCheckboxes = [...document.querySelectorAll('.remove-todo-checkbox')];
+    const todosControlsContainer = document.querySelector('#todos-controls-container');
     const todosControlsBtnsContainer = document.querySelector('#todos-control-btns-container');
     const todosControlBtns = [...todosControlsBtnsContainer.children];
     const todosControlActionBtns = [...document.querySelectorAll('.btn-todos-control-action')];
@@ -152,6 +170,7 @@ const todosContainer = (() => {
         switch (control.textContent) {
           case 'Remove':
             document.querySelector('#remove-todo-container').style.display = 'flex';
+            removeTodoCheckboxes.forEach(checkbox => checkbox.style.display = 'inline');
             break;
           case 'Edit':
             document.querySelector('#edit-todo-container').style.display = 'flex';
@@ -164,6 +183,7 @@ const todosContainer = (() => {
     });
 
     todosControlActionBtns.forEach(actionBtn => {
+      const selectedProjectName = document.querySelector('#selected-project-name').textContent;
       const removeTodoContainer = document.querySelector('#remove-todo-container');
       const editTodoContainer = document.querySelector('#edit-todo-container');
       const addTodoContainer = document.querySelector('#add-todo-container');
@@ -171,7 +191,18 @@ const todosContainer = (() => {
       actionBtn.addEventListener('click', () => {
         if (removeTodoContainer.style.display === 'flex') {
           if (actionBtn.textContent === 'Remove') {
-            console.log(todos);
+            const removeIndices = removeTodoCheckboxes.map(checkbox => {
+              if (checkbox.checked) {
+                console.log(todos.list);
+                return [...checkbox.parentElement.parentElement.children].indexOf(checkbox.parentElement);
+              }
+            }).filter(index => index || index === 0).reverse();
+
+            todos.list.forEach(project => {
+              if (project.name === selectedProjectName) {
+                removeIndices.forEach(index => project.deleteTodo(index));
+              }
+            });
           }
         }
         
@@ -186,11 +217,28 @@ const todosContainer = (() => {
             
           }
         }
-      });      
+
+        // rerender todos and controls, add event listeners back
+        clearTodos();
+        clearControlsContainer();
+        [...displayTodos(todos).children].forEach(todoContainer => {
+          todosListContainer.appendChild(todoContainer);
+        });
+        document.querySelector('#todos-section').appendChild(todosControlsContainers.todosControlsHandler());
+        todosEventHandlers(todos, Todo);
+
+        // rerender controls container, remove checkboxes and inputs from todos
+        todosControlsBtnsContainer.style.display = 'flex';
+        [...document.querySelectorAll('.todos-control-action-container')].forEach(container => {
+          container.style.display = 'none';
+        });
+        [...removeTodoCheckboxes].forEach(input => input.style.display = 'none');
+        // ...defaultProjectRadios
+      });
     });
   }
 
-  return { todosHandler, displayTodos, clearTodos, todosEventHandlers }
+  return { todosHandler, clearTodos, todosEventHandlers }
 })();
 
 export default todosContainer;

@@ -10,6 +10,7 @@ const projectsContainer = (() => {
     const menu = document.createElement('i');
     const closeMenuBtn = document.createElement('i');
 
+    projectsH1.id = 'selected-project-name';
     projectsH1.textContent = todos.list.filter(project => project['default project'])[0].name;
     menu.id = 'menu';
     menu.classList.add("fas", "fa-bars");
