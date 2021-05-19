@@ -114,9 +114,7 @@ const todosContainer = (() => {
 
           completeTodoCheckbox.classList.add('complete-todo-checkbox');
           completeTodoCheckbox.type = 'checkbox';
-          if (todo[prop]) {
-            completeTodoCheckbox.checked = true;
-          }
+          
 
           removeTodoCheckbox.classList.add('remove-todo-checkbox');
           removeTodoCheckbox.type = 'checkbox';
@@ -124,6 +122,11 @@ const todosContainer = (() => {
 
           todoContainer.appendChild(completeTodoCheckbox);
           todoContainer.appendChild(removeTodoCheckbox);
+
+          if (todo[prop]) {
+            completeTodoCheckbox.checked = true;
+            completeTodoCheckbox.parentElement.classList.add('completed-todo');
+          }
         } else {
           const p = document.createElement('p');
           p.textContent = todo[prop];
