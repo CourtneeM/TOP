@@ -68,6 +68,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
   margin: 2px;
   padding: 3px 2px;
   font-size: 0.9rem;
@@ -92,14 +93,15 @@
 .add-todo-info-container label:nth-child(5) {
   flex: 6 0 250px;
 }
-.edit-todo-info-container label input,
-.add-todo-info-container label input {
-  margin-top: 3px;
-  padding: 3px 2px;
-}
 
 .add-todo-info-container {
   border-top: 1px solid #ddd;
+}
+
+.edit-todo-field-input {
+  margin-top: 3px;
+  padding: 3px 2px;
+  height: 28px;
 }
 
 #todos-controls-container {

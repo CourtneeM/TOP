@@ -203,11 +203,27 @@ const todosContainer = (() => {
 
               [...todoInfoContainer.children].forEach((field, index) => {
                 const label = document.createElement('label');
-                const input = document.createElement('input');
-                
+                let input = document.createElement('input');
+
                 label.textContent = ((fieldNames[index])[0].toUpperCase() + fieldNames[index].slice(1));
-                input.setAttribute('type', 'text');
                 input.classList.add('edit-todo-field-input');
+
+                if (fieldNames[index] === 'priority') {
+                  input = document.createElement('select');
+                  input.classList.add('edit-todo-field-input');
+
+                  ['1', '2', '3', '4', '5'].forEach(n => {
+                    const option = document.createElement('option');
+                    option.value = n;
+                    option.textContent = n;
+                    input.appendChild(option);
+                  });
+                } else if (fieldNames[index] === 'dueDate') {
+                  input.setAttribute('type', 'date');
+                } else {
+                  input.setAttribute('type', 'text');
+                }
+
                 input.value = field.textContent;
 
                 label.appendChild(input);
@@ -281,9 +297,10 @@ const todosContainer = (() => {
         if (editTodoContainer.style.display === 'flex') {
           if (actionBtn.textContent === 'Edit') {
             const newValues = [...document.querySelectorAll('.edit-todo-info-container')].map(todoContainer => {
-              return [...todoContainer.children].map(label => label.querySelector('input').value);
+              return [...todoContainer.querySelectorAll('.edit-todo-field-input')].map(fieldInput => fieldInput.value);
             });
 
+            console.log(newValues);
             selectedProject.todos.forEach((todo, todoIndex) => {
               fieldNames.forEach((field, fieldIndex) => {
                 todo[field] = newValues[todoIndex][fieldIndex];
