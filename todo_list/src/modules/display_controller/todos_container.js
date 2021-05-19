@@ -191,10 +191,12 @@ const todosContainer = (() => {
         switch (control.textContent) {
           case 'Remove':
             document.querySelector('#remove-todo-container').style.display = 'flex';
+            completeTodoCheckboxes.forEach(checkbox => checkbox.style.display = 'none');
             removeTodoCheckboxes.forEach(checkbox => checkbox.style.display = 'inline');
             break;
           case 'Edit':
             document.querySelector('#edit-todo-container').style.display = 'flex';
+            completeTodoCheckboxes.forEach(checkbox => checkbox.style.display = 'none');
             todoInfoContainers.forEach(todoInfoContainer => {
               todoInfoContainer.removeAttribute('class');
               todoInfoContainer.classList.add('edit-todo-info-container');
@@ -220,16 +222,28 @@ const todosContainer = (() => {
             newTodoInfoContainer.classList.add('add-todo-info-container');
 
             fieldNames.forEach(field => {
+              const label = document.createElement('label');
+              label.textContent = (field[0].toUpperCase() + field.slice(1));
+
               if (field === 'completed') {
                 null;
-              } else {
+              } else if (field === 'priority') {
+                const select = document.createElement('select');
+                select.classList.add('add-todo-field-input');
 
-                const label = document.createElement('label');
+                ['1', '2', '3', '4', '5'].forEach(n => {
+                  const option = document.createElement('option');
+                  option.value = n;
+                  option.textContent = n;
+                  select.appendChild(option);
+                });
+
+                label.appendChild(select);
+                newTodoInfoContainer.appendChild(label);
+              } else {                
                 const input = document.createElement('input');
-                
-                label.textContent = (field[0].toUpperCase() + field.slice(1));
-                input.setAttribute('type', 'text');
                 input.classList.add('add-todo-field-input');
+                input.setAttribute('type', 'text');
                 
                 label.appendChild(input);
                 newTodoInfoContainer.appendChild(label);
@@ -284,7 +298,7 @@ const todosContainer = (() => {
         if (addTodoContainer.style.display === 'flex') {
           if (actionBtn.textContent === 'Add') {
             const newValues = [...document.querySelectorAll('.add-todo-info-container')].map(todoContainer => {
-              return [...todoContainer.children].map(label => label.querySelector('input').value);
+              return [...todoContainer.children].map(label => label.querySelector('.add-todo-field-input').value);
             })[0];
 
             selectedProject.addTodo(new Todo(...newValues));
