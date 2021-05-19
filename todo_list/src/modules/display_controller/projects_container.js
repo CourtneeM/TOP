@@ -29,16 +29,13 @@ const projectsContainer = (() => {
   }
 
   const updateHeaderTitle = function() {
-    const selectedProject = document.querySelector('#selected-project');
     const projectsH1 = document.querySelector('header>h1');
 
-    if (selectedProject.classList.value === 'project-container') {
-      projectsH1.textContent = [...selectedProject.children][2].textContent; 
+    if ([...projectsListContainer.children].length > 0) {
+      projectsH1.textContent = selectedProjectName; 
     } else {
       projectsH1.textContent = 'Todo List App';
     }
-
-    selectedProjectName = projectsH1.textContent;
   }
 
   const projectControls = function() {
@@ -206,6 +203,7 @@ const projectsContainer = (() => {
         selectedProjectContainer.removeAttribute('id');
         selectedProjectContainer = projectContainer;
         selectedProjectContainer.id = 'selected-project';
+        selectedProjectName = projectContainer.querySelector('.project-name').textContent;
       });
     });
     
@@ -269,8 +267,8 @@ const projectsContainer = (() => {
                 }
               });
 
+              selectedProjectName = document.querySelector('#selected-project').querySelector('.input-edit-project-name').value;
               document.querySelector('#selected-project').removeAttribute('id');
-              radioBtns[newDefaultProjectIndex].parentElement.id = 'selected-project';
             } else {
               inputs.forEach(input => {
                 input.setCustomValidity('Field required');
