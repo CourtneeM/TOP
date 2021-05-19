@@ -2,6 +2,8 @@ import '../../styles/projects/projects.css';
 
 const projectsContainer = (() => {
   const projectsListContainer = document.createElement('div');
+  let selectedProjectContainer = document.querySelector('#selected-project');
+  let selectedProjectName;
   projectsListContainer.id = 'projects-list-container';
 
   const header = function(todos) {
@@ -22,6 +24,7 @@ const projectsContainer = (() => {
     projectsHeader.appendChild(menu);
     projectsHeader.appendChild(closeMenuBtn);
     
+    selectedProjectName = projectsH1.textContent;
     return projectsHeader
   }
 
@@ -34,6 +37,8 @@ const projectsContainer = (() => {
     } else {
       projectsH1.textContent = 'Todo List App';
     }
+
+    selectedProjectName = projectsH1.textContent;
   }
 
   const projectControls = function() {
@@ -122,8 +127,12 @@ const projectsContainer = (() => {
 
 
       if (project['default project']) {
-        projectContainer.id = 'selected-project';
         radio.checked = true;
+
+        if (!selectedProjectContainer) {
+          selectedProjectContainer = projectContainer;
+          selectedProjectContainer.id = 'selected-project';
+        }
       }
 
       checkbox.style.display = 'none';
@@ -133,6 +142,12 @@ const projectsContainer = (() => {
       projectContainer.appendChild(radio);
       projectContainer.appendChild(nameP);
       projectContainer.appendChild(numberTodosP);
+
+      if (selectedProjectName === projectContainer.querySelector('.project-name').textContent) {
+        selectedProjectContainer = projectContainer;
+        selectedProjectContainer.id = 'selected-project';
+      }
+
       projectsListContainer.appendChild(projectContainer);
     });
     
@@ -161,7 +176,6 @@ const projectsContainer = (() => {
   const projectsEventHandlers = function(todos, Project) {
     const projectContainers = [...document.querySelectorAll('.project-container')];
     const projectControlsContainer = document.querySelector('#project-controls-container');
-
     const projectControlActionBtns = document.querySelectorAll('.btn-project-control-action');
     const menu = document.querySelector('#menu');
     const closeMenuBtn = document.querySelector('#close-menu-btn');
@@ -188,8 +202,9 @@ const projectsContainer = (() => {
       projectContainer.addEventListener('click', () => {
         if (projectControlsContainer.style.display === 'none') return;
         
-        document.querySelector('#selected-project').removeAttribute('id');
-        projectContainer.id = 'selected-project';
+        selectedProjectContainer.removeAttribute('id');
+        selectedProjectContainer = projectContainer;
+        selectedProjectContainer.id = 'selected-project';
       });
     });
     
@@ -303,9 +318,10 @@ const projectsContainer = (() => {
         [...removeProjectCheckboxes, ...defaultProjectRadios].forEach(input => input.style.display = 'none');
       });
     });
+
   }
 
-  return { projectsHandler, updateHeaderTitle, projectsEventHandlers };
+  return { projectsHandler, projectsList, clearProjectsList, updateHeaderTitle, projectsEventHandlers };
 })();
 
 export default projectsContainer;

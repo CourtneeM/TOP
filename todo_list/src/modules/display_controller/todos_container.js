@@ -114,6 +114,9 @@ const todosContainer = (() => {
 
           completeTodoCheckbox.classList.add('complete-todo-checkbox');
           completeTodoCheckbox.type = 'checkbox';
+          if (todo[prop]) {
+            completeTodoCheckbox.checked = true;
+          }
 
           removeTodoCheckbox.classList.add('remove-todo-checkbox');
           removeTodoCheckbox.type = 'checkbox';
@@ -163,7 +166,7 @@ const todosContainer = (() => {
   const todosEventHandlers = function(todos, Todo) {
     const selectedProjectName = document.querySelector('#selected-project-name').textContent;
     const selectedProject = todos.list.filter(project => project.name === selectedProjectName)[0];
-    const fieldNames = Object.keys(todos.list[0].todos[0]);
+    const fieldNames = ['title', 'description', 'dueDate', 'priority', 'notes', 'completed'];
 
     const todoContainers = [...todosListContainer.children];
     const todoInfoContainers = [...document.querySelectorAll('.todo-info-container')];
@@ -285,7 +288,7 @@ const todosContainer = (() => {
           if (actionBtn.textContent === 'Remove') {
             const removeIndices = removeTodoCheckboxes.map(checkbox => {
               if (checkbox.checked) {
-                console.log(todos.list);
+                console.log(checkbox);
                 return [...checkbox.parentElement.parentElement.children].indexOf(checkbox.parentElement);
               }
             }).filter(index => index || index === 0).reverse();
@@ -300,7 +303,6 @@ const todosContainer = (() => {
               return [...todoContainer.querySelectorAll('.edit-todo-field-input')].map(fieldInput => fieldInput.value);
             });
 
-            console.log(newValues);
             selectedProject.todos.forEach((todo, todoIndex) => {
               fieldNames.forEach((field, fieldIndex) => {
                 todo[field] = newValues[todoIndex][fieldIndex];
@@ -319,6 +321,7 @@ const todosContainer = (() => {
             console.log([...document.querySelectorAll('.add-todo-field-input')]);
             const newValues = [...document.querySelectorAll('.add-todo-field-input')].map(fieldInput => fieldInput.value);
 
+            console.log(selectedProject);
             selectedProject.addTodo(new Todo(...newValues));
           }
         }
@@ -338,12 +341,11 @@ const todosContainer = (() => {
           container.style.display = 'none';
         });
         [...removeTodoCheckboxes].forEach(input => input.style.display = 'none');
-        // ...defaultProjectRadios
       });
     });
   }
 
-  return { todosHandler, clearTodos, todosEventHandlers }
+  return { todosHandler, displayTodos, todosControlsContainers, clearTodos, clearControlsContainer, todosEventHandlers }
 })();
 
 export default todosContainer;

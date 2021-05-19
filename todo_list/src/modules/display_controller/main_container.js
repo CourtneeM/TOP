@@ -11,17 +11,27 @@ const mainContainer = (todos, Project, Todo) => {
   projectsContainer.projectsEventHandlers(todos, Project);
   todosContainer.todosEventHandlers(todos, Todo);
 
-  let observer = new MutationObserver(function() {
+  let observerSelectProject = new MutationObserver(function() {
     projectsContainer.updateHeaderTitle();
     todosContainer.clearTodos();
     todosContainer.displayTodos(todos);
-    
+    todosContainer.clearControlsContainer();
+    todosContainer.todosControlsContainers.todosControlsHandler()
+    todosContainer.todosEventHandlers(todos, Todo);
   });
 
-  observer.observe(document.querySelector('#projects-list-container'),
+  observerSelectProject.observe(document.querySelector('#projects-list-container'),
                                           { subtree: true, attributes: true, attributeFilter: ['id'] });
-  // look for a change in #selected-project
-  // on change, rerender todosContainer with the selected project's todos
+
+                                  
+  // let observerUpdateProjectsTodoCount = new MutationObserver(function() {
+  //   // projectsContainer.clearProjectsList();
+  //   // projectsContainer.projectsList(todos);
+  //   // projectsContainer.projectsEventHandlers(todos, Project);
+  // });
+
+  // observerUpdateProjectsTodoCount.observe(document.querySelector('#todos-list-container'),
+  //                                         { childList: true });
 };
 
 export default mainContainer;
