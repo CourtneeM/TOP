@@ -2,10 +2,19 @@
   min-height: 88.3vh;
 }
 
+#todos-list-container {
+  padding-bottom: 45px;
+}
+
 .todo-container {
   display: flex;
   align-items: center;
   padding: 0 10px;
+}
+
+.completed-todo p {
+  color: #777;
+  text-decoration: line-through;
 }
 
 .todo-info-container {
@@ -34,7 +43,6 @@
 }
 .todo-info-container p:nth-child(4) {
   grid-area: priority;
-  text-decoration: underline;
 }
 .todo-info-container p:nth-child(5) {
   grid-area: notes;
@@ -48,13 +56,15 @@
   background: #ddd;
 }
 
-.edit-todo-info-container {
+.edit-todo-info-container,
+.add-todo-info-container {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
   padding: 10px;
 }
-.edit-todo-info-container label {
+.edit-todo-info-container label,
+.add-todo-info-container label {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -62,24 +72,34 @@
   padding: 3px 2px;
   font-size: 0.9rem;
 }
-.edit-todo-info-container label:nth-child(1) {
+.edit-todo-info-container label:nth-child(1),
+.add-todo-info-container label:nth-child(1) {
   flex: 2 0 100px;
 }
-.edit-todo-info-container label:nth-child(2) {
+.edit-todo-info-container label:nth-child(2),
+.add-todo-info-container label:nth-child(2) {
   flex: 4 0 200px;
 }
-.edit-todo-info-container label:nth-child(3) {
+.edit-todo-info-container label:nth-child(3),
+.add-todo-info-container label:nth-child(3) {
   flex: 1 0 75px;
 }
-.edit-todo-info-container label:nth-child(4) {
+.edit-todo-info-container label:nth-child(4),
+.add-todo-info-container label:nth-child(4) {
   flex: 1 0 50px;
 }
-.edit-todo-info-container label:nth-child(5) {
+.edit-todo-info-container label:nth-child(5),
+.add-todo-info-container label:nth-child(5) {
   flex: 6 0 250px;
 }
-.edit-todo-info-container label input {
+.edit-todo-info-container label input,
+.add-todo-info-container label input {
   margin-top: 3px;
   padding: 3px 2px;
+}
+
+.add-todo-info-container {
+  border-top: 1px solid #ddd;
 }
 
 #todos-controls-container {

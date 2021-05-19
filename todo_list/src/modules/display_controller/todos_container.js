@@ -109,13 +109,18 @@ const todosContainer = (() => {
       todoInfoContainer.classList.add('todo-info-container');
       for (let prop in todo) {
         if (prop === 'completed') {
-          const checkbox = document.createElement('input');
+          const completeTodoCheckbox = document.createElement('input');
+          const removeTodoCheckbox = document.createElement('input');
 
-          checkbox.classList.add('remove-todo-checkbox');
-          checkbox.type = 'checkbox';
-          checkbox.style.display = 'none';
+          completeTodoCheckbox.classList.add('complete-todo-checkbox');
+          completeTodoCheckbox.type = 'checkbox';
 
-          todoContainer.appendChild(checkbox);
+          removeTodoCheckbox.classList.add('remove-todo-checkbox');
+          removeTodoCheckbox.type = 'checkbox';
+          removeTodoCheckbox.style.display = 'none';
+
+          todoContainer.appendChild(completeTodoCheckbox);
+          todoContainer.appendChild(removeTodoCheckbox);
         } else {
           const p = document.createElement('p');
           p.textContent = todo[prop];
@@ -156,14 +161,28 @@ const todosContainer = (() => {
   }
 
   const todosEventHandlers = function(todos, Todo) {
+    const selectedProjectName = document.querySelector('#selected-project-name').textContent;
+    const selectedProject = todos.list.filter(project => project.name === selectedProjectName)[0];
+    const fieldNames = Object.keys(todos.list[0].todos[0]);
+
     const todoContainers = [...todosListContainer.children];
     const todoInfoContainers = [...document.querySelectorAll('.todo-info-container')];
+    const completeTodoCheckboxes = [...document.querySelectorAll('.complete-todo-checkbox')];
     const removeTodoCheckboxes = [...document.querySelectorAll('.remove-todo-checkbox')];
     const todosControlsContainer = document.querySelector('#todos-controls-container');
     const todosControlsBtnsContainer = document.querySelector('#todos-control-btns-container');
     const todosControlBtns = [...todosControlsBtnsContainer.children];
     const todosControlActionBtns = [...document.querySelectorAll('.btn-todos-control-action')];
-    const fieldNames = Object.keys(todos.list[0].todos[0]);
+
+    // Mark Todo Complete and strikethrough
+    completeTodoCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('click', () => {
+        const todoContainerIndex = [...checkbox.parentElement.parentElement.children].indexOf(checkbox.parentElement);
+        
+        checkbox.parentElement.classList.toggle('completed-todo');
+        selectedProject.toggleCompleted(todoContainerIndex);
+      });
+    });
 
     // Todo Controls Buttons 
     todosControlBtns.forEach(control => {
@@ -197,7 +216,27 @@ const todosContainer = (() => {
             break;
           case 'Add':
             document.querySelector('#add-todo-container').style.display = 'flex';
-            // create a blank todo container with the inputs in the place of text spots
+            const newTodoInfoContainer = document.createElement('div');
+            newTodoInfoContainer.classList.add('add-todo-info-container');
+
+            fieldNames.forEach(field => {
+              if (field === 'completed') {
+                null;
+              } else {
+
+                const label = document.createElement('label');
+                const input = document.createElement('input');
+                
+                label.textContent = (field[0].toUpperCase() + field.slice(1));
+                input.setAttribute('type', 'text');
+                input.classList.add('add-todo-field-input');
+                
+                label.appendChild(input);
+                newTodoInfoContainer.appendChild(label);
+              }
+            }); 
+
+            todosListContainer.appendChild(newTodoInfoContainer);
             // priority should be a drop down, 1-5
             break;
         }
@@ -205,8 +244,6 @@ const todosContainer = (() => {
     });
 
     todosControlActionBtns.forEach(actionBtn => {
-      const selectedProjectName = document.querySelector('#selected-project-name').textContent;
-      const selectedProject = todos.list.filter(project => project.name === selectedProjectName)[0];
       const removeTodoContainer = document.querySelector('#remove-todo-container');
       const editTodoContainer = document.querySelector('#edit-todo-container');
       const addTodoContainer = document.querySelector('#add-todo-container');
@@ -246,11 +283,11 @@ const todosContainer = (() => {
         
         if (addTodoContainer.style.display === 'flex') {
           if (actionBtn.textContent === 'Add') {
-            // todos.list.forEach(project => {
-            //   if (project.name === selectedProjectName) {
-            //     project.addTodo(new Todo(...newValues));
-            //   }
-            // });
+            const newValues = [...document.querySelectorAll('.add-todo-info-container')].map(todoContainer => {
+              return [...todoContainer.children].map(label => label.querySelector('input').value);
+            })[0];
+
+            selectedProject.addTodo(new Todo(...newValues));
           }
         }
 
