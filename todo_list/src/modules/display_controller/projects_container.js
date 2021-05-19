@@ -248,27 +248,35 @@ const projectsContainer = (() => {
         if (editProjectContainer.style.display === 'flex') {
           const inputs = [...document.querySelectorAll('.input-edit-project-name')];
           const radioBtns = [...document.querySelectorAll('.radio-default-project')];
+
           if (button.textContent === 'Edit') {
-            // update todos.list project names
-            inputs.forEach((input, i) => todos.list[i].name = input.value.trim());
+            if (!inputs.some(input => input.value === '')) {
+              // update todos.list project names
+              inputs.forEach((input, i) => todos.list[i].name = input.value.trim());
 
-            // update default project
-            const newDefaultProjectIndex = radioBtns.map(btn => {
-              if (btn.checked) {
-                return [...btn.parentElement.parentElement.children].indexOf(btn.parentElement);
-              }
-            }).filter(index => index || index === 0)[0];
-            
-            todos.list.forEach((project, i) => {
-              if (i === newDefaultProjectIndex) {
-                project['default project'] = true;
-              } else {
-                project['default project'] = false;
-              }
-            });
+              // update default project
+              const newDefaultProjectIndex = radioBtns.map(btn => {
+                if (btn.checked) {
+                  return [...btn.parentElement.parentElement.children].indexOf(btn.parentElement);
+                }
+              }).filter(index => index || index === 0)[0];
+              
+              todos.list.forEach((project, i) => {
+                if (i === newDefaultProjectIndex) {
+                  project['default project'] = true;
+                } else {
+                  project['default project'] = false;
+                }
+              });
 
-            document.querySelector('#selected-project').removeAttribute('id');
-            radioBtns[newDefaultProjectIndex].parentElement.id = 'selected-project';
+              document.querySelector('#selected-project').removeAttribute('id');
+              radioBtns[newDefaultProjectIndex].parentElement.id = 'selected-project';
+            } else {
+              inputs.forEach(input => {
+                input.setCustomValidity('Field required');
+                input.reportValidity();
+              });
+            }
           }
         }
 
@@ -281,7 +289,6 @@ const projectsContainer = (() => {
             } else {
               input.setCustomValidity('Cannot have duplicate project names');
               input.reportValidity();
-              return;
             }
           }
         }
@@ -315,7 +322,15 @@ const projectsContainer = (() => {
         }
 
         // If project name is duplicate, return so input error message displays
-        if (!todos.list.some(project => project.name === document.querySelector('#add-project-container').querySelector('input').value)) return;
+        if (addProjectContainer.style.display === 'flex') {
+          if (!todos.list.some(project => project.name === document.querySelector('#add-project-container').querySelector('input').value)) return;
+        }
+
+        if (editProjectContainer.style.display === 'flex') {
+          if ([...document.querySelectorAll('.project-container')].some(projectContainer => {
+            return [...projectContainer.querySelectorAll('input[type="text"]')].some(input => input.value === '');
+          })) return;
+        }
 
         clearProjectsList();
         [...projectsList(todos).children].forEach(projectContainer => {
