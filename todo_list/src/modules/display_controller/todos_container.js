@@ -305,25 +305,45 @@ const todosContainer = (() => {
               return [...todoContainer.querySelectorAll('.edit-todo-field-input')].map(fieldInput => fieldInput.value);
             });
 
-            selectedProject.todos.forEach((todo, todoIndex) => {
-              fieldNames.forEach((field, fieldIndex) => {
-                todo[field] = newValues[todoIndex][fieldIndex];
+            if (!newValues.some(valuesArray => valuesArray.includes(''))) { 
+              // console.log(!newValues.some(valuesArray => valuesArray.includes('')));
+              selectedProject.todos.forEach((todo, todoIndex) => {
+                fieldNames.forEach((field, fieldIndex) => {
+                  todo[field] = newValues[todoIndex][fieldIndex];
+                });
               });
-            });
-          }
 
-          [...todoInfoContainers].forEach(todoInfoContainer => {
-            todoInfoContainer.removeAttribute('class');
-            todoInfoContainer.classList.add('todo-info-container');
-          });
+              [...todoInfoContainers].forEach(todoInfoContainer => {
+                todoInfoContainer.removeAttribute('class');
+                todoInfoContainer.classList.add('todo-info-container');
+              });
+            } else {
+              [...document.querySelector('.edit-todo-info-container').querySelectorAll('input')].forEach(fieldInput => {
+                fieldInput.setCustomValidity('All fields required');
+                fieldInput.reportValidity();
+              });
+            }
+          }
         }
         
         if (addTodoContainer.style.display === 'flex') {
           if (actionBtn.textContent === 'Add') {
             const newValues = [...document.querySelectorAll('.add-todo-field-input')].map(fieldInput => fieldInput.value);
-            selectedProject.addTodo(new Todo(...newValues));
+
+            if (!newValues.includes('')) {
+              selectedProject.addTodo(new Todo(...newValues));
+            } else {
+              [...document.querySelector('.add-todo-info-container').querySelectorAll('input')].forEach(fieldInput => {
+                fieldInput.setCustomValidity('All fields required');
+                fieldInput.reportValidity();
+              });
+            }
           }
         }
+
+        // prevent empty inputs from being submitted in Add/edit todo form
+        if ([...document.querySelectorAll('.edit-todo-field-input')].map(fieldInput => fieldInput.value).includes('')) return;
+        if ([...document.querySelectorAll('.add-todo-field-input')].map(fieldInput => fieldInput.value).includes('')) return;
 
         // rerender todos and controls, add event listeners back
         clearTodos();
