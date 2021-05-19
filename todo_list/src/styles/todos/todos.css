@@ -48,6 +48,40 @@
   background: #ddd;
 }
 
+.edit-todo-info-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 10px;
+}
+.edit-todo-info-container label {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 2px;
+  padding: 3px 2px;
+  font-size: 0.9rem;
+}
+.edit-todo-info-container label:nth-child(1) {
+  flex: 2 0 100px;
+}
+.edit-todo-info-container label:nth-child(2) {
+  flex: 4 0 200px;
+}
+.edit-todo-info-container label:nth-child(3) {
+  flex: 1 0 75px;
+}
+.edit-todo-info-container label:nth-child(4) {
+  flex: 1 0 50px;
+}
+.edit-todo-info-container label:nth-child(5) {
+  flex: 6 0 250px;
+}
+.edit-todo-info-container label input {
+  margin-top: 3px;
+  padding: 3px 2px;
+}
+
 #todos-controls-container {
   position: fixed;
   bottom: 0;
@@ -61,8 +95,8 @@
 #todos-control-btns-container {
   display: flex;
   width: 100%;
-  text-align: center;
   height: 45px;
+  text-align: center;
   border-top: 1px solid #ddd;
 }
 #todos-control-btns-container p {
