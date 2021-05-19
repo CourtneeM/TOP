@@ -73,6 +73,7 @@ const projectsContainer = (() => {
     addProjectContainer.id = 'add-project-container';
     addProjectContainer.classList.add('project-control-action-container');
     input.attributes.type = 'text';
+
     addProjectContainer.appendChild(input);
     addProjectContainer.appendChild(cancelButton);
     addProjectContainer.appendChild(addButton);
@@ -273,7 +274,15 @@ const projectsContainer = (() => {
 
         if (addProjectContainer.style.display === 'flex') {
           if (button.textContent === 'Add') {
-            todos.addProject(new Project(addProjectContainer.querySelector('input').value));
+            const input = addProjectContainer.querySelector('input');
+
+            if (!todos.list.some(project => project.name === input.value)) {
+              todos.addProject(new Project(input.value));
+            } else {
+              input.setCustomValidity('Cannot have duplicate project names');
+              input.reportValidity();
+              return;
+            }
           }
         }
 
@@ -304,6 +313,9 @@ const projectsContainer = (() => {
             }
           }
         }
+
+        // If project name is duplicate, return so input error message displays
+        if (!todos.list.some(project => project.name === document.querySelector('#add-project-container').querySelector('input').value)) return;
 
         clearProjectsList();
         [...projectsList(todos).children].forEach(projectContainer => {

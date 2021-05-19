@@ -291,7 +291,6 @@ const todosContainer = (() => {
           if (actionBtn.textContent === 'Remove') {
             const removeIndices = removeTodoCheckboxes.map(checkbox => {
               if (checkbox.checked) {
-                console.log(checkbox);
                 return [...checkbox.parentElement.parentElement.children].indexOf(checkbox.parentElement);
               }
             }).filter(index => index || index === 0).reverse();
@@ -321,10 +320,7 @@ const todosContainer = (() => {
         
         if (addTodoContainer.style.display === 'flex') {
           if (actionBtn.textContent === 'Add') {
-            console.log([...document.querySelectorAll('.add-todo-field-input')]);
             const newValues = [...document.querySelectorAll('.add-todo-field-input')].map(fieldInput => fieldInput.value);
-
-            console.log(selectedProject);
             selectedProject.addTodo(new Todo(...newValues));
           }
         }
