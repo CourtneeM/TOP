@@ -222,32 +222,34 @@ const todosContainer = (() => {
             newTodoInfoContainer.classList.add('add-todo-info-container');
 
             fieldNames.forEach(field => {
-              const label = document.createElement('label');
-              label.textContent = (field[0].toUpperCase() + field.slice(1));
-
               if (field === 'completed') {
                 null;
-              } else if (field === 'priority') {
-                const select = document.createElement('select');
-                select.classList.add('add-todo-field-input');
+              } else {
+                const label = document.createElement('label');
+                let input = document.createElement('input');
 
-                ['1', '2', '3', '4', '5'].forEach(n => {
-                  const option = document.createElement('option');
-                  option.value = n;
-                  option.textContent = n;
-                  select.appendChild(option);
-                });
-
-                label.appendChild(select);
-                newTodoInfoContainer.appendChild(label);
-              } else {                
-                const input = document.createElement('input');
+                label.textContent = (field[0].toUpperCase() + field.slice(1));
                 input.classList.add('add-todo-field-input');
-                input.setAttribute('type', 'text');
-                
+
+                if (field === 'priority') {
+                  input = document.createElement('select');
+                  input.classList.add('add-todo-field-input');
+
+                  ['1', '2', '3', '4', '5'].forEach(n => {
+                    const option = document.createElement('option');
+                    option.value = n;
+                    option.textContent = n;
+                    input.appendChild(option);
+                  });
+                } else if (field === 'dueDate') {
+                  input.setAttribute('type', 'date');
+                } else {                
+                  input.setAttribute('type', 'text');
+                }
+
                 label.appendChild(input);
                 newTodoInfoContainer.appendChild(label);
-              }
+              } 
             }); 
 
             todosListContainer.appendChild(newTodoInfoContainer);
@@ -297,9 +299,8 @@ const todosContainer = (() => {
         
         if (addTodoContainer.style.display === 'flex') {
           if (actionBtn.textContent === 'Add') {
-            const newValues = [...document.querySelectorAll('.add-todo-info-container')].map(todoContainer => {
-              return [...todoContainer.children].map(label => label.querySelector('.add-todo-field-input').value);
-            })[0];
+            console.log([...document.querySelectorAll('.add-todo-field-input')]);
+            const newValues = [...document.querySelectorAll('.add-todo-field-input')].map(fieldInput => fieldInput.value);
 
             selectedProject.addTodo(new Todo(...newValues));
           }
