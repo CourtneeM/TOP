@@ -24,14 +24,12 @@ const mainContainer = (todos, Project, Todo) => {
                                           { subtree: true, attributes: true, attributeFilter: ['id'] });
 
                                   
-  // let observerUpdateProjectsTodoCount = new MutationObserver(function() {
-  //   // projectsContainer.clearProjectsList();
-  //   // projectsContainer.projectsList(todos);
-  //   // projectsContainer.projectsEventHandlers(todos, Project);
-  // });
+  let observerUpdateProjectsTodoCount = new MutationObserver(function() {
+    projectsContainer.updateProjectTodoCount(todos);
+  });
 
-  // observerUpdateProjectsTodoCount.observe(document.querySelector('#todos-list-container'),
-  //                                         { childList: true });
+  observerUpdateProjectsTodoCount.observe(document.querySelector('#todos-list-container'),
+                                          { childList: true });
 };
 
 export default mainContainer;

@@ -38,6 +38,11 @@ const projectsContainer = (() => {
     }
   }
 
+  const updateProjectTodoCount = function(todos) {
+    const projectTodoCount = [...document.querySelectorAll('.project-todo-count')];
+    projectTodoCount.forEach((todoCount, index) => todoCount.textContent = todos.list[index].todos.length);
+  }
+
   const projectControls = function() {
     const projectControlsContainer = document.createElement('div');
     projectControlsContainer.id = "project-controls-container";
@@ -122,6 +127,7 @@ const projectsContainer = (() => {
       nameP.textContent = project.name;
       nameP.classList.add('project-name');
       numberTodosP.textContent = project.todos.length;
+      numberTodosP.classList.add('project-todo-count');
 
 
       if (project['default project']) {
@@ -346,7 +352,7 @@ const projectsContainer = (() => {
 
   }
 
-  return { projectsHandler, projectsList, clearProjectsList, updateHeaderTitle, projectsEventHandlers };
+  return { projectsHandler, projectsList, clearProjectsList, updateHeaderTitle, updateProjectTodoCount, projectsEventHandlers };
 })();
 
 export default projectsContainer;
