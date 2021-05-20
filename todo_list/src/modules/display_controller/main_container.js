@@ -21,8 +21,7 @@ const mainContainer = (todos, Project, Todo) => {
   });
 
   observerSelectProject.observe(document.querySelector('#projects-list-container'),
-                                          { subtree: true, attributes: true, attributeFilter: ['id'] });
-
+                                          { subtree: true, childList: true, attributes: true, attributeFilter: ['id'] });
                                   
   let observerUpdateProjectsTodoCount = new MutationObserver(function() {
     projectsContainer.updateProjectTodoCount(todos);

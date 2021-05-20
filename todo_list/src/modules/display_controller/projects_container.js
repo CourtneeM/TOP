@@ -31,8 +31,9 @@ const projectsContainer = (() => {
 
   const updateHeaderTitle = function() {
     const projectsH1 = document.querySelector('header>h1');
+    console.log('ayy');
 
-    if ([...projectsListContainer.children].length > 0) {
+    if ([...projectsListContainer.querySelectorAll('.project-container')].length > 0) {
       projectsH1.textContent = selectedProjectName; 
     } else {
       projectsH1.textContent = 'Todo List App';
@@ -40,14 +41,17 @@ const projectsContainer = (() => {
   }
 
   const updateSelectedProject = function() {
-    if (selectedProjectContainer) {
-      selectedProjectContainer.removeAttribute('id');
+    if ([...projectsListContainer.children].length === 0) {
+      updateHeaderTitle();
+    } else {
+      if (selectedProjectContainer) {
+        selectedProjectContainer.removeAttribute('id');
+      }
+
+      selectedProjectContainer = [...projectsListContainer.children][selectedProjectIndex];
+      selectedProjectName = selectedProjectContainer.querySelector('.project-name').textContent;
+      selectedProjectContainer.id = 'selected-project';
     }
-
-    selectedProjectContainer = [...projectsListContainer.children][selectedProjectIndex];
-    selectedProjectName = selectedProjectContainer.querySelector('.project-name').textContent;
-    selectedProjectContainer.id = 'selected-project';
-
   }
 
   const updateProjectTodoCount = function(todos) {
@@ -123,7 +127,7 @@ const projectsContainer = (() => {
   }
 
   const projectsList = function(todos) {
-    todos.list.forEach((project, index) => {
+    todos.list.forEach(project => {
       const projectContainer = document.createElement('div');
       const checkbox = document.createElement('input');
       const radio = document.createElement('input');
@@ -157,19 +161,23 @@ const projectsContainer = (() => {
       projectsListContainer.appendChild(projectContainer);
 
       if (!selectedProjectContainer) {
-        updateSelectedProject(selectedProjectIndex);
+        updateSelectedProject();
       }
     });
 
-    const projectNames = [...projectsListContainer.querySelectorAll('.project-name')].map(projectName => projectName.textContent);
+    if ([...projectsListContainer.children].length > 0) {
+      const projectNames = [...projectsListContainer.querySelectorAll('.project-name')].map(projectName => projectName.textContent);
 
-    if (projectNames.some(projectName => projectName === selectedProjectName)) {
-      console.log(projectNames.some(projectName => projectName === selectedProjectName));
-      selectedProjectIndex = projectNames.indexOf(selectedProjectName);
-      updateSelectedProject(selectedProjectIndex);
+      if (projectNames.some(projectName => projectName === selectedProjectName)) {
+        console.log(projectNames.some(projectName => projectName === selectedProjectName));
+        selectedProjectIndex = projectNames.indexOf(selectedProjectName);
+        updateSelectedProject();
+      } else {
+        selectedProjectIndex = 0;
+        updateSelectedProject();
+      }
     } else {
-      selectedProjectIndex = 0;
-      updateSelectedProject(selectedProjectIndex);
+      updateSelectedProject();
     }
     
     projectsListContainer.appendChild(projectControls());
@@ -224,7 +232,7 @@ const projectsContainer = (() => {
         if (projectControlsContainer.style.display === 'none') return;
         
         selectedProjectIndex = index;
-        updateSelectedProject(selectedProjectIndex);
+        updateSelectedProject();
       });
     });
     
@@ -330,11 +338,6 @@ const projectsContainer = (() => {
                 todos.list[0]['default project'] = true;
               }
             }
-
-            // // New selectedProject
-            // if (todos.list.length <= 0 && removeIndices.includes(selectedProjectIndex)) {
-            //   selectedProjectIndex = 0;
-            // }
           }
         }
 
