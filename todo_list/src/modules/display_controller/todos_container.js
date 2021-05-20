@@ -14,22 +14,58 @@ const todosContainer = (() => {
     const todosControlsContainer = document.createElement('div');
     todosControlsContainer.id = 'todos-controls-container';
 
+    const sortFilterOptions = function() {
+      const optionsContainer = document.createElement('div');
+      const options = ['Filter Dates', 'Sort', 'Sort Order'];
+      const filterDatesBy = ['Today', 'Tomorrow', 'Next 7 Days', 'Next 2 Weeks', 'This Month'];
+      const sortBy = ['Order', 'Priority', 'Due Date'];
+      const sortOrder = ['Descending', 'Ascending'];
+      optionsContainer.id = 'sort-filter-options-container';
+      
+      options.forEach(optionChoice => {
+        const optionsDropdown = document.createElement('select');
+
+        switch (optionChoice) {
+          case 'Filter Dates':
+            filterDatesBy.forEach(el => {
+              const option = document.createElement('option');
+              option.classList.add('.filter-option');
+              option.textContent = el;
+              option.value = el;
+              optionsDropdown.appendChild(option);
+            });
+            break;
+          case 'Sort':
+            sortBy.forEach(el => {
+              const option = document.createElement('option');
+              option.classList.add('.sort-option');
+              option.textContent = el;
+              option.value = el;
+              optionsDropdown.appendChild(option);
+            });
+            break;
+          case 'Sort Order':
+            sortOrder.forEach(el => {
+              const option = document.createElement('option');
+              option.classList.add('.sort-by-option');
+              option.textContent = el;
+              option.value = el;
+              optionsDropdown.appendChild(option);
+            });
+            break;
+        }
+
+        optionsContainer.appendChild(optionsDropdown);
+      });
+
+      return optionsContainer;
+    }
+
     const todosControls = function() {
-      // const optionsContainer = document.createElement('div');
-      // ['Filter Dates', 'Sort', 'Sort Order'].forEach(optionChoice => {
-      //   const filterDatesBy = ['Today', 'Tomorrow', 'Next 7 Days', 'Next 2 Weeks', 'This Month'];
-      //   const sortBy = ['Order', 'Priority', 'Due Date'];
-      //   const sortOrder = ['Ascending', 'Descending'];
-  
-      //   const optionsDropdown = document.createElement('input');
-      //   optionsDropdown.setAttribute('type', 'dropdown');
-  
-        // if ([].includes(optionChoice))
-  
-        // });
-  
       const todosControlBtnsContainer = document.createElement('div');
       todosControlBtnsContainer.id = 'todos-control-btns-container';
+
+      
       ['Remove', 'Edit', 'Add'].forEach(control => {
         const controlP = document.createElement('p');
         controlP.textContent = control;
@@ -91,6 +127,7 @@ const todosContainer = (() => {
     }
 
     const todosControlsHandler = function() {
+      todosControlsContainer.appendChild(sortFilterOptions());
       todosControlsContainer.appendChild(todosControls());
       todosControlsContainer.appendChild(removeTodoContainer());
       todosControlsContainer.appendChild(editTodoContainer());
@@ -107,7 +144,7 @@ const todosContainer = (() => {
 
     const currentProjectName = getSelectedProjectName();
     const currentProjectTodos = todos.list.filter(project => project.name === currentProjectName)[0].todos;
-    
+
     currentProjectTodos.forEach(todo => {
       const todoContainer = document.createElement('div');
       todoContainer.classList.add('todo-container');
@@ -178,11 +215,9 @@ const todosContainer = (() => {
     const selectedProject = todos.list.filter(project => project.name === selectedProjectName)[0];
     const fieldNames = ['title', 'description', 'dueDate', 'priority', 'notes', 'completed'];
 
-    const todoContainers = [...todosListContainer.children];
     const todoInfoContainers = [...document.querySelectorAll('.todo-info-container')];
     const completeTodoCheckboxes = [...document.querySelectorAll('.complete-todo-checkbox')];
     const removeTodoCheckboxes = [...document.querySelectorAll('.remove-todo-checkbox')];
-    const todosControlsContainer = document.querySelector('#todos-controls-container');
     const todosControlsBtnsContainer = document.querySelector('#todos-control-btns-container');
     const todosControlBtns = [...todosControlsBtnsContainer.children];
     const todosControlActionBtns = [...document.querySelectorAll('.btn-todos-control-action')];

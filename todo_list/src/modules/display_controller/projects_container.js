@@ -20,12 +20,13 @@ const projectsContainer = (() => {
     closeMenuBtn.id = 'close-menu-btn';
     closeMenuBtn.classList.add("fas", "fa-times");
     closeMenuBtn.style.display = 'none';
+    
+    selectedProjectName = projectsH1.textContent;
 
     projectsHeader.appendChild(projectsH1);
     projectsHeader.appendChild(menu);
     projectsHeader.appendChild(closeMenuBtn);
     
-    selectedProjectName = projectsH1.textContent;
     return projectsHeader
   }
 
@@ -363,7 +364,6 @@ const projectsContainer = (() => {
         [...removeProjectCheckboxes, ...defaultProjectRadios].forEach(input => input.style.display = 'none');
       });
     });
-
   }
 
   return { projectsHandler, projectsList, clearProjectsList, updateHeaderTitle, updateProjectTodoCount, projectsEventHandlers };
