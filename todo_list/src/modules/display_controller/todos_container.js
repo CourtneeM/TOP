@@ -4,6 +4,12 @@ const todosContainer = (() => {
   const todosListContainer = document.createElement('div');
   todosListContainer.id = 'todos-list-container';
 
+  const getSelectedProjectName = function() {
+    const projectContainer = document.querySelector('#selected-project');
+    return projectContainer.querySelector('.project-name') ? projectContainer.querySelector('.project-name').textContent
+                                                           : projectContainer.querySelector('.input-edit-project-name').value;
+  }
+
   const todosControlsContainers = (function() {
     const todosControlsContainer = document.createElement('div');
     todosControlsContainer.id = 'todos-controls-container';
@@ -99,8 +105,9 @@ const todosContainer = (() => {
   const displayTodos = function(todos) {
     if (todos.list.length <= 0) return;
 
-    const currentProjectName = [...document.querySelector('#selected-project').children][2].textContent;
+    const currentProjectName = getSelectedProjectName();
     const currentProjectTodos = todos.list.filter(project => project.name === currentProjectName)[0].todos;
+    
     currentProjectTodos.forEach(todo => {
       const todoContainer = document.createElement('div');
       todoContainer.classList.add('todo-container');

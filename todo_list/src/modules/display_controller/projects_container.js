@@ -31,7 +31,6 @@ const projectsContainer = (() => {
 
   const updateHeaderTitle = function() {
     const projectsH1 = document.querySelector('header>h1');
-    console.log('ayy');
 
     if ([...projectsListContainer.querySelectorAll('.project-container')].length > 0) {
       projectsH1.textContent = selectedProjectName; 
@@ -169,7 +168,6 @@ const projectsContainer = (() => {
       const projectNames = [...projectsListContainer.querySelectorAll('.project-name')].map(projectName => projectName.textContent);
 
       if (projectNames.some(projectName => projectName === selectedProjectName)) {
-        console.log(projectNames.some(projectName => projectName === selectedProjectName));
         selectedProjectIndex = projectNames.indexOf(selectedProjectName);
         updateSelectedProject();
       } else {
