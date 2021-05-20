@@ -328,7 +328,7 @@ const todosContainer = (() => {
       const editTodoContainer = document.querySelector('#edit-todo-container');
       const addTodoContainer = document.querySelector('#add-todo-container');
 
-      actionBtn.addEventListener('click', () => {
+      actionBtn.addEventListener('click', e => {
         if (removeTodoContainer.style.display === 'flex') {
           if (actionBtn.textContent === 'Remove') {
             const removeIndices = removeTodoCheckboxes.map(checkbox => {
@@ -384,8 +384,11 @@ const todosContainer = (() => {
         }
 
         // prevent empty inputs from being submitted in Add/edit todo form
-        if ([...document.querySelectorAll('.edit-todo-field-input')].map(fieldInput => fieldInput.value).includes('')) return;
-        if ([...document.querySelectorAll('.add-todo-field-input')].map(fieldInput => fieldInput.value).includes('')) return;
+        if (e.target.textContent === 'Cancel') {
+        } else {
+          if ([...document.querySelectorAll('.edit-todo-field-input')].map(fieldInput => fieldInput.value).includes('')) return;
+          if ([...document.querySelectorAll('.add-todo-field-input')].map(fieldInput => fieldInput.value).includes('')) return;
+        }
 
         // rerender todos and controls, add event listeners back
         clearTodos();
