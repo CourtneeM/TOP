@@ -23,10 +23,16 @@ const todosContainer = (() => {
       optionsContainer.id = 'sort-filter-options-container';
       
       options.forEach(optionChoice => {
+        const optionsDiv = document.createElement('div');
+        const p = document.createElement('p');
         const optionsDropdown = document.createElement('select');
+        
+        optionsDiv.classList.add('options-choice-container');
+        p.textContent = optionChoice;
 
         switch (optionChoice) {
           case 'Due in the next:':
+            optionsDiv.id = "filter-options-container"
             filterDatesBy.forEach(el => {
               const option = document.createElement('option');
               option.classList.add('.filter-option');
@@ -36,6 +42,7 @@ const todosContainer = (() => {
             });
             break;
           case 'Sort by:':
+            optionsDiv.id = "sort-by-options-container"
             sortBy.forEach(el => {
               const option = document.createElement('option');
               option.classList.add('.sort-option');
@@ -45,6 +52,7 @@ const todosContainer = (() => {
             });
             break;
           case 'Sort order:':
+            optionsDiv.id = "sort-order-options-container";
             sortOrder.forEach(el => {
               const option = document.createElement('option');
               option.classList.add('.sort-by-option');
@@ -54,12 +62,6 @@ const todosContainer = (() => {
             });
             break;
         }
-
-        const optionsDiv = document.createElement('div');
-        const p = document.createElement('p');
-        
-        optionsDiv.classList.add('options-choice-container');
-        p.textContent = optionChoice;
 
         optionsDiv.appendChild(p);
         optionsDiv.appendChild(optionsDropdown);
@@ -148,10 +150,10 @@ const todosContainer = (() => {
   })();
 
   const displayTodos = function(todos) {
-    if (todos.list.length <= 0) return;
+    if (todos.length <= 0) return;
 
     const currentProjectName = getSelectedProjectName();
-    const currentProjectTodos = todos.list.filter(project => project.name === currentProjectName)[0].todos;
+    const currentProjectTodos = todos.filter(project => project.name === currentProjectName)[0].todos;
 
     currentProjectTodos.forEach(todo => {
       const todoContainer = document.createElement('div');
@@ -220,7 +222,7 @@ const todosContainer = (() => {
 
   const todosEventHandlers = function(todos, Todo) {
     const selectedProjectName = document.querySelector('#selected-project-name').textContent;
-    const selectedProject = todos.list.filter(project => project.name === selectedProjectName)[0];
+    const selectedProject = todos.filter(project => project.name === selectedProjectName)[0];
     const fieldNames = ['title', 'description', 'dueDate', 'priority', 'notes', 'completed'];
 
     const todoInfoContainers = [...document.querySelectorAll('.todo-info-container')];
@@ -239,6 +241,46 @@ const todosContainer = (() => {
         selectedProject.toggleCompleted(todoContainerIndex);
       });
     });
+
+    (function filterTodos() {
+      const filterOptionsContainer = document.querySelector('#filter-options-container').querySelector('select');
+      filterOptionsContainer.addEventListener('change', e => {
+        switch (e.target.value) {
+          case 'Day':
+            selectedProject.todos.filter(todo => {
+              const today = new Date();
+              return today < new Date(todo.dueDate) && new Date(todo.dueDate) < new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+            });
+            break;
+          case '3 Days':
+            selectedProject.todos.filter(todo => {
+              const today = new Date();
+              return today < new Date(todo.dueDate) && new Date(todo.dueDate) < new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3);
+            });
+            break;
+          case '7 Days':
+            selectedProject.todos.filter(todo => {
+              const today = new Date();
+              return today < new Date(todo.dueDate) && new Date(todo.dueDate) < new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7);
+            });
+            break;
+          case '2 Weeks':
+            selectedProject.todos.filter(todo => {
+              const today = new Date();
+              return today < new Date(todo.dueDate) && new Date(todo.dueDate) < new Date(today.getFullYear(), today.getMonth(), today.getDate() + 14);
+            });
+            break;
+          case 'Month':
+            selectedProject.todos.filter(todo => {
+              const today = new Date();
+              return today < new Date(todo.dueDate) && new Date(todo.dueDate) < new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+            });
+            break;
+        }
+        // clear todosContainer
+        // call displayTodos(filtered todos)
+      });
+    })();
 
     // Todo Controls Buttons 
     todosControlBtns.forEach(control => {
