@@ -3,7 +3,7 @@
 }
 
 #todos-list-container {
-  padding-bottom: 80px;
+  padding-bottom: 90px;
 }
 
 .todo-container {
@@ -110,20 +110,24 @@
 }
 
 #sort-filter-options-container {
+  display: flex;
+  justify-content: center;
   width: 100%;
-  height: 35px;
+  height: 45px;
   margin: 0 auto;
-  padding: 6px;
-  text-align: center;
+  padding: 4px;
+  font-size: 0.7rem;
   border-bottom: 1px solid #ddd;
 
   select {
     padding: 3px 2px;
     font-size: 0.7rem;
-
-    &:nth-child(1) { margin-right: 5%; }
-    &:nth-child(3) { margin-left: 5%; }
   }
+}
+
+.options-choice-container {
+  &:nth-child(1) { margin-right: 5%; }
+  &:nth-child(3) { margin-left: 5%; }
 }
 
 #todos-control-btns-container {

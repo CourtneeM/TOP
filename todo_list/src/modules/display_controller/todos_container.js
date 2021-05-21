@@ -16,9 +16,9 @@ const todosContainer = (() => {
 
     const sortFilterOptions = function() {
       const optionsContainer = document.createElement('div');
-      const options = ['Filter Dates', 'Sort', 'Sort Order'];
-      const filterDatesBy = ['Today', 'Tomorrow', 'Next 7 Days', 'Next 2 Weeks', 'This Month'];
-      const sortBy = ['Order', 'Priority', 'Due Date'];
+      const options = ['Due in the next:', 'Sort by:', 'Sort order:'];
+      const filterDatesBy = ['Day', '3 Days', '7 Days', '2 Weeks', 'Month'];
+      const sortBy = ['Priority', 'Due Date'];
       const sortOrder = ['Descending', 'Ascending'];
       optionsContainer.id = 'sort-filter-options-container';
       
@@ -26,7 +26,7 @@ const todosContainer = (() => {
         const optionsDropdown = document.createElement('select');
 
         switch (optionChoice) {
-          case 'Filter Dates':
+          case 'Due in the next:':
             filterDatesBy.forEach(el => {
               const option = document.createElement('option');
               option.classList.add('.filter-option');
@@ -35,7 +35,7 @@ const todosContainer = (() => {
               optionsDropdown.appendChild(option);
             });
             break;
-          case 'Sort':
+          case 'Sort by:':
             sortBy.forEach(el => {
               const option = document.createElement('option');
               option.classList.add('.sort-option');
@@ -44,7 +44,7 @@ const todosContainer = (() => {
               optionsDropdown.appendChild(option);
             });
             break;
-          case 'Sort Order':
+          case 'Sort order:':
             sortOrder.forEach(el => {
               const option = document.createElement('option');
               option.classList.add('.sort-by-option');
@@ -55,7 +55,15 @@ const todosContainer = (() => {
             break;
         }
 
-        optionsContainer.appendChild(optionsDropdown);
+        const optionsDiv = document.createElement('div');
+        const p = document.createElement('p');
+        
+        optionsDiv.classList.add('options-choice-container');
+        p.textContent = optionChoice;
+
+        optionsDiv.appendChild(p);
+        optionsDiv.appendChild(optionsDropdown);
+        optionsContainer.appendChild(optionsDiv);
       });
 
       return optionsContainer;
