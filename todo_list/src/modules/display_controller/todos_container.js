@@ -232,17 +232,18 @@ const todosContainer = (() => {
     const todosControlBtns = [...todosControlsBtnsContainer.children];
     const todosControlActionBtns = [...document.querySelectorAll('.btn-todos-control-action')];
 
-    // Mark Todo Complete and strikethrough
-    completeTodoCheckboxes.forEach(checkbox => {
-      checkbox.addEventListener('click', () => {
-        const todoContainerIndex = [...checkbox.parentElement.parentElement.children].indexOf(checkbox.parentElement);
-        
-        checkbox.parentElement.classList.toggle('completed-todo');
-        selectedProject.toggleCompleted(todoContainerIndex);
+    (function completeTodoCheckboxesHandler() {
+      completeTodoCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('click', () => {
+          const todoContainerIndex = [...checkbox.parentElement.parentElement.children].indexOf(checkbox.parentElement);
+          
+          checkbox.parentElement.classList.toggle('completed-todo');
+          selectedProject.toggleCompleted(todoContainerIndex);
+        });
       });
-    });
+    })();
 
-    (function sortFilterOptions() {
+    (function sortFilterOptionHandler() {
       const filterOptionsContainer = document.querySelector('#filter-options-container').querySelector('select');
       const sortByOptionsContainer = document.querySelector('#sort-by-options-container').querySelector('select');
       const sortOrderOptionsContainer = document.querySelector('#sort-order-options-container').querySelector('select');
@@ -381,181 +382,185 @@ const todosContainer = (() => {
       }));
     })();
 
-    // Todo Controls Buttons 
-    todosControlBtns.forEach(control => {
-      control.addEventListener('click', () => {
-        todosControlsBtnsContainer.style.display = 'none';
-        switch (control.textContent) {
-          case 'Remove':
-            document.querySelector('#remove-todo-container').style.display = 'flex';
-            completeTodoCheckboxes.forEach(checkbox => checkbox.style.display = 'none');
-            removeTodoCheckboxes.forEach(checkbox => checkbox.style.display = 'inline');
-            break;
-          case 'Edit':
-            document.querySelector('#edit-todo-container').style.display = 'flex';
-            completeTodoCheckboxes.forEach(checkbox => checkbox.style.display = 'none');
-            todoInfoContainers.forEach(todoInfoContainer => {
-              todoInfoContainer.removeAttribute('class');
-              todoInfoContainer.classList.add('edit-todo-info-container');
+    (function todosControlBtnsHandler() {
+      todosControlBtns.forEach(control => {
+        control.addEventListener('click', () => {
+          todosControlsBtnsContainer.style.display = 'none';
+          switch (control.textContent) {
+            case 'Remove':
+              document.querySelector('#remove-todo-container').style.display = 'flex';
+              completeTodoCheckboxes.forEach(checkbox => checkbox.style.display = 'none');
+              removeTodoCheckboxes.forEach(checkbox => checkbox.style.display = 'inline');
+              break;
+            case 'Edit':
+              document.querySelector('#edit-todo-container').style.display = 'flex';
+              completeTodoCheckboxes.forEach(checkbox => checkbox.style.display = 'none');
+              todoInfoContainers.forEach(todoInfoContainer => {
+                todoInfoContainer.removeAttribute('class');
+                todoInfoContainer.classList.add('edit-todo-info-container');
 
-              [...todoInfoContainer.children].forEach((field, index) => {
-                const label = document.createElement('label');
-                let input = document.createElement('input');
+                [...todoInfoContainer.children].forEach((field, index) => {
+                  const label = document.createElement('label');
+                  let input = document.createElement('input');
 
-                label.textContent = ((fieldNames[index])[0].toUpperCase() + fieldNames[index].slice(1));
-                input.classList.add('edit-todo-field-input');
-
-                if (fieldNames[index] === 'priority') {
-                  input = document.createElement('select');
+                  label.textContent = ((fieldNames[index])[0].toUpperCase() + fieldNames[index].slice(1));
                   input.classList.add('edit-todo-field-input');
 
-                  ['1', '2', '3', '4', '5'].forEach(n => {
-                    const option = document.createElement('option');
-                    option.value = n;
-                    option.textContent = n;
-                    input.appendChild(option);
-                  });
-                } else if (fieldNames[index] === 'dueDate') {
-                  input.setAttribute('type', 'date');
-                } else {
-                  input.setAttribute('type', 'text');
-                }
+                  if (fieldNames[index] === 'priority') {
+                    input = document.createElement('select');
+                    input.classList.add('edit-todo-field-input');
 
-                input.value = field.textContent;
+                    ['1', '2', '3', '4', '5'].forEach(n => {
+                      const option = document.createElement('option');
+                      option.value = n;
+                      option.textContent = n;
+                      input.appendChild(option);
+                    });
+                  } else if (fieldNames[index] === 'dueDate') {
+                    input.setAttribute('type', 'date');
+                  } else {
+                    input.setAttribute('type', 'text');
+                  }
 
-                label.appendChild(input);
-                todoInfoContainer.replaceChild(label, field);
-              });
-            });
-            // priority should be a drop down, 1-5
-            break;
-          case 'Add':
-            document.querySelector('#add-todo-container').style.display = 'flex';
-            const newTodoInfoContainer = document.createElement('div');
-            newTodoInfoContainer.classList.add('add-todo-info-container');
+                  input.value = field.textContent;
 
-            fieldNames.forEach(field => {
-              if (field === 'completed') {
-                null;
-              } else {
-                const label = document.createElement('label');
-                let input = document.createElement('input');
-
-                label.textContent = (field[0].toUpperCase() + field.slice(1));
-                input.classList.add('add-todo-field-input');
-
-                if (field === 'priority') {
-                  input = document.createElement('select');
-                  input.classList.add('add-todo-field-input');
-
-                  ['1', '2', '3', '4', '5'].forEach(n => {
-                    const option = document.createElement('option');
-                    option.value = n;
-                    option.textContent = n;
-                    input.appendChild(option);
-                  });
-                } else if (field === 'dueDate') {
-                  input.setAttribute('type', 'date');
-                } else {                
-                  input.setAttribute('type', 'text');
-                }
-
-                label.appendChild(input);
-                newTodoInfoContainer.appendChild(label);
-              } 
-            }); 
-
-            todosListContainer.appendChild(newTodoInfoContainer);
-            // priority should be a drop down, 1-5
-            break;
-        }
-      });
-    });
-
-    todosControlActionBtns.forEach(actionBtn => {
-      const removeTodoContainer = document.querySelector('#remove-todo-container');
-      const editTodoContainer = document.querySelector('#edit-todo-container');
-      const addTodoContainer = document.querySelector('#add-todo-container');
-
-      actionBtn.addEventListener('click', e => {
-        if (removeTodoContainer.style.display === 'flex') {
-          if (actionBtn.textContent === 'Remove') {
-            const removeIndices = removeTodoCheckboxes.map(checkbox => {
-              if (checkbox.checked) {
-                return [...checkbox.parentElement.parentElement.children].indexOf(checkbox.parentElement);
-              }
-            }).filter(index => index || index === 0).reverse();
-
-            removeIndices.forEach(index => selectedProject.deleteTodo(index));
-          }
-        }
-        
-        if (editTodoContainer.style.display === 'flex') {
-          if (actionBtn.textContent === 'Edit') {
-            const newValues = [...document.querySelectorAll('.edit-todo-info-container')].map(todoContainer => {
-              return [...todoContainer.querySelectorAll('.edit-todo-field-input')].map(fieldInput => fieldInput.value);
-            });
-
-            if (!newValues.some(valuesArray => valuesArray.includes(''))) { 
-              // console.log(!newValues.some(valuesArray => valuesArray.includes('')));
-              selectedProject.todos.forEach((todo, todoIndex) => {
-                fieldNames.forEach((field, fieldIndex) => {
-                  todo[field] = newValues[todoIndex][fieldIndex];
+                  label.appendChild(input);
+                  todoInfoContainer.replaceChild(label, field);
                 });
               });
+              // priority should be a drop down, 1-5
+              break;
+            case 'Add':
+              document.querySelector('#add-todo-container').style.display = 'flex';
+              const newTodoInfoContainer = document.createElement('div');
+              newTodoInfoContainer.classList.add('add-todo-info-container');
 
-              [...todoInfoContainers].forEach(todoInfoContainer => {
-                todoInfoContainer.removeAttribute('class');
-                todoInfoContainer.classList.add('todo-info-container');
-              });
-            } else {
-              [...document.querySelector('.edit-todo-info-container').querySelectorAll('input')].forEach(fieldInput => {
-                fieldInput.setCustomValidity('All fields required');
-                fieldInput.reportValidity();
-              });
-            }
+              fieldNames.forEach(field => {
+                if (field === 'completed') {
+                  null;
+                } else {
+                  const label = document.createElement('label');
+                  let input = document.createElement('input');
+
+                  label.textContent = (field[0].toUpperCase() + field.slice(1));
+                  input.classList.add('add-todo-field-input');
+
+                  if (field === 'priority') {
+                    input = document.createElement('select');
+                    input.classList.add('add-todo-field-input');
+
+                    ['1', '2', '3', '4', '5'].forEach(n => {
+                      const option = document.createElement('option');
+                      option.value = n;
+                      option.textContent = n;
+                      input.appendChild(option);
+                    });
+                  } else if (field === 'dueDate') {
+                    input.setAttribute('type', 'date');
+                  } else {                
+                    input.setAttribute('type', 'text');
+                  }
+
+                  label.appendChild(input);
+                  newTodoInfoContainer.appendChild(label);
+                } 
+              }); 
+
+              todosListContainer.appendChild(newTodoInfoContainer);
+              // priority should be a drop down, 1-5
+              break;
           }
-        }
-        
-        if (addTodoContainer.style.display === 'flex') {
-          if (actionBtn.textContent === 'Add') {
-            const newValues = [...document.querySelectorAll('.add-todo-field-input')].map(fieldInput => fieldInput.value);
-
-            if (!newValues.includes('')) {
-              selectedProject.addTodo(new Todo(...newValues));
-            } else {
-              [...document.querySelector('.add-todo-info-container').querySelectorAll('input')].forEach(fieldInput => {
-                fieldInput.setCustomValidity('All fields required');
-                fieldInput.reportValidity();
-              });
-            }
-          }
-        }
-
-        // prevent empty inputs from being submitted in Add/edit todo form
-        if (e.target.textContent === 'Cancel') {
-        } else {
-          if ([...document.querySelectorAll('.edit-todo-field-input')].map(fieldInput => fieldInput.value).includes('')) return;
-          if ([...document.querySelectorAll('.add-todo-field-input')].map(fieldInput => fieldInput.value).includes('')) return;
-        }
-
-        // rerender todos and controls, add event listeners back
-        clearTodos();
-        clearControlsContainer();
-        [...displayTodos(todos).children].forEach(todoContainer => {
-          todosListContainer.appendChild(todoContainer);
         });
-        document.querySelector('#todos-section').appendChild(todosControlsContainers.todosControlsHandler());
-        todosEventHandlers(todos, Todo);
-
-        // rerender controls container, remove checkboxes and inputs from todos
-        todosControlsBtnsContainer.style.display = 'flex';
-        [...document.querySelectorAll('.todos-control-action-container')].forEach(container => {
-          container.style.display = 'none';
-        });
-        [...removeTodoCheckboxes].forEach(input => input.style.display = 'none');
       });
-    });
+    })();
+
+    (function todosControlActionBtnHandler() {
+      todosControlActionBtns.forEach(actionBtn => {
+        const removeTodoContainer = document.querySelector('#remove-todo-container');
+        const editTodoContainer = document.querySelector('#edit-todo-container');
+        const addTodoContainer = document.querySelector('#add-todo-container');
+
+        actionBtn.addEventListener('click', e => {
+          if (removeTodoContainer.style.display === 'flex') {
+            if (actionBtn.textContent === 'Remove') {
+              const removeIndices = removeTodoCheckboxes.map(checkbox => {
+                if (checkbox.checked) {
+                  return [...checkbox.parentElement.parentElement.children].indexOf(checkbox.parentElement);
+                }
+              }).filter(index => index || index === 0).reverse();
+
+              removeIndices.forEach(index => selectedProject.deleteTodo(index));
+            }
+          }
+          
+          if (editTodoContainer.style.display === 'flex') {
+            if (actionBtn.textContent === 'Edit') {
+              const newValues = [...document.querySelectorAll('.edit-todo-info-container')].map(todoContainer => {
+                return [...todoContainer.querySelectorAll('.edit-todo-field-input')].map(fieldInput => fieldInput.value);
+              });
+
+              if (!newValues.some(valuesArray => valuesArray.includes(''))) { 
+                selectedProject.todos.forEach((todo, todoIndex) => {
+                  fieldNames.forEach((field, fieldIndex) => {
+                    todo[field] = newValues[todoIndex][fieldIndex];
+                  });
+                });
+
+                [...todoInfoContainers].forEach(todoInfoContainer => {
+                  todoInfoContainer.removeAttribute('class');
+                  todoInfoContainer.classList.add('todo-info-container');
+                });
+              } else {
+                [...document.querySelector('.edit-todo-info-container').querySelectorAll('input')].forEach(fieldInput => {
+                  fieldInput.setCustomValidity('All fields required');
+                  fieldInput.reportValidity();
+                });
+              }
+            }
+          }
+          
+          if (addTodoContainer.style.display === 'flex') {
+            if (actionBtn.textContent === 'Add') {
+              const newValues = [...document.querySelectorAll('.add-todo-field-input')].map(fieldInput => fieldInput.value);
+
+              if (!newValues.includes('')) {
+                selectedProject.addTodo(new Todo(...newValues));
+              } else {
+                [...document.querySelector('.add-todo-info-container').querySelectorAll('input')].forEach(fieldInput => {
+                  fieldInput.setCustomValidity('All fields required');
+                  fieldInput.reportValidity();
+                });
+              }
+            }
+          }
+
+          // prevent empty inputs from being submitted in Add/edit todo form
+          if (e.target.textContent === 'Cancel') {
+          } else {
+            if ([...document.querySelectorAll('.edit-todo-field-input')].map(fieldInput => fieldInput.value).includes('')) return;
+            if ([...document.querySelectorAll('.add-todo-field-input')].map(fieldInput => fieldInput.value).includes('')) return;
+          }
+
+          rerenderTodosSection();
+        });
+      });
+    })();
+
+    function rerenderTodosSection() {
+      clearTodos();
+      clearControlsContainer();
+      [...displayTodos(todos).children].forEach(todoContainer => {
+        todosListContainer.appendChild(todoContainer);
+      });
+      document.querySelector('#todos-section').appendChild(todosControlsContainers.todosControlsHandler());
+      todosEventHandlers(todos, Todo);
+
+      todosControlsBtnsContainer.style.display = 'flex';
+      [...document.querySelectorAll('.todos-control-action-container')].forEach(container => {
+        container.style.display = 'none';
+      });
+      [...removeTodoCheckboxes].forEach(input => input.style.display = 'none');
+    }
   }
 
   return { todosHandler, displayTodos, todosControlsContainers, clearTodos, clearControlsContainer, todosEventHandlers }
