@@ -314,6 +314,47 @@ const todosContainer = (() => {
       });
     })();
 
+    (function sortTodos() {
+      const sortByOptionsContainer = document.querySelector('#sort-by-options-container').querySelector('select');
+      sortByOptionsContainer.addEventListener('change', e => {
+        let todosCopy = JSON.parse(JSON.stringify(todos));
+        switch (e.target.value) {
+          case 'Priority':
+            todosCopy = todosCopy.map(project => {
+              if (project.name === selectedProject.name) {
+               project.todos.sort((a, b) => {
+                  return a.priority - b.priority;
+                });
+              }
+
+              return project;
+            });
+            break;
+          case 'Due Date':
+            todosCopy = todosCopy.map(project => {
+              if (project.name === selectedProject.name) {
+                project.todos.sort((a, b) => {
+                  if (a.dueDate < b.dueDate) {
+                    return -1;
+                  } else if (a.dueDate > b.dueDate) {
+                    return 1;
+                  } else {
+                    return 0;
+                  }
+                });
+              }
+
+              return project;
+            });
+            break;
+        }
+
+        console.log(todosCopy);
+        clearTodos();
+        displayTodos(todosCopy);
+      });
+    })();
+
     // Todo Controls Buttons 
     todosControlBtns.forEach(control => {
       control.addEventListener('click', () => {
