@@ -17,7 +17,7 @@ const todosContainer = (() => {
     const sortFilterOptions = function() {
       const optionsContainer = document.createElement('div');
       const options = ['Due in the next:', 'Sort by:', 'Sort order:'];
-      const filterDatesBy = ['Day', '3 Days', '7 Days', '2 Weeks', 'Month'];
+      const filterDatesBy = ['All', 'Day', '3 Days', '7 Days', '2 Weeks', 'Month'];
       const sortBy = ['Priority', 'Due Date'];
       const sortOrder = ['Descending', 'Ascending'];
       optionsContainer.id = 'sort-filter-options-container';
@@ -245,40 +245,72 @@ const todosContainer = (() => {
     (function filterTodos() {
       const filterOptionsContainer = document.querySelector('#filter-options-container').querySelector('select');
       filterOptionsContainer.addEventListener('change', e => {
+        let todosCopy = JSON.parse(JSON.stringify(todos));
         switch (e.target.value) {
           case 'Day':
-            selectedProject.todos.filter(todo => {
-              const today = new Date();
-              return today < new Date(todo.dueDate) && new Date(todo.dueDate) < new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+            todosCopy = todosCopy.map(project => {
+              if (project.name === selectedProject.name) {
+                project.todos = project.todos.filter(todo => {
+                  const today = new Date();
+                  return today < new Date(todo.dueDate) && new Date(todo.dueDate) < new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+                });
+              }
+
+              return project;
             });
             break;
           case '3 Days':
-            selectedProject.todos.filter(todo => {
-              const today = new Date();
-              return today < new Date(todo.dueDate) && new Date(todo.dueDate) < new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3);
+            todosCopy = todosCopy.map(project => {
+              if (project.name === selectedProject.name) {
+                project.todos = project.todos.filter(todo => {
+                  const today = new Date();
+                  return today < new Date(todo.dueDate) && new Date(todo.dueDate) < new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3);
+                });
+              }
+
+              return project;
             });
             break;
           case '7 Days':
-            selectedProject.todos.filter(todo => {
-              const today = new Date();
-              return today < new Date(todo.dueDate) && new Date(todo.dueDate) < new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7);
+            todosCopy = todosCopy.map(project => {
+              if (project.name === selectedProject.name) {
+                project.todos = project.todos.filter(todo => {
+                  const today = new Date();
+                  return today < new Date(todo.dueDate) && new Date(todo.dueDate) < new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7);
+                });
+              }
+
+              return project;
             });
             break;
           case '2 Weeks':
-            selectedProject.todos.filter(todo => {
-              const today = new Date();
-              return today < new Date(todo.dueDate) && new Date(todo.dueDate) < new Date(today.getFullYear(), today.getMonth(), today.getDate() + 14);
+            todosCopy = todosCopy.map(project => {
+              if (project.name === selectedProject.name) {
+                project.todos = project.todos.filter(todo => {
+                  const today = new Date();
+                  return today < new Date(todo.dueDate) && new Date(todo.dueDate) < new Date(today.getFullYear(), today.getMonth(), today.getDate() + 14);
+                });
+              }
+
+              return project;
             });
             break;
           case 'Month':
-            selectedProject.todos.filter(todo => {
-              const today = new Date();
-              return today < new Date(todo.dueDate) && new Date(todo.dueDate) < new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+            todosCopy = todosCopy.map(project => {
+              if (project.name === selectedProject.name) {
+                project.todos = project.todos.filter(todo => {
+                  const today = new Date();
+                  return today < new Date(todo.dueDate) && new Date(todo.dueDate) < new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+                });
+              }
+
+              return project;
             });
             break;
         }
-        // clear todosContainer
-        // call displayTodos(filtered todos)
+
+        clearTodos();
+        displayTodos(todosCopy);
       });
     })();
 
