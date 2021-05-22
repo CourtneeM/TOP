@@ -242,11 +242,13 @@ const todosContainer = (() => {
       });
     });
 
-    (function filterTodos() {
+    (function sortFilterOptions() {
       const filterOptionsContainer = document.querySelector('#filter-options-container').querySelector('select');
-      filterOptionsContainer.addEventListener('change', e => {
-        let todosCopy = JSON.parse(JSON.stringify(todos));
-        switch (e.target.value) {
+      const sortByOptionsContainer = document.querySelector('#sort-by-options-container').querySelector('select');
+      const sortOrderOptionsContainer = document.querySelector('#sort-order-options-container').querySelector('select');
+
+      function filterTodos(todosCopy) {
+        switch (filterOptionsContainer.value) {
           case 'Day':
             todosCopy = todosCopy.map(project => {
               if (project.name === selectedProject.name) {
@@ -309,20 +311,15 @@ const todosContainer = (() => {
             break;
         }
 
-        clearTodos();
-        displayTodos(todosCopy);
-      });
-    })();
+        return todosCopy;
+      };
 
-    (function sortTodos() {
-      const sortByOptionsContainer = document.querySelector('#sort-by-options-container').querySelector('select');
-      sortByOptionsContainer.addEventListener('change', e => {
-        let todosCopy = JSON.parse(JSON.stringify(todos));
-        switch (e.target.value) {
+      function sortTodos(todosCopy) {
+        switch (sortByOptionsContainer.value) {
           case 'Priority':
             todosCopy = todosCopy.map(project => {
               if (project.name === selectedProject.name) {
-               project.todos.sort((a, b) => {
+                project.todos.sort((a, b) => {
                   return a.priority - b.priority;
                 });
               }
@@ -331,6 +328,7 @@ const todosContainer = (() => {
             });
             break;
           case 'Due Date':
+          default:
             todosCopy = todosCopy.map(project => {
               if (project.name === selectedProject.name) {
                 project.todos.sort((a, b) => {
@@ -346,13 +344,41 @@ const todosContainer = (() => {
 
               return project;
             });
-            break;
         }
 
-        console.log(todosCopy);
+        return todosCopy;
+      };
+
+      function sortOrder(todosCopy) {
+        todosCopy = todosCopy.map(project => {
+          if (project.name === selectedProject.name) {
+            if (sortByOptionsContainer.value === 'Due Date') {
+              if (sortOrderOptionsContainer.value === 'Descending') {
+                project.todos.reverse();
+              }
+            }
+
+            if (sortByOptionsContainer.value === 'Priority') {
+              if (sortOrderOptionsContainer.value === 'Ascending') {
+                project.todos.reverse();
+              }
+            }
+          }
+
+          return project;
+        });
+        return todosCopy;
+      }
+
+      [filterOptionsContainer, sortByOptionsContainer, sortOrderOptionsContainer].forEach(container => container.addEventListener('change', e => {
+        let todosCopy = JSON.parse(JSON.stringify(todos));
+        todosCopy = filterTodos(todosCopy);
+        todosCopy = sortTodos(todosCopy);
+        todosCopy = sortOrder(todosCopy);
+
         clearTodos();
         displayTodos(todosCopy);
-      });
+      }));
     })();
 
     // Todo Controls Buttons 
