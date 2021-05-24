@@ -211,7 +211,7 @@ const projectsContainer = (() => {
     const removeProjectCheckboxes = document.querySelectorAll('.checkbox-remove-project');
     const defaultProjectRadios = document.querySelectorAll('.radio-default-project');
 
-    (function openCloseMenuBtnsHandler() {
+    function openCloseMenuBtnsHandler() {
       menu.addEventListener('click', () => {
         projectsListContainer.style.display = 'block';
         menu.style.display = 'none';
@@ -224,9 +224,9 @@ const projectsContainer = (() => {
         closeMenuBtn.style.display = 'none';
         [...removeProjectCheckboxes, ...defaultProjectRadios].forEach(input => input.style.display = 'none');
       });
-    })();
+    };
 
-    (function projectContainerHandler() {
+    function projectContainerHandler() {
       projectContainers.forEach((projectContainer, index) => {
         projectContainer.addEventListener('click', () => {
           if (projectControlsContainer.style.display === 'none') return;
@@ -235,9 +235,9 @@ const projectsContainer = (() => {
           updateSelectedProject();
         });
       });
-    })();
+    };
     
-    (function projectControlsBtnsHandler() {
+    function projectControlsBtnsHandler() {
       [...projectControlsContainer.children].forEach(button => {
         button.addEventListener('click', () => {
           projectControlsContainer.style.display = 'none';
@@ -265,7 +265,11 @@ const projectsContainer = (() => {
           }
         });
       });
-    })();
+    };
+
+    openCloseMenuBtnsHandler();
+    projectContainerHandler();
+    projectControlsBtnsHandler();
 
     // submit one of the project controls | hide action specifics and show action controls
     [...projectControlActionBtns, closeMenuBtn].forEach(button => {
@@ -273,96 +277,88 @@ const projectsContainer = (() => {
       const editProjectContainer = document.querySelector('#edit-project-container');
       const removeProjectContainer = document.querySelector('#remove-project-container');
 
-      button.addEventListener('click', e => {
-        if (editProjectContainer.style.display === 'flex') {
-          const inputs = [...document.querySelectorAll('.input-edit-project-name')];
-          const radioBtns = [...document.querySelectorAll('.radio-default-project')];
+      function removeProjectHandler() {
+        const checkboxes = [...document.querySelectorAll('.checkbox-remove-project')];
+        if (button.textContent === 'Remove') {
+          // remove checked projects from todos array
+          const removeIndices = checkboxes.map(checkbox => {
+            if (checkbox.checked) {
+              return [...(checkbox.parentElement.parentElement).children].indexOf(checkbox.parentElement);
+            }
+          }).filter(index => index || index === 0).reverse();
+          
+          removeIndices.forEach(index => todos.list.splice(index, 1));
 
-          if (button.textContent === 'Edit') {
-            if (!inputs.some(input => input.value === '')) {
-              // update todos.list project names
-              inputs.forEach((input, i) => todos.list[i].name = input.value.trim());
-
-              // update default project
-              const newDefaultProjectIndex = radioBtns.map(btn => {
-                if (btn.checked) {
-                  return [...btn.parentElement.parentElement.children].indexOf(btn.parentElement);
-                }
-              }).filter(index => index || index === 0)[0];
-              
-              todos.list.forEach((project, i) => {
-                if (i === newDefaultProjectIndex) {
-                  project['default project'] = true;
-                } else {
-                  project['default project'] = false;
-                }
-              });
-
-              selectedProjectName = document.querySelector('#selected-project').querySelector('.input-edit-project-name').value;
-              document.querySelector('#selected-project').removeAttribute('id');
-            } else {
-              inputs.forEach(input => {
-                input.setCustomValidity('Field required');
-                input.reportValidity();
-              });
+          // set new default project, if any projects in list, if current one is removed
+          if (todos.list.some(todo => !todo['default project'])) {
+            if (todos.list.length > 0) {
+              todos.list[0]['default project'] = true;
             }
           }
         }
+      }
 
-        if (addProjectContainer.style.display === 'flex') {
-          if (button.textContent === 'Add') {
-            const input = addProjectContainer.querySelector('input');
+      function editProjectHandler(editProjectContainer) {
+        const inputs = [...document.querySelectorAll('.input-edit-project-name')];
+        const radioBtns = [...document.querySelectorAll('.radio-default-project')];
 
-            if (!input.value) {
+        if (button.textContent === 'Edit') {
+          if (!inputs.some(input => input.value === '')) {
+            // update todos.list project names
+            inputs.forEach((input, i) => todos.list[i].name = input.value.trim());
+
+            // update default project
+            const newDefaultProjectIndex = radioBtns.map(btn => {
+              if (btn.checked) {
+                return [...btn.parentElement.parentElement.children].indexOf(btn.parentElement);
+              }
+            }).filter(index => index || index === 0)[0];
+            
+            todos.list.forEach((project, i) => {
+              if (i === newDefaultProjectIndex) {
+                project['default project'] = true;
+              } else {
+                project['default project'] = false;
+              }
+            });
+
+            selectedProjectName = document.querySelector('#selected-project').querySelector('.input-edit-project-name').value;
+            document.querySelector('#selected-project').removeAttribute('id');
+            return true;
+          } else {
+            inputs.forEach(input => {
               input.setCustomValidity('Field required');
               input.reportValidity();
               return;
-            }
-
-            if (!todos.list.some(project => project.name === input.value)) {
-              todos.addProject(new Project(input.value));
-            } else {
-              input.setCustomValidity('Cannot have duplicate project names');
-              input.reportValidity();
-            }
+            });
           }
         }
 
-        if (removeProjectContainer.style.display === 'flex') {
-          const checkboxes = [...document.querySelectorAll('.checkbox-remove-project')];
-          if (button.textContent === 'Remove') {
-            // remove checked projects from todos array
-            const removeIndices = checkboxes.map(checkbox => {
-              if (checkbox.checked) {
-                return [...(checkbox.parentElement.parentElement).children].indexOf(checkbox.parentElement);
-              }
-            }).filter(index => index || index === 0).reverse();
-            
-            removeIndices.forEach(index => todos.list.splice(index, 1));
+        return true;
+      }
 
-            // set new default project, if any projects in list, if current one is removed
-            if (todos.list.some(todo => !todo['default project'])) {
-              if (todos.list.length > 0) {
-                todos.list[0]['default project'] = true;
-              }
-            }
+      function addProjectHandler(addProjectContainer) {
+        if (button.textContent === 'Add') {
+          const input = addProjectContainer.querySelector('input');
+
+          if (!input.value) {
+            input.setCustomValidity('Field required');
+            input.reportValidity();
+            return;
+          }
+
+          if (!todos.list.some(project => project.name === input.value)) {
+            todos.addProject(new Project(input.value));
+            return true;
+          } else {
+            input.setCustomValidity('Cannot have duplicate project names');
+            input.reportValidity();
+            return;
           }
         }
 
-        // If project name is duplicate, return so input error message displays
-        if (addProjectContainer.style.display === 'flex' && e.target.textContent === 'Add') {
-          const input = document.querySelector('#add-project-input');
-          if (!todos.list.some(project => project.name === input.value) || !input.value) return;
-        }
-
-        if (editProjectContainer.style.display === 'flex' && e.target.textContent === 'Edit') {
-          if ([...document.querySelectorAll('.project-container')].some(projectContainer => {
-            return [...projectContainer.querySelectorAll('input[type="text"]')].some(input => input.value === '');
-          })) return;
-        }
-
-        rerenderProjectsList();
-      });
+        return true;
+      }
 
       function rerenderProjectsList() {
         clearProjectsList();
@@ -377,6 +373,22 @@ const projectsContainer = (() => {
         });
         [...removeProjectCheckboxes, ...defaultProjectRadios].forEach(input => input.style.display = 'none');
       }
+
+      button.addEventListener('click', () => {
+        if (removeProjectContainer.style.display === 'flex') {
+          removeProjectHandler();
+        }
+
+        if (editProjectContainer.style.display === 'flex') {
+          if (!editProjectHandler(editProjectContainer)) return;
+        }
+
+        if (addProjectContainer.style.display === 'flex') {
+          if (!addProjectHandler(addProjectContainer)) return;
+        }
+
+        rerenderProjectsList();
+      });
     });
   }
 
