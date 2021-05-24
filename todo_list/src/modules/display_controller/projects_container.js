@@ -296,9 +296,11 @@ const projectsContainer = (() => {
             }
           }
         }
+
+        rerenderProjectsList();
       }
 
-      function editProjectHandler(editProjectContainer) {
+      function editProjectHandler() {
         const inputs = [...document.querySelectorAll('.input-edit-project-name')];
         const radioBtns = [...document.querySelectorAll('.radio-default-project')];
 
@@ -324,20 +326,20 @@ const projectsContainer = (() => {
 
             selectedProjectName = document.querySelector('#selected-project').querySelector('.input-edit-project-name').value;
             document.querySelector('#selected-project').removeAttribute('id');
-            return true;
           } else {
             inputs.forEach(input => {
               input.setCustomValidity('Field required');
               input.reportValidity();
-              return;
             });
+
+            return;
           }
         }
 
-        return true;
+        rerenderProjectsList();
       }
 
-      function addProjectHandler(addProjectContainer) {
+      function addProjectHandler() {
         if (button.textContent === 'Add') {
           const input = addProjectContainer.querySelector('input');
 
@@ -349,7 +351,6 @@ const projectsContainer = (() => {
 
           if (!todos.list.some(project => project.name === input.value)) {
             todos.addProject(new Project(input.value));
-            return true;
           } else {
             input.setCustomValidity('Cannot have duplicate project names');
             input.reportValidity();
@@ -357,7 +358,7 @@ const projectsContainer = (() => {
           }
         }
 
-        return true;
+        rerenderProjectsList();
       }
 
       function rerenderProjectsList() {
@@ -380,14 +381,12 @@ const projectsContainer = (() => {
         }
 
         if (editProjectContainer.style.display === 'flex') {
-          if (!editProjectHandler(editProjectContainer)) return;
+          editProjectHandler();
         }
 
         if (addProjectContainer.style.display === 'flex') {
-          if (!addProjectHandler(addProjectContainer)) return;
+          addProjectHandler(addProjectContainer);
         }
-
-        rerenderProjectsList();
       });
     });
   }
