@@ -267,128 +267,131 @@ const projectsContainer = (() => {
       });
     };
 
+    // submit one of the project controls | hide action specifics and show action controls
+    function projectControlsActionsBtnsHandler() {
+      [...projectControlActionBtns, closeMenuBtn].forEach(button => {
+        const addProjectContainer = document.querySelector('#add-project-container');
+        const editProjectContainer = document.querySelector('#edit-project-container');
+        const removeProjectContainer = document.querySelector('#remove-project-container');
+
+        function removeProjectHandler() {
+          const checkboxes = [...document.querySelectorAll('.checkbox-remove-project')];
+          if (button.textContent === 'Remove') {
+            // remove checked projects from todos array
+            const removeIndices = checkboxes.map(checkbox => {
+              if (checkbox.checked) {
+                return [...(checkbox.parentElement.parentElement).children].indexOf(checkbox.parentElement);
+              }
+            }).filter(index => index || index === 0).reverse();
+            
+            removeIndices.forEach(index => todos.list.splice(index, 1));
+
+            // set new default project, if any projects in list, if current one is removed
+            if (todos.list.some(todo => !todo['default project'])) {
+              if (todos.list.length > 0) {
+                todos.list[0]['default project'] = true;
+              }
+            }
+          }
+
+          rerenderProjectsList();
+        }
+
+        function editProjectHandler() {
+          const inputs = [...document.querySelectorAll('.input-edit-project-name')];
+          const radioBtns = [...document.querySelectorAll('.radio-default-project')];
+
+          if (button.textContent === 'Edit') {
+            if (!inputs.some(input => input.value === '')) {
+              // update todos.list project names
+              inputs.forEach((input, i) => todos.list[i].name = input.value.trim());
+
+              // update default project
+              const newDefaultProjectIndex = radioBtns.map(btn => {
+                if (btn.checked) {
+                  return [...btn.parentElement.parentElement.children].indexOf(btn.parentElement);
+                }
+              }).filter(index => index || index === 0)[0];
+              
+              todos.list.forEach((project, i) => {
+                if (i === newDefaultProjectIndex) {
+                  project['default project'] = true;
+                } else {
+                  project['default project'] = false;
+                }
+              });
+
+              selectedProjectName = document.querySelector('#selected-project').querySelector('.input-edit-project-name').value;
+              document.querySelector('#selected-project').removeAttribute('id');
+            } else {
+              inputs.forEach(input => {
+                input.setCustomValidity('Field required');
+                input.reportValidity();
+              });
+
+              return;
+            }
+          }
+
+          rerenderProjectsList();
+        }
+
+        function addProjectHandler() {
+          if (button.textContent === 'Add') {
+            const input = addProjectContainer.querySelector('input');
+
+            if (!input.value) {
+              input.setCustomValidity('Field required');
+              input.reportValidity();
+              return;
+            }
+
+            if (!todos.list.some(project => project.name === input.value)) {
+              todos.addProject(new Project(input.value));
+            } else {
+              input.setCustomValidity('Cannot have duplicate project names');
+              input.reportValidity();
+              return;
+            }
+          }
+
+          rerenderProjectsList();
+        }
+
+        function rerenderProjectsList() {
+          clearProjectsList();
+          [...projectsList(todos).children].forEach(projectContainer => {
+            projectsListContainer.appendChild(projectContainer);
+          });
+          projectsEventHandlers(todos, Project);
+
+          projectControlsContainer.style.display = 'flex';
+          [...document.querySelectorAll('.project-control-action-container')].forEach(container => {
+            container.style.display = 'none';
+          });
+          [...removeProjectCheckboxes, ...defaultProjectRadios].forEach(input => input.style.display = 'none');
+        }
+
+        button.addEventListener('click', () => {
+          if (removeProjectContainer.style.display === 'flex') {
+            removeProjectHandler();
+          }
+
+          if (editProjectContainer.style.display === 'flex') {
+            editProjectHandler();
+          }
+
+          if (addProjectContainer.style.display === 'flex') {
+            addProjectHandler(addProjectContainer);
+          }
+        });
+      });
+    }
+
     openCloseMenuBtnsHandler();
     projectContainerHandler();
     projectControlsBtnsHandler();
-
-    // submit one of the project controls | hide action specifics and show action controls
-    [...projectControlActionBtns, closeMenuBtn].forEach(button => {
-      const addProjectContainer = document.querySelector('#add-project-container');
-      const editProjectContainer = document.querySelector('#edit-project-container');
-      const removeProjectContainer = document.querySelector('#remove-project-container');
-
-      function removeProjectHandler() {
-        const checkboxes = [...document.querySelectorAll('.checkbox-remove-project')];
-        if (button.textContent === 'Remove') {
-          // remove checked projects from todos array
-          const removeIndices = checkboxes.map(checkbox => {
-            if (checkbox.checked) {
-              return [...(checkbox.parentElement.parentElement).children].indexOf(checkbox.parentElement);
-            }
-          }).filter(index => index || index === 0).reverse();
-          
-          removeIndices.forEach(index => todos.list.splice(index, 1));
-
-          // set new default project, if any projects in list, if current one is removed
-          if (todos.list.some(todo => !todo['default project'])) {
-            if (todos.list.length > 0) {
-              todos.list[0]['default project'] = true;
-            }
-          }
-        }
-
-        rerenderProjectsList();
-      }
-
-      function editProjectHandler() {
-        const inputs = [...document.querySelectorAll('.input-edit-project-name')];
-        const radioBtns = [...document.querySelectorAll('.radio-default-project')];
-
-        if (button.textContent === 'Edit') {
-          if (!inputs.some(input => input.value === '')) {
-            // update todos.list project names
-            inputs.forEach((input, i) => todos.list[i].name = input.value.trim());
-
-            // update default project
-            const newDefaultProjectIndex = radioBtns.map(btn => {
-              if (btn.checked) {
-                return [...btn.parentElement.parentElement.children].indexOf(btn.parentElement);
-              }
-            }).filter(index => index || index === 0)[0];
-            
-            todos.list.forEach((project, i) => {
-              if (i === newDefaultProjectIndex) {
-                project['default project'] = true;
-              } else {
-                project['default project'] = false;
-              }
-            });
-
-            selectedProjectName = document.querySelector('#selected-project').querySelector('.input-edit-project-name').value;
-            document.querySelector('#selected-project').removeAttribute('id');
-          } else {
-            inputs.forEach(input => {
-              input.setCustomValidity('Field required');
-              input.reportValidity();
-            });
-
-            return;
-          }
-        }
-
-        rerenderProjectsList();
-      }
-
-      function addProjectHandler() {
-        if (button.textContent === 'Add') {
-          const input = addProjectContainer.querySelector('input');
-
-          if (!input.value) {
-            input.setCustomValidity('Field required');
-            input.reportValidity();
-            return;
-          }
-
-          if (!todos.list.some(project => project.name === input.value)) {
-            todos.addProject(new Project(input.value));
-          } else {
-            input.setCustomValidity('Cannot have duplicate project names');
-            input.reportValidity();
-            return;
-          }
-        }
-
-        rerenderProjectsList();
-      }
-
-      function rerenderProjectsList() {
-        clearProjectsList();
-        [...projectsList(todos).children].forEach(projectContainer => {
-          projectsListContainer.appendChild(projectContainer);
-        });
-        projectsEventHandlers(todos, Project);
-
-        projectControlsContainer.style.display = 'flex';
-        [...document.querySelectorAll('.project-control-action-container')].forEach(container => {
-          container.style.display = 'none';
-        });
-        [...removeProjectCheckboxes, ...defaultProjectRadios].forEach(input => input.style.display = 'none');
-      }
-
-      button.addEventListener('click', () => {
-        if (removeProjectContainer.style.display === 'flex') {
-          removeProjectHandler();
-        }
-
-        if (editProjectContainer.style.display === 'flex') {
-          editProjectHandler();
-        }
-
-        if (addProjectContainer.style.display === 'flex') {
-          addProjectHandler(addProjectContainer);
-        }
-      });
-    });
+    projectControlsActionsBtnsHandler();
   }
 
   return { projectsHandler, projectsList, clearProjectsList, updateHeaderTitle, updateProjectTodoCount, projectsEventHandlers };
