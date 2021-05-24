@@ -90,6 +90,7 @@ const projectsContainer = (() => {
 
     addProjectContainer.id = 'add-project-container';
     addProjectContainer.classList.add('project-control-action-container');
+    input.id = 'add-project-input';
     input.attributes.type = 'text';
 
     addProjectContainer.appendChild(input);
@@ -210,59 +211,61 @@ const projectsContainer = (() => {
     const removeProjectCheckboxes = document.querySelectorAll('.checkbox-remove-project');
     const defaultProjectRadios = document.querySelectorAll('.radio-default-project');
 
-    // display projects list
-    menu.addEventListener('click', () => {
-      projectsListContainer.style.display = 'block';
-      menu.style.display = 'none';
-      closeMenuBtn.style.display = 'block';
-    });
-
-    // hide projects list
-    closeMenuBtn.addEventListener('click', () => {
-      projectsListContainer.style.display = 'none';
-      menu.style.display = 'block';
-      closeMenuBtn.style.display = 'none';
-      [...removeProjectCheckboxes, ...defaultProjectRadios].forEach(input => input.style.display = 'none');
-    });
-
-    // select a project from the project list 
-    projectContainers.forEach((projectContainer, index) => {
-      projectContainer.addEventListener('click', () => {
-        if (projectControlsContainer.style.display === 'none') return;
-        
-        selectedProjectIndex = index;
-        updateSelectedProject();
+    (function openCloseMenuBtnsHandler() {
+      menu.addEventListener('click', () => {
+        projectsListContainer.style.display = 'block';
+        menu.style.display = 'none';
+        closeMenuBtn.style.display = 'block';
       });
-    });
+
+      closeMenuBtn.addEventListener('click', () => {
+        projectsListContainer.style.display = 'none';
+        menu.style.display = 'block';
+        closeMenuBtn.style.display = 'none';
+        [...removeProjectCheckboxes, ...defaultProjectRadios].forEach(input => input.style.display = 'none');
+      });
+    })();
+
+    (function projectContainerHandler() {
+      projectContainers.forEach((projectContainer, index) => {
+        projectContainer.addEventListener('click', () => {
+          if (projectControlsContainer.style.display === 'none') return;
+          
+          selectedProjectIndex = index;
+          updateSelectedProject();
+        });
+      });
+    })();
     
-    // display one of the project controls on click
-    [...projectControlsContainer.children].forEach(button => {
-      button.addEventListener('click', () => {
-        projectControlsContainer.style.display = 'none';
-        switch (button.textContent) {
-          case 'Remove':
-            document.querySelector('#remove-project-container').style.display = 'flex';
-            [...removeProjectCheckboxes].forEach(checkbox => checkbox.style.display = 'inline');
-            break;
-          case 'Edit':
-            document.querySelector('#edit-project-container').style.display = 'flex';
-            projectContainers.forEach(projectContainer => {
-              const projectElements = [...projectContainer.children];
-              const input = document.createElement('input');
-              input.classList.add('input-edit-project-name');
-              input.setAttribute('type', 'text');
-              input.value = projectElements[2].textContent;
-              projectContainer.removeChild(projectElements[2]);
-              projectContainer.insertBefore(input, projectElements[projectElements.length - 1]);
-            });
-            [...defaultProjectRadios].forEach(radio => radio.style.display = 'inline');
-            break;
-          case 'Add':
-            document.querySelector('#add-project-container').style.display = 'flex';
-            break;
-        }
+    (function projectControlsBtnsHandler() {
+      [...projectControlsContainer.children].forEach(button => {
+        button.addEventListener('click', () => {
+          projectControlsContainer.style.display = 'none';
+          switch (button.textContent) {
+            case 'Remove':
+              document.querySelector('#remove-project-container').style.display = 'flex';
+              [...removeProjectCheckboxes].forEach(checkbox => checkbox.style.display = 'inline');
+              break;
+            case 'Edit':
+              document.querySelector('#edit-project-container').style.display = 'flex';
+              projectContainers.forEach(projectContainer => {
+                const projectElements = [...projectContainer.children];
+                const input = document.createElement('input');
+                input.classList.add('input-edit-project-name');
+                input.setAttribute('type', 'text');
+                input.value = projectElements[2].textContent;
+                projectContainer.removeChild(projectElements[2]);
+                projectContainer.insertBefore(input, projectElements[projectElements.length - 1]);
+              });
+              [...defaultProjectRadios].forEach(radio => radio.style.display = 'inline');
+              break;
+            case 'Add':
+              document.querySelector('#add-project-container').style.display = 'flex';
+              break;
+          }
+        });
       });
-    });
+    })();
 
     // submit one of the project controls | hide action specifics and show action controls
     [...projectControlActionBtns, closeMenuBtn].forEach(button => {
@@ -270,7 +273,7 @@ const projectsContainer = (() => {
       const editProjectContainer = document.querySelector('#edit-project-container');
       const removeProjectContainer = document.querySelector('#remove-project-container');
 
-      button.addEventListener('click', () => {
+      button.addEventListener('click', e => {
         if (editProjectContainer.style.display === 'flex') {
           const inputs = [...document.querySelectorAll('.input-edit-project-name')];
           const radioBtns = [...document.querySelectorAll('.radio-default-project')];
@@ -310,6 +313,12 @@ const projectsContainer = (() => {
           if (button.textContent === 'Add') {
             const input = addProjectContainer.querySelector('input');
 
+            if (!input.value) {
+              input.setCustomValidity('Field required');
+              input.reportValidity();
+              return;
+            }
+
             if (!todos.list.some(project => project.name === input.value)) {
               todos.addProject(new Project(input.value));
             } else {
@@ -341,16 +350,21 @@ const projectsContainer = (() => {
         }
 
         // If project name is duplicate, return so input error message displays
-        if (addProjectContainer.style.display === 'flex') {
-          if (!todos.list.some(project => project.name === document.querySelector('#add-project-container').querySelector('input').value)) return;
+        if (addProjectContainer.style.display === 'flex' && e.target.textContent === 'Add') {
+          const input = document.querySelector('#add-project-input');
+          if (!todos.list.some(project => project.name === input.value) || !input.value) return;
         }
 
-        if (editProjectContainer.style.display === 'flex') {
+        if (editProjectContainer.style.display === 'flex' && e.target.textContent === 'Edit') {
           if ([...document.querySelectorAll('.project-container')].some(projectContainer => {
             return [...projectContainer.querySelectorAll('input[type="text"]')].some(input => input.value === '');
           })) return;
         }
 
+        rerenderProjectsList();
+      });
+
+      function rerenderProjectsList() {
         clearProjectsList();
         [...projectsList(todos).children].forEach(projectContainer => {
           projectsListContainer.appendChild(projectContainer);
@@ -362,7 +376,7 @@ const projectsContainer = (() => {
           container.style.display = 'none';
         });
         [...removeProjectCheckboxes, ...defaultProjectRadios].forEach(input => input.style.display = 'none');
-      });
+      }
     });
   }
 
