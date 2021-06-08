@@ -1,5 +1,7 @@
-const menuIcon = document.querySelector('#menu-icon');
+function dropdownMenu(dropdownTarget) {  
+  dropdownTarget.addEventListener('click', () => {
+    document.querySelector('#nav-items').classList.toggle('hidden');
+  });
+}
 
-menuIcon.addEventListener('click', () => {
-  document.querySelector('#nav-items').classList.toggle('hidden');
-});
+dropdownMenu(document.querySelector('#menu-icon'));
