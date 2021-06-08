@@ -1,0 +1,48 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 16px;
+  font-family: sans-serif;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 20px 40px;
+}
+nav i:hover,
+nav p:hover {
+  color: #888;
+  cursor: pointer;
+}
+nav i {
+  font-size: 1.8rem;
+}
+nav p {
+  font-size: 1.4rem;
+}
+
+#nav-items {
+  background: cornflowerblue;
+  border: 2px solid #000;
+}
+#nav-items p {
+  padding: 10px 15px;
+  color: #fff;
+}
+#nav-items p:hover {
+  background: #72a3fd;
+}
+
+.hidden {
+  display: none;
+}
+
+/*# sourceMappingURL=style.css.map */
