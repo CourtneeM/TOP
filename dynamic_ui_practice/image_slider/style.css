@@ -1,0 +1,85 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+}
+
+img {
+  width: 100%;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#img-carousel {
+  position: relative;
+  justify-content: space-between;
+  display: flex;
+  width: 600px;
+  height: 400px;
+}
+#img-carousel .slide {
+  position: absolute;
+  display: none;
+}
+#img-carousel .slide img {
+  width: 600px;
+  height: 400px;
+}
+#img-carousel #current-slide {
+  display: block;
+}
+#img-carousel .img-carousel-control {
+  position: relative;
+  display: flex;
+  height: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: 1.6rem;
+  color: #fff;
+  z-index: 1;
+}
+#img-carousel .img-carousel-control:hover {
+  background: rgba(83, 83, 83, 0.7);
+  cursor: pointer;
+}
+#img-carousel .img-carousel-control > * {
+  align-self: center;
+}
+#img-carousel #prev-slide-btn {
+  left: 0;
+}
+#img-carousel #next-slide-btn {
+  right: 0;
+}
+#img-carousel #carousel-progress {
+  position: absolute;
+  bottom: 20px;
+  left: 225px;
+  display: flex;
+  justify-content: space-between;
+  width: 150px;
+  z-index: 2;
+}
+#img-carousel #carousel-progress p {
+  width: 15px;
+  height: 15px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+#img-carousel #carousel-progress p:hover {
+  cursor: pointer;
+}
+#img-carousel #carousel-progress #current-slide-circle {
+  background: #fff;
+}
+
+/*# sourceMappingURL=style.css.map */
