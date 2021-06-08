@@ -33,3 +33,14 @@ nextSlideBtn.addEventListener('click', () => {
 });
 
 setInterval(() => nextSlide(), 5000);
+
+progressCircles.forEach((circle, index) => {
+  circle.addEventListener('click', () => {
+    slides[currentSlideIndex].removeAttribute('id');
+    progressCircles[currentSlideIndex].removeAttribute('id');
+
+    currentSlideIndex = index;
+    slides[currentSlideIndex].id = 'current-slide';
+    progressCircles[currentSlideIndex].id = "current-slide-circle";
+  });
+});
