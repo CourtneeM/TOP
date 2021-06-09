@@ -1,0 +1,53 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 600px;
+  height: 280px;
+  padding: 30px 20px;
+  border: 1px solid #000;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+    margin-right: 5px;
+
+    input {
+      padding: 5px;
+    }
+  }
+
+  label[for="email"] { flex-basis: 40%; }
+  label[for="country"] { flex-basis: 40%; }
+  label[for="zip"] { flex-basis: 10%; }
+  label[for="password"] { flex-basis: 48%; }
+  label[for="password-confirm"] { flex-basis: 48%; }
+  
+  button {
+    flex-basis: 100%;
+    margin-top: 25px;
+    padding: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+
+    cursor: pointer;
+  }
+
+  .invalid:invalid {
+    border: 2px solid red;
+  }
+}
