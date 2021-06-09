@@ -31,7 +31,7 @@ body {
   position: absolute;
   display: none;
   opacity: 1;
-  animation: fade 2s linear;
+  animation: fade 5s linear;
 }
 #img-carousel .slide img {
   width: 600px;
@@ -41,8 +41,11 @@ body {
   0% {
     opacity: 0.2;
   }
-  100% {
+  50% {
     opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
   }
 }
 #img-carousel #current-slide {

@@ -31,7 +31,7 @@ body {
     position: absolute;
     display: none;
     opacity: 1;
-    animation: fade 2s linear;
+    animation: fade 5s linear;
 
     img {
       width: 600px;
@@ -41,7 +41,8 @@ body {
 
   @keyframes fade {
     0% { opacity: 0.2 }
-    100% { opacity: 1; }
+    50% { opacity: 1 }
+    100% { opacity: 0.2; }
   }
 
   #current-slide {
