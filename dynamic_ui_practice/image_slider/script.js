@@ -1,5 +1,3 @@
-const prevSlideBtn = document.querySelector('#prev-slide-btn');
-const nextSlideBtn = document.querySelector('#next-slide-btn');
 const slides = [...document.querySelectorAll('.slide')];
 const progressCircles = [...document.querySelectorAll('.progress-circle')];
 let currentSlideIndex = 0;
@@ -24,11 +22,11 @@ function nextSlide() {
   progressCircles[currentSlideIndex].id = 'current-slide-circle';
 }
 
-prevSlideBtn.addEventListener('click', () => {
+document.querySelector('#prev-slide-btn').addEventListener('click', () => {
   previousSlide();    
 });
 
-nextSlideBtn.addEventListener('click', () => {
+document.querySelector('#next-slide-btn').addEventListener('click', () => {
   nextSlide();
 });
 

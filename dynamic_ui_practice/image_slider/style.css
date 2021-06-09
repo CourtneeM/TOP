@@ -25,14 +25,25 @@ body {
   display: flex;
   width: 600px;
   height: 400px;
+  background: #000;
 }
 #img-carousel .slide {
   position: absolute;
   display: none;
+  opacity: 1;
+  animation: fade 2s linear;
 }
 #img-carousel .slide img {
   width: 600px;
   height: 400px;
+}
+@keyframes fade {
+  0% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 #img-carousel #current-slide {
   display: block;
