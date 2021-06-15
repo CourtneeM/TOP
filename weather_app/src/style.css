@@ -1,0 +1,49 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  position: relative;
+  height: 100vh;
+}
+
+header {
+  display: none;
+  justify-content: center;
+  padding: 10px;
+  background: #000;
+}
+header input {
+  margin-right: 10px;
+  padding: 4px 10px;
+}
+header button {
+  margin-left: 10px;
+  padding: 4px;
+  font-weight: 600;
+}
+
+#initial-search-container {
+  display: flex;
+  align-items: center;
+  width: 310px;
+  margin: 150px auto 0;
+}
+#initial-search-container input {
+  margin-right: 10px;
+  padding: 4px 10px;
+  font-size: 1rem;
+}
+#initial-search-container button {
+  padding: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/*# sourceMappingURL=style.css.map */

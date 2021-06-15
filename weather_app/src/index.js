@@ -1,9 +1,11 @@
 import API_KEY from './keys.js';
+const intialSearchContainer = document.querySelector('#initial-search-container');
+const initialCityInput = document.querySelector('#initial-city-name-input');
+const header = document.querySelector('header');
 const cityInput = document.querySelector('#city-name-input');
-const searchBtn = document.querySelector('button');
-let cityName = 'Branson'
+const searchBtns = [...document.querySelectorAll('button')];
 
-const render = () => {
+const render = (cityName) => {
   async function getWeatherData() {
     try {
       const plainWeatherData = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${API_KEY}`);
@@ -37,18 +39,28 @@ const render = () => {
     }
   })();
 
-  specificWeatherData.then(res => {
-    const { currentTemp, highTemp, lowTemp, feelsLike, weatherConditions } = res;
-    console.log(weatherConditions);
+  specificWeatherData.then(response => {
+    const { currentTemp, highTemp, lowTemp, feelsLike, weatherConditions } = response;
   }).catch(error => {
     console.log('Something went wrong: ' + error);
   });
 }
 
-render();
-
-searchBtn.addEventListener('click', () => {
-  cityName = cityInput.value;
-  render();
-  cityInput.value = '';
+searchBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    let cityName;
+    
+    if (!intialSearchContainer.style.display) {
+      intialSearchContainer.style.display = 'none';
+      cityName = initialCityInput.value;
+      cityInput.value = '';
+      header.style.display = 'flex';
+    } else {
+      cityName = cityInput.value;
+      cityInput.value = '';
+    }
+    
+    render(cityName);
+  });
 });
+  
