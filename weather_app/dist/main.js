@@ -1,0 +1,1 @@
+(()=>{"use strict";let t;!async function(){try{const e=await fetch("http://api.openweathermap.org/data/2.5/weather?q=Beaumont&units=imperial&appid=c4b669418ad101f305637ea342fa6e65"),a=await e.json();t=a.main.temp,console.log(`Current Temperature: ${t}°F`)}catch(t){return"Something went wrong: "+t}}()})();
