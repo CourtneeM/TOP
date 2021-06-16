@@ -26,7 +26,7 @@ const render = (cityName) => {
   const specificWeatherData = (async () => {
     try {
       const weatherData = await getWeatherData();
-      console.log(weatherData);
+      console.log(weatherData.message);
       
       const currentTemp = `${weatherData.main.temp}\xB0F`;
       const highTemp = `${weatherData.main.temp_max}\xB0F`;
