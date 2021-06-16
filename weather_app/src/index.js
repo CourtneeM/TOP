@@ -17,46 +17,39 @@ const render = (cityName) => {
     try {
       const plainWeatherData = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${API_KEY}`);
       const weatherData = await plainWeatherData.json();
+      console.log(weatherData);
       return weatherData;
     } catch (error) {
       return 'Something went wrong: ' + error;
     }
   }
 
-  const specificWeatherData = (async () => {
-    try {
-      const weatherData = await getWeatherData();
-      console.log(weatherData.message);
-      
-      const currentTemp = `${weatherData.main.temp}\xB0F`;
-      const highTemp = `${weatherData.main.temp_max}\xB0F`;
-      const lowTemp = `${weatherData.main.temp_min}\xB0F`;
-      const feelsLike = `${weatherData.main.feels_like}\xB0F`;
-      const weatherConditions = weatherData.weather.map(condition => condition.main);
-
-      return {
-        currentTemp,
-        highTemp,
-        lowTemp,
-        feelsLike,
-        weatherConditions,
-      }
+  const weatherData = (async () => {
+    try {  
+      const weatherData = await getWeatherData();      
+      return weatherData;
     } catch (error) {
       console.log('Something went wrong: ' + error);
     }
   })();
 
-  specificWeatherData.then(response => {
-    const { currentTemp, highTemp, lowTemp, feelsLike, weatherConditions } = response;
-
-    cityNameH1.textContent = cityName;
-    weatherConditionP.textContent = weatherConditions;
-    currentTempP.textContent = currentTemp;
-    highTempP.textContent = highTemp;
-    lowTempP.textContent = lowTemp;
-    feelsLikeP.textContent = feelsLike;
-  }).catch(error => {
-    console.log('Something went wrong: ' + error);
+  weatherData.then(response => {
+    try {
+      cityNameH1.textContent = response.name;;
+      weatherConditionP.textContent = response.weather.map(condition => condition.main);
+      currentTempP.textContent = `${response.main.temp}\xB0F`;
+      highTempP.textContent = `${response.main.temp_max}\xB0F`;
+      lowTempP.textContent = `${response.main.temp_min}\xB0F`;
+      feelsLikeP.textContent = `${response.main.feels_like}\xB0F`;
+    } catch (error) {
+      cityNameH1.textContent = 'Error: ' + response.message;
+      console.log('Error: ' + error);
+      weatherConditionP.textContent = '';
+      currentTempP.textContent = '';
+      highTempP.textContent = '';
+      lowTempP.textContent = '';
+      feelsLikeP.textContent = '';
+    }
   });
 }
 
