@@ -58,12 +58,15 @@ searchBtns.forEach(btn => {
     let cityName;
     
     if (!intialSearchContainer.style.display) {
+      if (initialCityInput.value === '') return;
+
       intialSearchContainer.style.display = 'none';
       cityName = initialCityInput.value;
-      cityInput.value = '';
       header.style.display = 'flex';
       searchResultsContainer.style.display = 'block';
     } else {
+      if (cityInput.value === '') return;
+
       cityName = cityInput.value;
       cityInput.value = '';
     }
