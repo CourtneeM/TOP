@@ -11,6 +11,7 @@ html {
 body {
   position: relative;
   height: 100vh;
+  font-family: sans-serif;
 }
 
 header {
@@ -43,6 +44,46 @@ header button {
 #initial-search-container button {
   padding: 4px;
   font-size: 1rem;
+  font-weight: 600;
+}
+
+#search-results-container {
+  display: none;
+  width: 400px;
+  margin: 100px auto 0;
+  padding: 20px 10px;
+  text-align: center;
+  border: 3px solid #ddd;
+  border-radius: 8px;
+}
+
+#location-name {
+  padding: 5px 0;
+}
+
+#weather-condition {
+  padding: 5px 0;
+  font-style: italic;
+}
+
+#temperatures {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+#temperatures #current-temp-container {
+  flex-basis: 100%;
+  padding: 15px 0;
+}
+#temperatures #high-temp-container,
+#temperatures #low-temp-container,
+#temperatures #feels-like-container {
+  flex-basis: 100px;
+}
+#temperatures #current-temp,
+#temperatures #high-temp,
+#temperatures #low-temp,
+#temperatures #feels-like {
   font-weight: 600;
 }
 

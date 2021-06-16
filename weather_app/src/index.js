@@ -4,6 +4,13 @@ const initialCityInput = document.querySelector('#initial-city-name-input');
 const header = document.querySelector('header');
 const cityInput = document.querySelector('#city-name-input');
 const searchBtns = [...document.querySelectorAll('button')];
+const searchResultsContainer = document.querySelector('#search-results-container');
+const cityNameH1 = document.querySelector('#location-name')
+const weatherConditionP = document.querySelector('#weather-condition');
+const currentTempP = document.querySelector('#current-temp');
+const highTempP = document.querySelector('#high-temp');
+const lowTempP = document.querySelector('#low-temp');
+const feelsLikeP = document.querySelector('#feels-like');
 
 const render = (cityName) => {
   async function getWeatherData() {
@@ -21,10 +28,10 @@ const render = (cityName) => {
       const weatherData = await getWeatherData();
       console.log(weatherData);
       
-      const currentTemp = `The current temperature is: ${weatherData.main.temp}\xB0F`;
-      const highTemp = `The high today is: ${weatherData.main.temp_max}\xB0F`;
-      const lowTemp = `The low today is: ${weatherData.main.temp_min}\xB0F`;
-      const feelsLike = weatherData.main.feels_like;
+      const currentTemp = `${weatherData.main.temp}\xB0F`;
+      const highTemp = `${weatherData.main.temp_max}\xB0F`;
+      const lowTemp = `${weatherData.main.temp_min}\xB0F`;
+      const feelsLike = `${weatherData.main.feels_like}\xB0F`;
       const weatherConditions = weatherData.weather.map(condition => condition.main);
 
       return {
@@ -41,6 +48,13 @@ const render = (cityName) => {
 
   specificWeatherData.then(response => {
     const { currentTemp, highTemp, lowTemp, feelsLike, weatherConditions } = response;
+
+    cityNameH1.textContent = cityName;
+    weatherConditionP.textContent = weatherConditions;
+    currentTempP.textContent = currentTemp;
+    highTempP.textContent = highTemp;
+    lowTempP.textContent = lowTemp;
+    feelsLikeP.textContent = feelsLike;
   }).catch(error => {
     console.log('Something went wrong: ' + error);
   });
@@ -55,6 +69,7 @@ searchBtns.forEach(btn => {
       cityName = initialCityInput.value;
       cityInput.value = '';
       header.style.display = 'flex';
+      searchResultsContainer.style.display = 'block';
     } else {
       cityName = cityInput.value;
       cityInput.value = '';
