@@ -5,7 +5,7 @@ export default (function render() {
     weatherContainer.id = 'weather-container';
     weatherElements.forEach(element => weatherContainer.appendChild(element));
 
-    document.querySelector('body').appendChild(weatherContainer);
+    document.querySelector('main').appendChild(weatherContainer);
   }
 
   function rerenderWeatherElements(weatherElements) {
@@ -65,7 +65,7 @@ export default (function render() {
       const weatherContainer = document.createElement('section');
       weatherContainer.id = 'weather-container';
       weatherContainer.appendChild(errorP);
-      document.querySelector('body').appendChild(weatherContainer);
+      document.querySelector('main').appendChild(weatherContainer);
     }
   }
 
