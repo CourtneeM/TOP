@@ -5,7 +5,7 @@ const gameControls = (() => {
   }
   
   const resetGame = () => {
-
+    displayController.clearWinner();
   }
 
   return { startGame, resetGame }
@@ -91,7 +91,17 @@ const displayController = (() => {
     [winnerP, resetBtn].forEach(el => gameContainer.removeChild(el));
   }
 
-  return { displayWinner, clearWinner }
+  const disableChoiceButtons = () => {
+    const choiceButtons = [...document.querySelectorAll('button')];
+    choiceButtons.forEach(btn => btn.disabled = true);
+  }
+
+  const enableChoiceButtons = () => {
+    const choiceButtons = [...document.querySelectorAll('button')];
+    choiceButtons.forEach(btn => btn.disabled = false);
+  }
+
+  return { displayWinner, clearWinner, disableChoiceButtons, enableChoiceButtons }
 })();
 
 const eventHandlers = (() => {
@@ -99,9 +109,11 @@ const eventHandlers = (() => {
   
   choiceButtons.forEach(btn => {
     btn.addEventListener('click', e => {
+      displayController.disableChoiceButtons();
       gameControls.startGame(e.target.textContent);
 
       document.querySelector('#reset-btn').addEventListener('click', () => {
+        displayController.enableChoiceButtons();
         gameControls.resetGame();
       });
     });
