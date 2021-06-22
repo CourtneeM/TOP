@@ -1,6 +1,9 @@
 const gameControls = (() => {
   const startGame = playerChoice => {
-    let winnerMessage = gamePlay.declareWinner(gamePlay.checkForWinner(playerChoice));
+    let computerChoice = gamePlay.computerMove();
+    let winnerMessage = gamePlay.declareWinner(gamePlay.checkForWinner(playerChoice, computerChoice));
+
+    displayController.displayMoves(playerChoice, computerChoice);
     displayController.displayWinner(winnerMessage);
   }
   
@@ -13,9 +16,9 @@ const gameControls = (() => {
 
 const gamePlay = (() => {
   const MOVES = {
-    'rock': { win: 'scissors', lose: 'paper' },
-    'paper': { win: 'rock', lose: 'scissors' },
-    'scissors': { win: 'paper', lose: 'rock' }
+    'Rock': { win: 'Scissors', lose: 'Paper' },
+    'Paper': { win: 'Rock', lose: 'Scissors' },
+    'Scissors': { win: 'Paper', lose: 'Rock' }
   }
   let moveChoices = Object.keys(MOVES);
 
@@ -24,11 +27,9 @@ const gamePlay = (() => {
     return computerChoice;
   }
 
-  const checkForWinner = playerChoice => {
-    let computerChoice = computerMove();
-
-    if (MOVES[playerChoice.toLowerCase()].win === computerChoice) return 'player';
-    if (MOVES[computerChoice].win === playerChoice.toLowerCase()) return 'computer';
+  const checkForWinner = (playerChoice, computerChoice) => {
+    if (MOVES[playerChoice].win === computerChoice) return 'player';
+    if (MOVES[computerChoice].win === playerChoice) return 'computer';
   }
 
   const declareWinner = (winner) => {
@@ -39,7 +40,7 @@ const gamePlay = (() => {
     }
   }
 
-  return { checkForWinner, declareWinner }
+  return { computerMove, checkForWinner, declareWinner }
 })();
 
 const displayController = (() => {
@@ -72,23 +73,35 @@ const displayController = (() => {
     gameContainer.appendChild(resetBtn);
   }
 
-  const displayWinner = winnerMessage => {
-    const winnerP = document.createElement('p');
-    let gameContainer = document.querySelector('#game-container');
+  const displayMoves = (playerChoice, computerChoice) => {
+    const gameContainer = document.querySelector('#game-container');
+    const resultsContainer = document.createElement('div');
+    const matchMovesP = document.createElement('p');
 
-    winnerP.id = 'winner-container';
+    resultsContainer.id = 'results-container';
+    matchMovesP.textContent = `${playerChoice} vs. ${computerChoice}`;
+
+    resultsContainer.appendChild(matchMovesP);
+    gameContainer.appendChild(resultsContainer);
+  }
+
+  const displayWinner = winnerMessage => {
+    const resultsContainer = document.querySelector('#results-container');
+    const winnerP = document.createElement('p');
+
     winnerP.textContent = winnerMessage;
-    gameContainer.appendChild(winnerP);
+
+    resultsContainer.appendChild(winnerP);
 
     generateResetBtn();
   }
   
   const clearWinner = () => {
     const gameContainer = document.querySelector('#game-container');
-    const winnerP = document.querySelector('#winner-container');
+    const resultsContainer = document.querySelector('#results-container');
     const resetBtn = document.querySelector('#reset-btn');
 
-    [winnerP, resetBtn].forEach(el => gameContainer.removeChild(el));
+    [resultsContainer, resetBtn].forEach(el => gameContainer.removeChild(el));
   }
 
   const disableChoiceButtons = () => {
@@ -101,7 +114,7 @@ const displayController = (() => {
     choiceButtons.forEach(btn => btn.disabled = false);
   }
 
-  return { displayWinner, clearWinner, disableChoiceButtons, enableChoiceButtons }
+  return { displayWinner, displayMoves, clearWinner, disableChoiceButtons, enableChoiceButtons }
 })();
 
 const eventHandlers = (() => {
