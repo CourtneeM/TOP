@@ -6,9 +6,8 @@ const displayController = (() => {
   let gridSize = defaultGridSize;
   
   const generateGrid = () => {
-    const mainContainer = document.querySelector('main');
-    const mainContainerSize = mainContainer.offsetWidth;
-    const gridSquareSize = mainContainerSize / gridSize;
+    const gridContainerSize = window.getComputedStyle(gridContainer).getPropertyValue('width').split('px')[0];
+    const gridSquareSize = gridContainerSize / gridSize;
 
     for (let i = 0; i < gridSize * gridSize; i++) {
       const gridSquare = document.createElement('div');
