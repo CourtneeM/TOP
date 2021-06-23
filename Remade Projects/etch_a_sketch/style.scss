@@ -31,3 +31,30 @@ main {
     border: 1px solid #000;
   }
 }
+
+@media only screen and (min-width: 525px) {
+  main {
+    min-width: 500px;
+    width: 500px;
+    min-height: 500px;
+    height: 500px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  main {
+    min-width: 720px;
+    width: 720px;
+    min-height: 720px;
+    height: 720px;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  main {
+    min-width: 910px;
+    width: 910px;
+    min-height: 910px;
+    height: 910px;
+  }
+}
