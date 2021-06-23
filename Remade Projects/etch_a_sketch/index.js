@@ -21,6 +21,8 @@ const displayController = (() => {
   }
 
   const resetGrid = () => {
+    if (!gridSize) return;
+
     while (gridContainer.firstChild) {
       gridContainer.removeChild(gridContainer.firstChild);
     }
