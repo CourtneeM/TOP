@@ -48,7 +48,7 @@ const displayController = (() => {
 })();
 
 const eventHandlers = (() => {
-  const gridSquareMouseover = () => {
+  const gridSquareMouseenter = () => {
     [...document.querySelectorAll('.grid-square')].forEach(gridSquare => {
       gridSquare.addEventListener('mouseenter', () => {
         gridSquare.style.background = gridSquareColor;
@@ -57,19 +57,23 @@ const eventHandlers = (() => {
   }
 
   document.querySelector('#clear-btn').addEventListener('click', displayController.clearGrid);
-  
+
   document.querySelector('#reset-btn').addEventListener('click', () => {
     displayController.changeGridSize(16);
     displayController.resetGrid();
-    gridSquareMouseover();
+    gridSquareMouseenter();
   });
   
   document.querySelector('#size-btn').addEventListener('click', () => {
     let newSize = prompt('Enter a grid size between 2 and 64. (Sizes over 64 may freeze.)');
     displayController.changeGridSize(newSize);
     displayController.resetGrid();
-    gridSquareMouseover();
+    gridSquareMouseenter();
   });
 
-  gridSquareMouseover();
+  document.querySelector('#color-picker').addEventListener('change', (e) => {
+    displayController.changeGridSquareColor(e.target.value);
+  });
+
+  gridSquareMouseenter();
 })();
