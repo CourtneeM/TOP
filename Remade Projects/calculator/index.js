@@ -2,15 +2,11 @@ const calculator = (() => {
   let currentCalculation = [];
 
   const addToCalculation = input => {
-
     if (currentCalculation.length === 0 || ['+', '-', 'X', '/'].includes(input) || ['+', '-', 'X', '/'].includes(currentCalculation[currentCalculation.length - 1])) {
       currentCalculation.push(input);
     } else {
-      if (currentCalculation[currentCalculation.length - 1][0] === '0') {
-        currentCalculation[currentCalculation.length - 1] = input;
-      } else {
-        currentCalculation[currentCalculation.length - 1] += input;
-      }
+      if (currentCalculation[currentCalculation.length - 1][0] === '0' && input === '0') return;
+      currentCalculation[currentCalculation.length - 1] += input;
     }
   }
 
@@ -75,6 +71,12 @@ const eventHandlers = (() => {
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
       if ([...btn.classList].includes('numbers')) {
+        calculator.addToCalculation(btn.textContent);
+      }
+
+      if (btn.id === 'btn-decimal') {
+        if (String(calculator.currentCalculation[calculator.currentCalculation.length - 1]).includes(btn.textContent)
+            || ['+', '-', 'X', '/'].includes(calculator.currentCalculation[calculator.currentCalculation.length - 1])) return;
         calculator.addToCalculation(btn.textContent);
       }
 
