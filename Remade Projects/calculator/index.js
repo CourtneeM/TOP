@@ -2,10 +2,15 @@ const calculator = (() => {
   let currentCalculation = [];
 
   const addToCalculation = input => {
-    if (Number(currentCalculation[currentCalculation.length - 1]) && Number(input)) {
-      currentCalculation[currentCalculation.length - 1] += input;
-    } else {
+
+    if (currentCalculation.length === 0 || ['+', '-', 'X', '/'].includes(input) || ['+', '-', 'X', '/'].includes(currentCalculation[currentCalculation.length - 1])) {
       currentCalculation.push(input);
+    } else {
+      if (currentCalculation[currentCalculation.length - 1][0] === '0') {
+        currentCalculation[currentCalculation.length - 1] = input;
+      } else {
+        currentCalculation[currentCalculation.length - 1] += input;
+      }
     }
   }
 
@@ -18,9 +23,8 @@ const calculator = (() => {
   const deleteLastInput = () => {
     if (currentCalculation.length === 0) return;
 
-    if (currentCalculation[currentCalculation.length - 1].split('').length > 1) {
-      console.log(currentCalculation[currentCalculation.length - 1]);
-      currentCalculation[currentCalculation.length - 1] = currentCalculation[currentCalculation.length - 1].slice(0, -1);
+    if (String(currentCalculation[currentCalculation.length - 1]).split('').length > 1) {
+      currentCalculation[currentCalculation.length - 1] = String(currentCalculation[currentCalculation.length - 1]).slice(0, -1);
     } else {
       currentCalculation.pop();
     }
@@ -58,7 +62,11 @@ const displayController = (() => {
     }
   }
 
-  return { updateDisplay }
+  const infinityMessage = () => {
+    calculatorDisplay.textContent = 'Cannot divide by 0';
+  }
+
+  return { updateDisplay, infinityMessage }
 })();
 
 const eventHandlers = (() => {
@@ -71,12 +79,21 @@ const eventHandlers = (() => {
       }
 
       if ([...btn.classList].includes('operator') || btn.id === 'btn-equal') {
-        if ([...btn.classList].includes('operator') && calculator.currentCalculation.length === 0) return;
+        if ([...btn.classList].includes('operator')) {
+          if (calculator.currentCalculation.length === 0) return;
+          if (['+', '-', 'X', '/'].includes(calculator.currentCalculation[calculator.currentCalculation.length - 1])) return;
+        }
 
         if (calculator.currentCalculation.length === 3) {
           let currentCalculation = calculator.calculate();
           calculator.clearCalculation();
           calculator.addToCalculation(currentCalculation);
+        }
+
+        if (calculator.currentCalculation[0] === Infinity) {
+          displayController.infinityMessage();
+          calculator.clearCalculation();
+          return;
         }
 
         if ([...btn.classList].includes('operator')) calculator.addToCalculation(btn.textContent);
