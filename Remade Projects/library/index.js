@@ -53,6 +53,9 @@ const displayController = (() => {
       const label = document.createElement('label');
       const input = document.createElement('input');
 
+      if (item === 'Pages') input.type = 'number';
+      if (item === 'Read Status') input.type = 'checkbox';
+
       label.textContent = item;
       label.appendChild(input);
       form.appendChild(label);
@@ -141,11 +144,22 @@ const displayController = (() => {
 const eventHandlers = (() => {
   const bookshelfBody = document.querySelector('#bookshelf-body')
 
+  const preventEmptyInputs = inputs => !inputs.slice(0, -1).every(input => input.value !== '');
+  
+  const extractInputs = inputs => {
+    let [author, title, pages, readStatus] = inputs.map(input => input.getAttribute('type') === 'checkbox' ? input.checked : input.value);
+    inputs.forEach(input => input.getAttribute('type') === 'checkbox' ? input.checked = false : input.value = '');
+    return [author, title, pages, readStatus];
+  }
+
   const addBook = (() => {
     document.querySelector('#add-book-btn').addEventListener('click', (e) => {
       e.preventDefault();
 
-      let newBook = new Book('JK Rowling', 'Harry Potter', 859, true);
+      const inputs = [...document.querySelector('header').querySelectorAll('input')];
+      if (preventEmptyInputs(inputs)) return;
+
+      let newBook = new Book(...extractInputs(inputs));
       libraryController.addBook(newBook);
       displayController.addBookToBookshelf(newBook);
     });
