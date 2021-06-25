@@ -200,18 +200,11 @@ const displayController = (() => {
     const bookContainer = [...document.querySelector('#bookshelf-body').children][index];
     bookContainer.parentElement.removeChild(bookContainer);
   }
-
-  // const toggleBookReadStatus = (bookContainer) => {
-  //   let readStatus = bookContainer.querySelector('.read-status').textContent;
-  //   bookContainer.querySelector('.read-status').textContent = readStatus === 'true' ? 'false' : 'true';
-  // }
-
+  
   return { addBookToBookshelf, editBook, editBookFields, removeBookFromBookshelf }
 })();
 
 const eventHandlers = (() => {
-  const bookshelfBody = document.querySelector('#bookshelf-body')
-
   const preventEmptyInputs = inputs => !inputs.slice(0, -1).every(input => input.value !== '');
   
   const extractInputs = inputs => {
@@ -251,14 +244,6 @@ const eventHandlers = (() => {
       displayController.removeBookFromBookshelf(index);
     });
   }
-
-  // const toggleReadStatus = (readStatusP, bookContainer) => {
-  //   readStatusP.addEventListener('click', () => {
-  //     let bookIndex = [...bookshelfBody.children].indexOf(bookContainer);
-  //     libraryController.toggleBookReadStatus(bookIndex);
-  //     displayController.toggleBookReadStatus(bookContainer);
-  //   });
-  // }
 
   return { editBook, removeBook }
 })();

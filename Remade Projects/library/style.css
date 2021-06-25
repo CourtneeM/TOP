@@ -4,16 +4,64 @@
   padding: 0;
 }
 
+body {
+  font-family: sans-serif;
+}
+
+html {
+  font-size: 14px;
+}
+
+header {
+  padding: 15px;
+}
+header form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+header form label {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  flex-basis: 100px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+header form label input {
+  padding: 3px 12px;
+}
+header form label:nth-child(4) input {
+  margin: 8px auto 0;
+}
+header form button {
+  flex-basis: 150px;
+  margin-top: 15px;
+  margin-bottom: 30px;
+  padding: 9px;
+  font-weight: 600;
+  color: #fff;
+  background: limegreen;
+  border: none;
+  border-radius: 4px;
+}
+
 #bookshelf-header {
   display: grid;
   grid-template-columns: 0.25fr repeat(4, 1fr) 0.25fr;
   justify-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #ddd;
 }
 
 .book-container {
   display: grid;
   grid-template-columns: 0.25fr repeat(4, 1fr) 0.25fr;
   justify-items: center;
+  padding: 20px;
+}
+.book-container:nth-child(even) {
+  background: #eee;
 }
 
 /*# sourceMappingURL=style.css.map */
