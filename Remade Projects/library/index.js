@@ -1,5 +1,12 @@
 class Book {
-  constructor(author, title, pages, readStatus = false) {
+  constructor(author, title, pages, readStatus) {
+    this.author = author;
+    this.title = title;
+    this.pages = pages;
+    this.readStatus = readStatus;
+  }
+
+  editBook(author, title, pages, readStatus) {
     this.author = author;
     this.title = title;
     this.pages = pages;
@@ -19,7 +26,7 @@ const libraryController = (() => {
   }
   
   const editBook = (index, author, title, pages, readStatus) => {
-    myLibrary[index] = { author, title, pages, readStatus }
+    myLibrary[index].editBook(author, title, pages, readStatus);
   }
 
   const removeBook = index => {
@@ -77,7 +84,7 @@ const displayController = (() => {
     bookshelfHeader.id = 'bookshelf-header';
     bookshelfBody.id = 'bookshelf-body';
 
-    bookItems.forEach(item => {
+    ['', ...bookItems, ''].forEach(item => {
       const h2 = document.createElement('h2');
       h2.textContent = item;
       h2.classList.add('bookshelf-header-item');
@@ -96,10 +103,17 @@ const displayController = (() => {
     generateBookshelf();
   })();
 
+  const generateEditBookBtn = () => {
+    const editBookBtn = document.createElement('i');
+    editBookBtn.classList.add('far', 'fa-edit', 'edit-book-btn');
+    eventHandlers.editBook(editBookBtn);
+
+    return editBookBtn;
+  }
+
   const generateRemoveBookBtn = () => {
-    const removeBookBtn = document.createElement('button');
-    removeBookBtn.classList.add('remove-book-btn');
-    removeBookBtn.textContent = '[X]';
+    const removeBookBtn = document.createElement('i');
+    removeBookBtn.classList.add('fas', 'fa-trash', 'remove-book-btn');
     eventHandlers.removeBook(removeBookBtn);
 
     return removeBookBtn;
@@ -108,9 +122,11 @@ const displayController = (() => {
   const addBookToBookshelf = book => {
     const bookshelfBody = document.querySelector('#bookshelf-body');
     const bookContainer = document.createElement('div');
-    const removeBookBtn = generateRemoveBookBtn();    
+    const editBookBtn = generateEditBookBtn();
+    const removeBookBtn = generateRemoveBookBtn();
 
     bookContainer.classList.add('book-container'); 
+    bookContainer.appendChild(editBookBtn);
 
     for (let item in book) {
       const p = document.createElement('p');
@@ -128,6 +144,42 @@ const displayController = (() => {
     bookshelfBody.appendChild(bookContainer);
   }
 
+  const editBook = index => {
+    const bookshelfBody = document.querySelector('#bookshelf-body');
+    const bookContainer = [...bookshelfBody.children][index];
+    const editBookBtn = bookContainer.querySelector('.edit-book-btn');
+    const editFields = [...bookContainer.querySelectorAll('input')];
+    const newValues = editFields.map(field => {
+      if (field.type === 'checkbox') return field.checked;
+      return field.value;
+    });
+    
+    if (!newValues.slice(0, 3).every(value => value)) return;
+    editFields.forEach((field, index) => field.parentElement.textContent = newValues[index]);
+
+    editBookBtn.classList.remove('fa-check-square');
+    editBookBtn.classList.add('fa-edit');
+
+    libraryController.editBook(index, ...newValues)
+  }
+
+  const editBookFields = index => {
+    const bookshelfBody = document.querySelector('#bookshelf-body');
+    const bookContainer = [...bookshelfBody.children][index];
+    const editBookBtn = bookContainer.querySelector('.edit-book-btn');
+    const fields = [...bookContainer.children].slice(1, 5);
+    fields.forEach((field, index) => {
+      const input = document.createElement('input');
+
+      field.textContent = '';
+      index === 3 ? input.type = 'checkbox' : input.type = 'text';
+      field.appendChild(input);
+    });
+
+    editBookBtn.classList.remove('fa-edit');
+    editBookBtn.classList.add('fa-check-square');
+  }
+
   const removeBookFromBookshelf = index => {
     const bookContainer = [...document.querySelector('#bookshelf-body').children][index];
     bookContainer.parentElement.removeChild(bookContainer);
@@ -138,7 +190,7 @@ const displayController = (() => {
     bookContainer.querySelector('.read-status').textContent = readStatus === 'true' ? 'false' : 'true';
   }
 
-  return { addBookToBookshelf, removeBookFromBookshelf, toggleBookReadStatus }
+  return { addBookToBookshelf, editBook, editBookFields, removeBookFromBookshelf, toggleBookReadStatus }
 })();
 
 const eventHandlers = (() => {
@@ -165,6 +217,17 @@ const eventHandlers = (() => {
     });
   })();
 
+  const editBook = editBookBtn => {
+    editBookBtn.addEventListener('click', () => {
+      const index = [...editBookBtn.parentElement.parentElement.children].indexOf(editBookBtn.parentElement);
+      if (editBookBtn.classList.contains('fa-edit')) {
+        displayController.editBookFields(index);
+      } else {
+        displayController.editBook(index);
+      }
+    });
+  }
+
   const removeBook = removeBookBtn => {
     removeBookBtn.addEventListener('click', () => {
       const index = [...removeBookBtn.parentElement.parentElement.children].indexOf(removeBookBtn.parentElement);
@@ -181,5 +244,5 @@ const eventHandlers = (() => {
     });
   }
 
-  return { removeBook, toggleReadStatus }
+  return { editBook, removeBook, toggleReadStatus }
 })();

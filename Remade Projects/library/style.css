@@ -6,12 +6,14 @@
 
 #bookshelf-header {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: 0.25fr repeat(4, 1fr) 0.25fr;
+  justify-items: center;
 }
 
 .book-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: 0.25fr repeat(4, 1fr) 0.25fr;
+  justify-items: center;
 }
 
 /*# sourceMappingURL=style.css.map */
