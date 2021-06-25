@@ -130,13 +130,13 @@ const displayController = (() => {
 
     for (let item in book) {
       const p = document.createElement('p');
-      console.log(item);
+
       if (item === 'readStatus') {
-        p.classList.add('read-status');
-        eventHandlers.toggleReadStatus(p, bookContainer);
+        p.textContent = book[item] ? 'Read' : 'Not Read'
+      } else {
+        p.textContent = book[item];
       }
 
-      p.textContent = book[item];
       bookContainer.appendChild(p);
     }
 
@@ -155,7 +155,13 @@ const displayController = (() => {
     });
     
     if (!newValues.slice(0, 3).every(value => value)) return;
-    editFields.forEach((field, index) => field.parentElement.textContent = newValues[index]);
+    editFields.forEach((field, index) => {
+      if (index === 3) {
+        field.parentElement.textContent = field.checked ? 'Read' : 'Not Read'
+      } else {
+        field.parentElement.textContent = newValues[index];
+      }
+    });
 
     editBookBtn.classList.remove('fa-check-square');
     editBookBtn.classList.add('fa-edit');
@@ -170,9 +176,19 @@ const displayController = (() => {
     const fields = [...bookContainer.children].slice(1, 5);
     fields.forEach((field, index) => {
       const input = document.createElement('input');
+      
+      if (index === 3) {
+        input.type = 'checkbox';
+        field.textContent === 'Read' ? input.checked = true : input.checked = false;
+      } else if (index === 2) {
+        input.type = 'number';
+        input.value = field.textContent;
+      } else {
+        input.type = 'text';
+        input.value = field.textContent;
+      }
 
       field.textContent = '';
-      index === 3 ? input.type = 'checkbox' : input.type = 'text';
       field.appendChild(input);
     });
 
@@ -185,12 +201,12 @@ const displayController = (() => {
     bookContainer.parentElement.removeChild(bookContainer);
   }
 
-  const toggleBookReadStatus = (bookContainer) => {
-    let readStatus = bookContainer.querySelector('.read-status').textContent;
-    bookContainer.querySelector('.read-status').textContent = readStatus === 'true' ? 'false' : 'true';
-  }
+  // const toggleBookReadStatus = (bookContainer) => {
+  //   let readStatus = bookContainer.querySelector('.read-status').textContent;
+  //   bookContainer.querySelector('.read-status').textContent = readStatus === 'true' ? 'false' : 'true';
+  // }
 
-  return { addBookToBookshelf, editBook, editBookFields, removeBookFromBookshelf, toggleBookReadStatus }
+  return { addBookToBookshelf, editBook, editBookFields, removeBookFromBookshelf }
 })();
 
 const eventHandlers = (() => {
@@ -236,13 +252,13 @@ const eventHandlers = (() => {
     });
   }
 
-  const toggleReadStatus = (readStatusP, bookContainer) => {
-    readStatusP.addEventListener('click', () => {
-      let bookIndex = [...bookshelfBody.children].indexOf(bookContainer);
-      libraryController.toggleBookReadStatus(bookIndex);
-      displayController.toggleBookReadStatus(bookContainer);
-    });
-  }
+  // const toggleReadStatus = (readStatusP, bookContainer) => {
+  //   readStatusP.addEventListener('click', () => {
+  //     let bookIndex = [...bookshelfBody.children].indexOf(bookContainer);
+  //     libraryController.toggleBookReadStatus(bookIndex);
+  //     displayController.toggleBookReadStatus(bookContainer);
+  //   });
+  // }
 
-  return { editBook, removeBook, toggleReadStatus }
+  return { editBook, removeBook }
 })();
