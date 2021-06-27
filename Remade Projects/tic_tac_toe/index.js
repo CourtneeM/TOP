@@ -34,7 +34,6 @@ const gameboardController = (() => {
 
 const displayController = (() => {
   const body = document.querySelector('body');
-  let roundNumber = 1;
 
   const preGameElements = (() => {
     const generate = () => {
@@ -82,8 +81,10 @@ const displayController = (() => {
       preGameElements.remove(preGameContainer);
       const [player1, player2] = Object.keys(players);
 
+      roundNumberP.id = 'round-number';
+
       namesP.textContent = `${player1}(${players[player1]}) vs. ${player2}(${players[player2]})`
-      roundNumberP.textContent = `Round #${roundNumber}`;
+      roundNumberP.textContent = `Round #1`;
   
       preGameContainer.appendChild(namesP);
       preGameContainer.appendChild(roundNumberP);
@@ -94,17 +95,17 @@ const displayController = (() => {
   })();
 
   const postGameElements = (() => {
-    const displayWinner = () => {
+    const displayWinner = (winner) => {
       const winnerP = document.createElement('p');
-      // winnerP.textContent = // winnerName
+      winnerP.textContent = winner
       return winnerP;
     }
 
-    const generate = () => {
+    const generate = winner => {
       // append under InGameElements
       const postGameElements = document.createElement('div');
       const winnerH2 = document.createElement('h2');
-      const winnerP = displayWinner();
+      const winnerP = displayWinner(winner);
       const newGameBtn = document.createElement('button');
 
       postGameElements.id = 'post-game-elements';
@@ -156,6 +157,24 @@ const displayController = (() => {
     return { generate, update, clear }
   })();
 
+  const roundNumberHandler = (() => {
+    let roundNumber = 1;
+    
+    const increment = () => {
+      const roundNumberP = document.querySelector('#round-number');
+      roundNumber += 1;
+      roundNumberP.textContent = `Round #${roundNumber}`;
+    }
+
+    const resetRoundNumber = () => {
+      const roundNumberP = document.querySelector('#round-number');
+      roundNumber = 1;
+      roundNumberP.textContent = `Round #${roundNumber}`;
+    }
+
+    return { increment, resetRoundNumber }
+  })();
+
   (function initialRender() {
     preGameElements.generate();
   })();
@@ -165,8 +184,8 @@ const displayController = (() => {
     gameboard.generate();
   }
 
-  const postGameRender = () => {
-    postGameElements.generate();
+  const postGameRender = (winner) => {
+    postGameElements.generate(winner);
     postGameElements.disableBoard();
   }
 
@@ -174,9 +193,10 @@ const displayController = (() => {
     postGameElements.remove();
     postGameElements.enableBoard();
     gameboard.clear();
+    roundNumberHandler.resetRoundNumber();
   }
 
-  return { gameboard, startGameRender, postGameRender, newGameRender }
+  return { gameboard, startGameRender, postGameRender, newGameRender, roundNumberHandler }
 })();
 
 const eventHandlers = (() => {
@@ -190,15 +210,22 @@ const eventHandlers = (() => {
   }
 
   const squaresListener = () => {
+    const checkForEmptySquare = index => gameboardController.gameboard[index] === '';
+
     [...document.querySelectorAll('.square')].forEach((square, index) => {
       square.addEventListener('click', () => {
         const [player1, player2] = Object.keys(players);
         const marker = gameboardController.gameboard.filter(square => square === '').length % 2 !== 0 ? players[player1] : players[player2];
 
+        if (!checkForEmptySquare(index)) return;
+
         gameboardController.update(index, marker);
         displayController.gameboard.update(index, marker);
+        displayController.roundNumberHandler.increment();
+
         if (gameboardController.checkForWinner(marker)) {
-          displayController.postGameRender();
+          const winner = `${Object.keys(players)[Object.values(players).indexOf(marker)]}(${marker})`;
+          displayController.postGameRender(winner);
           newGameListener();
         }
       });
@@ -215,5 +242,4 @@ const eventHandlers = (() => {
 
   
   startGameListener();
-  // newGameListener();
 })();
