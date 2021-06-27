@@ -22,6 +22,8 @@ const gameboardController = (() => {
 
 const displayController = (() => {
   const body = document.querySelector('body');
+  const players = {};
+  let roundNumber = 1;
   
   const generatePreGameElements = () => {
     const preGameContainer = document.createElement('div');
@@ -44,8 +46,33 @@ const displayController = (() => {
     body.appendChild(preGameContainer);
   }
 
+  const generateInGameElements = () => {
+    const preGameContainer = document.querySelector('#pre-game-container');
+    const inputs = [...preGameContainer.querySelectorAll('input')];
+    const startGameBtn = preGameContainer.querySelector('#start-game-btn');
+    const namesP = document.createElement('p');
+    const roundNumberP = document.createElement('p');
+
+    inputs.forEach((input, index) => {
+      index === 0 ? players[input.value] = 'X' : players[input.value] = 'O';
+      preGameContainer.removeChild(input);
+    });
+
+    preGameContainer.removeChild(startGameBtn);
+
+    namesP.textContent = `${Object.keys(players)[0]} vs. ${Object.keys(players)[1]}`
+    roundNumberP.textContent = `Round #${roundNumber}`;
+
+    preGameContainer.appendChild(namesP);
+    preGameContainer.appendChild(roundNumberP);
+  }
+
   const generatePostGameElements = () => {
-    
+    // append under InGameElements
+    // display \\Winner//
+    //         Player Name
+
+    // Add reset button that clears the gameboard, but not names
   }
 
   const gameboard = (() => {
@@ -81,9 +108,9 @@ const displayController = (() => {
     gameboard.generate();
   })();
 
-  return { gameboard }
+  return { generateInGameElements, gameboard }
 })();
 
 const eventHandlers = (() => {
-
+  document.querySelector('#start-game-btn').addEventListener('click', displayController.generateInGameElements);
 })();
