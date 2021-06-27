@@ -18,9 +18,18 @@ const gameboardController = (() => {
     }
   }
 
-  // add win conditions
+  const checkForWinner = marker => {
+    const winningMoves = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+    const currentGameboard = winningMoves.map(move => [gameboard[move[0]], gameboard[move[1]], gameboard[move[2]]])
+    let winner = false;
+    currentGameboard.forEach(winningCombination => {
+      if (winningCombination.every(combo => combo === marker)) winner = true;
+    });
 
-  return { gameboard, generate, update, clear }
+    return winner;
+  }
+
+  return { gameboard, generate, update, clear, checkForWinner }
 })();
 
 const displayController = (() => {
@@ -182,6 +191,7 @@ const eventHandlers = (() => {
 
         gameboardController.update(index, marker);
         displayController.gameboard.update(index, marker);
+        if (gameboardController.checkForWinner(marker)) displayController.postGameRender();
       });
     });
   }
