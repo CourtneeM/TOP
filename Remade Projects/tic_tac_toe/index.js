@@ -105,13 +105,14 @@ const displayController = (() => {
       const postGameElements = document.createElement('div');
       const winnerH2 = document.createElement('h2');
       const winnerP = displayWinner();
-      const resetGameBtn = document.createElement('button');
+      const newGameBtn = document.createElement('button');
 
       postGameElements.id = 'post-game-elements';
-      resetGameBtn.id = 'reset-game-btn';
+      newGameBtn.id = 'new-game-btn';
       winnerH2.textContent = '~~Winner~~';
+      newGameBtn.textContent = 'New Game';
 
-      [winnerH2, winnerP, resetGameBtn].forEach(el => postGameElements.appendChild(el));
+      [winnerH2, winnerP, newGameBtn].forEach(el => postGameElements.appendChild(el));
       document.querySelector('body').insertBefore(postGameElements, document.querySelector('#gameboard-container'));
     }
 
@@ -120,7 +121,11 @@ const displayController = (() => {
       document.querySelector('body').removeChild(postGameElements);
     }
 
-    return { generate, remove }
+    const disableBoard = () => document.querySelector('#gameboard-container').style.pointerEvents = 'none';
+
+    const enableBoard = () => document.querySelector('#gameboard-container').style.pointerEvents = 'auto';
+
+    return { generate, remove, disableBoard, enableBoard }
   })();
 
   const gameboard = (() => {
@@ -162,11 +167,12 @@ const displayController = (() => {
 
   const postGameRender = () => {
     postGameElements.generate();
-    // lock board
+    postGameElements.disableBoard();
   }
 
   const newGameRender = () => {
     postGameElements.remove();
+    postGameElements.enableBoard();
     gameboard.clear();
   }
 
@@ -191,19 +197,23 @@ const eventHandlers = (() => {
 
         gameboardController.update(index, marker);
         displayController.gameboard.update(index, marker);
-        if (gameboardController.checkForWinner(marker)) displayController.postGameRender();
+        if (gameboardController.checkForWinner(marker)) {
+          displayController.postGameRender();
+          newGameListener();
+        }
       });
     });
   }
 
-  const resetGameListener = () => {
-    document.querySelector('#reset-game-btn').addEventListener('click', () => {
+  const newGameListener = () => {
+    document.querySelector('#new-game-btn').addEventListener('click', () => {
       gameboardController.clear();
+      gameboardController.generate();
       displayController.newGameRender();
     });
   }
 
   
   startGameListener();
-  // resetGameListener();
+  // newGameListener();
 })();
