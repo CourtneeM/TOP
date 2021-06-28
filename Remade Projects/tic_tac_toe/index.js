@@ -42,8 +42,14 @@ const playerTurn = (index, marker) => {
   displayController.gameboard.update(index, marker);
 }
 
-const computerTurn = () => {
+const computerTurn = marker => {
+  const emptySquaresIndices = gameboardController.gameboard.map((square, index) => {
+    if (square === '') return index;
+  }).filter(index => index);
+  const randomIndex = emptySquaresIndices[Math.floor(Math.random() * emptySquaresIndices.length)];
 
+  gameboardController.update(randomIndex, marker);
+  displayController.gameboard.update(randomIndex, marker);
 }
 
 const displayController = (() => {
@@ -310,11 +316,12 @@ const eventHandlers = (() => {
         }
 
         if (numPlayers === '1 Player') {
+          if (!gameboardController.checkForEmptySquare(index)) return;
           playerTurn(index, players[player1])
           displayController.roundNumberHandler.increment();
           if (gameboardController.checkForWinner(players[player1])) return winEvent(players[player1]);
 
-          computerTurn(players[player2]) // calculate index within function
+          computerTurn(players[player2])
           displayController.roundNumberHandler.increment();
           if (gameboardController.checkForWinner(players[player2])) return winEvent(players[player2]);
         }
