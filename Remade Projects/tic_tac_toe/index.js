@@ -25,8 +25,9 @@ const gameboardController = (() => {
 
   const checkForWinner = marker => {
     const winningMoves = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-    const currentGameboard = winningMoves.map(move => [gameboard[move[0]], gameboard[move[1]], gameboard[move[2]]])
+    const currentGameboard = winningMoves.map(move => [gameboard[move[0]], gameboard[move[1]], gameboard[move[2]]]);
     let winner = false;
+    
     currentGameboard.forEach(winningCombination => {
       if (winningCombination.every(combo => combo === marker)) winner = true;
     });
@@ -34,7 +35,9 @@ const gameboardController = (() => {
     return winner;
   }
 
-  return { gameboard, generate, update, clear, checkForEmptySquare, checkForWinner }
+  const checkForTie = () => gameboard.every(square => square !== '');
+
+  return { gameboard, generate, update, clear, checkForEmptySquare, checkForWinner, checkForTie }
 })();
 
 const playerTurn = (index, marker) => {
@@ -171,19 +174,38 @@ const displayController = (() => {
       return winnerP;
     }
 
-    const generate = winner => {
-      // append under InGameElements
-      const postGameElements = document.createElement('div');
+    const generateWinner = winner => {
+      const winnerContainer = document.createElement('div');
       const winnerH2 = document.createElement('h2');
       const winnerP = displayWinner(winner);
+
+      winnerH2.textContent = '~~Winner~~';
+
+      [winnerH2, winnerP].forEach(el => winnerContainer.appendChild(el));
+
+      return winnerContainer;
+    }
+
+    const generateTie = () => {
+      const tieContainer = document.createElement('div');
+      const tieH2 = document.createElement('h2');
+
+      tieH2.textContent = "It's a tie!";
+
+      tieContainer.appendChild(tieH2);
+      return tieContainer;
+    }
+
+    const generate = winner => {
+      const postGameElements = document.createElement('div');
+      const resultsContainer = winner ? generateWinner(winner) : generateTie();
       const newGameBtn = document.createElement('button');
 
       postGameElements.id = 'post-game-elements';
       newGameBtn.id = 'new-game-btn';
-      winnerH2.textContent = '~~Winner~~';
       newGameBtn.textContent = 'New Game';
 
-      [winnerH2, winnerP, newGameBtn].forEach(el => postGameElements.appendChild(el));
+      [resultsContainer, newGameBtn].forEach(el => postGameElements.appendChild(el));
       document.querySelector('body').insertBefore(postGameElements, document.querySelector('#gameboard-container'));
     }
 
@@ -254,7 +276,7 @@ const displayController = (() => {
     gameboard.generate();
   }
 
-  const postGameRender = (winner) => {
+  const postGameRender = winner => {
     postGameElements.generate(winner);
     postGameElements.disableBoard();
   }
@@ -302,6 +324,11 @@ const eventHandlers = (() => {
       displayController.postGameRender(winner);
       newGameListener();
     }
+
+    const tieEvent = () => {
+      displayController.postGameRender();
+      newGameListener();
+    }
     
     [...document.querySelectorAll('.square')].forEach((square, index) => {
       square.addEventListener('click', () => {
@@ -313,6 +340,7 @@ const eventHandlers = (() => {
           playerTurn(index, marker);
           displayController.roundNumberHandler.increment();
           if (gameboardController.checkForWinner(marker)) return winEvent(marker);
+          if(gameboardController.checkForTie()) return tieEvent();
         }
 
         if (numPlayers === '1 Player') {
@@ -320,10 +348,12 @@ const eventHandlers = (() => {
           playerTurn(index, players[player1])
           displayController.roundNumberHandler.increment();
           if (gameboardController.checkForWinner(players[player1])) return winEvent(players[player1]);
+          if(gameboardController.checkForTie()) return tieEvent();
 
           computerTurn(players[player2])
           displayController.roundNumberHandler.increment();
           if (gameboardController.checkForWinner(players[player2])) return winEvent(players[player2]);
+          if(gameboardController.checkForTie()) return tieEvent();
         }
       });
     });
