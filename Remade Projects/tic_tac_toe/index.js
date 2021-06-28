@@ -48,11 +48,28 @@ const playerTurn = (index, marker) => {
 const computerTurn = marker => {
   const emptySquaresIndices = gameboardController.gameboard.map((square, index) => {
     if (square === '') return index;
+  }).filter(index => index);  
+  const winningMoves = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+  const currentGameboard = winningMoves.map(move => [gameboardController.gameboard[move[0]], gameboardController.gameboard[move[1]], gameboardController.gameboard[move[2]]]);
+  
+  const offenseMoves = currentGameboard.map((moves, index) => {
+    if (moves.filter(move => move === 'O').length === 2 && moves.includes('')) return index;
   }).filter(index => index);
-  const randomIndex = emptySquaresIndices[Math.floor(Math.random() * emptySquaresIndices.length)];
 
-  gameboardController.update(randomIndex, marker);
-  displayController.gameboard.update(randomIndex, marker);
+  const defenseMoves = currentGameboard.map((moves, index) => {
+    if (moves.filter(move => move === 'X').length === 2 && moves.includes('')) return index;
+  }).filter(index => index);
+
+  let index = emptySquaresIndices[Math.floor(Math.random() * emptySquaresIndices.length)];
+
+  if (offenseMoves.length > 0) {
+    index = winningMoves[offenseMoves[Math.floor(Math.random() * offenseMoves.length)]].filter(move => gameboardController.gameboard[move] === '')[0];
+  } else if (defenseMoves.length > 0) {
+    index = winningMoves[defenseMoves[Math.floor(Math.random() * defenseMoves.length)]].filter(move => gameboardController.gameboard[move] === '')[0];
+  }
+
+  gameboardController.update(index, marker);
+  displayController.gameboard.update(index, marker);
 }
 
 const displayController = (() => {
