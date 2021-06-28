@@ -4,12 +4,74 @@
   padding: 0;
 }
 
+body { font-family: sans-serif; }
+
 #pre-game-container {
+  padding: 20px;
   text-align: center;
+
+  h1 { margin-bottom: 10px; }
+
+  #num-players-container {
+    margin-bottom: 10px;
+
+    label {
+      margin-left: 10px;
+      margin-right: 10px;
+
+      input { margin-left: 8px; }
+    }
+  }
+
+  #inputs-container {
+    margin-bottom: 10px;
+
+    input {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
   
   button {
     display: block;
     margin: 0 auto;
+    padding: 10px 20px;
+    font-weight: 600;
+    color: #fff;
+    background: steelblue;
+    border: 1px solid #000;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+}
+
+#in-game-container {
+  padding: 20px 0 0;
+  text-align: center;
+
+  h1 { margin-bottom: 10px; }
+  p { margin-bottom: 10px; }
+}
+
+#post-game-container {
+  margin: 15px 0;
+  padding: 15px;
+  text-align: center;
+  background: #ddd;
+
+  h2 { margin-bottom: 10px; }
+  p { margin-bottom: 10px; }
+
+  button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-weight: 600;
+    color: steelblue;
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 4px;
+    cursor: pointer;
   }
 }
 
@@ -21,8 +83,12 @@
   margin: 30px auto;
 
   div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 150px;
     height: 150px;
+    font-size: 3.6rem;
     border: 1px solid #000;
 
     &:nth-child(3n+1) { border-left: none; }

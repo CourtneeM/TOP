@@ -156,7 +156,7 @@ const displayController = (() => {
 
       roundNumberP.id = 'round-number';
 
-      namesP.textContent = `${player1}(${players[player1]}) vs. ${player2}(${players[player2]})`
+      namesP.textContent = `${player1} (${players[player1]}) vs. ${player2} (${players[player2]})`
       roundNumberP.textContent = `Round #1`;
   
       preGameContainer.appendChild(namesP);
@@ -179,7 +179,7 @@ const displayController = (() => {
       const winnerH2 = document.createElement('h2');
       const winnerP = displayWinner(winner);
 
-      winnerH2.textContent = '~~Winner~~';
+      winnerH2.textContent = 'Winner';
 
       [winnerH2, winnerP].forEach(el => winnerContainer.appendChild(el));
 
@@ -197,21 +197,21 @@ const displayController = (() => {
     }
 
     const generate = winner => {
-      const postGameElements = document.createElement('div');
+      const postGameContainer = document.createElement('div');
       const resultsContainer = winner ? generateWinner(winner) : generateTie();
       const newGameBtn = document.createElement('button');
 
-      postGameElements.id = 'post-game-elements';
+      postGameContainer.id = 'post-game-container';
       newGameBtn.id = 'new-game-btn';
       newGameBtn.textContent = 'New Game';
 
-      [resultsContainer, newGameBtn].forEach(el => postGameElements.appendChild(el));
-      document.querySelector('body').insertBefore(postGameElements, document.querySelector('#gameboard-container'));
+      [resultsContainer, newGameBtn].forEach(el => postGameContainer.appendChild(el));
+      document.querySelector('body').insertBefore(postGameContainer, document.querySelector('#gameboard-container'));
     }
 
     const remove = () => {
-      const postGameElements = document.querySelector('#post-game-elements');
-      document.querySelector('body').removeChild(postGameElements);
+      const postGameContainer = document.querySelector('#post-game-container');
+      document.querySelector('body').removeChild(postGameContainer);
     }
 
     const disableBoard = () => document.querySelector('#gameboard-container').style.pointerEvents = 'none';
@@ -320,7 +320,7 @@ const eventHandlers = (() => {
 
   const squaresListener = () => {
     const winEvent =  marker => {
-      const winner = `${Object.keys(players)[Object.values(players).indexOf(marker)]}(${marker})`;
+      const winner = `${Object.keys(players)[Object.values(players).indexOf(marker)]} (${marker})`;
       displayController.postGameRender(winner);
       newGameListener();
     }
@@ -351,7 +351,6 @@ const eventHandlers = (() => {
           if(gameboardController.checkForTie()) return tieEvent();
 
           computerTurn(players[player2])
-          displayController.roundNumberHandler.increment();
           if (gameboardController.checkForWinner(players[player2])) return winEvent(players[player2]);
           if(gameboardController.checkForTie()) return tieEvent();
         }
