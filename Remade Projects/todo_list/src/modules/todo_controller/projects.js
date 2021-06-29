@@ -1,9 +1,9 @@
 class Projects {
-  add(listName, list) {
+  addList(listName, list) {
     this[listName] = list;
   }
 
-  remove(listName) {
+  removeList(listName) {
     delete this[listName];
   }
 }

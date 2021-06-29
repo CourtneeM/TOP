@@ -7,5 +7,5 @@ const defaultList = new TodoList([new Todo('defaultTodo1', 'default todo 1', 'no
 new Todo('defaultTodo2', 'default todo 2', 'later', 2, 'notes notes', true)]);
 const projects = new Projects();
 
-projects.add('Default List', defaultList);
+projects.addList('Default List', defaultList);
 console.log(projects);

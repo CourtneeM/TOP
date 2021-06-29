@@ -3,16 +3,12 @@ class TodoList {
     this.list = list;
   }
 
-  add(todo) {
+  addTodo(todo) {
     this.list.push(todo);
   }
 
-  remove(index) {
+  removeTodo(index) {
     this.list.splice(index, 1);
-  }
-
-  edit(index, todo) {
-    this.list.splice(index, 1, todo);
   }
 }
 
