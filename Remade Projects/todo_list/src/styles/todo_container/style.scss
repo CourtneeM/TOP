@@ -1,0 +1,13 @@
+.todo-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.item-container {
+  text-align: center;
+
+  p:first-child {
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+}
