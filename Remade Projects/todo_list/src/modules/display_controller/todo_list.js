@@ -39,6 +39,15 @@ const currentProjectContainer = (() => {
     renderTodoListContainer(projectName, projectList);
   }
 
+  const addTodo = (newTodo) => {
+    const newTodoElement = todoContainer.render(newTodo);
+    document.querySelector('#todo-list-container').appendChild(newTodoElement);
+  }
+
+  const removeTodo = index => {
+
+  }
+
   const renderNewTodoButton = () => {
     const newTodoFormBtn = document.createElement('button');
 
@@ -73,7 +82,7 @@ const currentProjectContainer = (() => {
     currentProjectContainer.appendChild(newTodoForm);
   }
 
-  return { initialRender, rerenderTodoListContainer, renderNewTodoForm }
+  return { initialRender, rerenderTodoListContainer, addTodo, removeTodo, renderNewTodoForm }
 })();
 
 export default currentProjectContainer;

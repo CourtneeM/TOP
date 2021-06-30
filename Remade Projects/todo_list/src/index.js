@@ -25,16 +25,28 @@ const initialRender = (() => {
   currentProjectContainer.initialRender('Default List', projects['Default List']);
 })();
 
-const projectsListContainer = document.querySelector('#projects-list-container');
-[...projectsListContainer.children].forEach(projectP => {
-  projectP.addEventListener('click', () => {
-    currentProjectContainer.rerenderTodoListContainer(projectP.textContent, projects[projectP.textContent]);
-  });
-});
-
-document.querySelector('#new-todo-form-btn').addEventListener('click', () => {
-  currentProjectContainer.renderNewTodoForm(projects);
-  document.querySelector('#add-todo-btn').addEventListener('click', () => {
-    
-  });
-});
+const eventHandlers = (() => {
+  const projectsListListener = (() => {
+    const projectsListContainer = document.querySelector('#projects-list-container');
+    [...projectsListContainer.children].forEach(projectP => {
+      projectP.addEventListener('click', () => {
+        currentProjectContainer.rerenderTodoListContainer(projectP.textContent, projects[projectP.textContent]);
+      });
+    });
+  })();
+  
+  const newTodoBtnListener = (() => {
+    document.querySelector('#new-todo-form-btn').addEventListener('click', () => {
+      currentProjectContainer.renderNewTodoForm(projects);
+      document.querySelector('#add-todo-btn').addEventListener('click', () => {
+        const inputValues = [...document.querySelector('#new-todo-form').querySelectorAll('input')]
+                            .map(input => input.value);
+        const newTodo = new Todo(...inputValues);
+        const currentProject = projects[document.querySelector('#current-project-name').textContent];
+        
+        currentProject.list.push(newTodo);
+        currentProjectContainer.addTodo(newTodo);
+      });
+    });
+  })();
+})();
