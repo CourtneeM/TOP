@@ -4,6 +4,7 @@
 }
 
 .item-container {
+  flex-basis: 100%/6;
   text-align: center;
 }
 .item-container p:first-child {

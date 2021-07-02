@@ -3,7 +3,7 @@ import './styles/style.css';
 import Todo from './modules/todo_controller/todo';
 import TodoList from './modules/todo_controller/todo_list';
 import Projects from './modules/todo_controller/projects';
-import projectsContainer from './modules/display_controller/projects';
+import { projectsContainer, projectsEventHandler } from './modules/display_controller/projects';
 import currentProjectContainer from './modules/display_controller/todo_list';
 
 // Test //
@@ -21,19 +21,12 @@ projects.addList('Todo List 1', todoList1);
 // console.log(projects);
 
 const initialRender = (() => {
-  projectsContainer.initialRender(projects);
+  projectsContainer.initialRender(projects, currentProjectContainer);
   currentProjectContainer.initialRender('Default List', projects['Default List']);
 })();
 
 const eventHandlers = (() => {
-  const projectsListListener = (() => {
-    const projectsListContainer = document.querySelector('#projects-list-container');
-    [...projectsListContainer.children].forEach(projectP => {
-      projectP.addEventListener('click', () => {
-        currentProjectContainer.rerenderTodoListContainer(projectP.textContent, projects[projectP.textContent]);
-      });
-    });
-  })();
+  projectsEventHandler.initialProjectsListener(projects, currentProjectContainer);
   
   const newTodoBtnListener = (() => {
     document.querySelector('#new-todo-form-btn').addEventListener('click', () => {

@@ -5,8 +5,18 @@
   text-align: center;
   border-right: 1px solid #000;
 }
-#projects-container h2 {
+#projects-container .project-container {
+  display: flex;
+  justify-content: center;
+}
+#projects-container .project-container h2 {
   margin-bottom: 15px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+#projects-container .project-container i {
+  margin-left: 15px;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=style.css.map */
