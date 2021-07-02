@@ -1,5 +1,7 @@
+import TodoList from './todo_list';
+
 class Projects {
-  addList(listName, list) {
+  addList(listName, list = new TodoList()) {
     this[listName] = list;
   }
 

@@ -1,5 +1,5 @@
 class TodoList {
-  constructor(list) {
+  constructor(list = []) {
     this.list = list;
   }
 
