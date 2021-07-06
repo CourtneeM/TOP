@@ -31,8 +31,6 @@ const projectsContainer = (() => {
       projectNameP.classList.add('project-name');
       projectNameP.textContent = projectName;
 
-      projectsEventHandler.editProjectListeners.editProject(projects, editBtn);
-      
       [projectNameP, editBtn].forEach(el => projectContainer.appendChild(el));
       projectsListContainer.appendChild(projectContainer);
     }
@@ -47,8 +45,6 @@ const projectsContainer = (() => {
     newProjectContainer.id = 'new-project-container';
     newProjectBtn.id = 'new-project-btn';
     newProjectBtn.textContent = 'New Project';
-
-    projectsEventHandler.newProjectListeners.newProject(projects, newProjectBtn);
 
     newProjectContainer.appendChild(newProjectBtn);
     projectsContainer.appendChild(newProjectContainer);
@@ -89,9 +85,6 @@ const projectsContainer = (() => {
       editBtn.classList.add('far', 'fa-edit', 'edit-project-btn');
       newProjectNameP.textContent = selectedProjectName ? selectedProjectName : selectedProject.querySelector('input').value;
       
-      projectsEventHandler.projectPListener(projects, newProjectNameP);
-      projectsEventHandler.editProjectListeners.editProject(projects, editBtn);
-
       while (selectedProject.firstChild) {
         selectedProject.removeChild(selectedProject.firstChild);
       }
@@ -127,8 +120,6 @@ const projectsContainer = (() => {
       newProjectBtn.id = 'new-project-btn';
       newProjectBtn.textContent = 'New Project';
       
-      projectsEventHandler.newProjectListeners.newProject(projects, newProjectBtn);
-
       while (newProjectContainer.firstChild) {
         newProjectContainer.removeChild(newProjectContainer.firstChild);
       }
@@ -143,9 +134,6 @@ const projectsContainer = (() => {
         newProjectNameP.classList.add('project-name');
         newProjectNameP.textContent = newProjectName;
 
-        projectsEventHandler.projectPListener(projects, newProjectNameP);
-        projectsEventHandler.editProjectListeners.editProject(projects, editBtn);
-        
         [newProjectNameP, editBtn].forEach(el => newProjectContainer.appendChild(el));
         document.querySelector('#projects-list-container').appendChild(newProjectContainer);
       }
@@ -164,78 +152,4 @@ const projectsContainer = (() => {
   return { initialRender, renderProjectsList, editProject, newProject, removeProject }
 })();
 
-const projectsEventHandler = (() => {
-  const initialProjectsListener = (projects) => {
-    const projectsListContainer = document.querySelector('#projects-list-container');
-
-    [...projectsListContainer.querySelectorAll('.project-name')].forEach(projectP => {
-      projectPListener(projects, projectP);
-    });
-  }
-
-  const projectPListener = (projects, projectP) => {
-    projectP.addEventListener('click', () => {
-      currentProjectContainer.rerenderTodoListContainer(projectP.textContent, projects[projectP.textContent]);
-    });
-  }
-
-  // run when list is generated, and again for new project added to list
-  const editProjectListeners = (() => {
-    const editProject = (projects, editBtn) => {  
-      editBtn.addEventListener('click', () => {
-        const selectedProject = editBtn.parentElement
-        const selectedProjectName = selectedProject.querySelector('.project-name').textContent;
-
-        projectsContainer.editProject.renderEdit(selectedProject);
-        confirmEditProject(projects, selectedProject, selectedProjectName);
-        cancelEditProject(projects, selectedProject, selectedProjectName);
-      });
-    }
-
-    const confirmEditProject = (projects, selectedProject, oldProjectName) => {
-      selectedProject.querySelector('.confirm-edit-project-btn').addEventListener('click', () => {
-        projectsContainer.editProject.renderConfirmCancelEdit(projects, selectedProject);
-
-        const newProjectName = selectedProject.querySelector('.project-name').textContent;
-        projects.editListName(oldProjectName, newProjectName);
-        currentProjectContainer.rerenderTodoListContainer(newProjectName, projects[newProjectName]);
-      });
-    }
-    
-    const cancelEditProject = (projects, selectedProject, selectedProjectName) => {
-      selectedProject.querySelector('.cancel-edit-project-btn').addEventListener('click', () => {
-        projectsContainer.editProject.renderConfirmCancelEdit(projects, selectedProject, selectedProjectName);
-      });
-    }
-
-    return { editProject, confirmEditProject, cancelEditProject }
-  })();
-
-  const newProjectListeners = (() => {
-    const newProject = (projects, newProjectBtn) => {
-      newProjectBtn.addEventListener('click', () => {
-        projectsContainer.newProject.renderNewProject();
-        confirmNewProject(projects);
-        cancelNewProject();
-      });
-    }
-
-    const confirmNewProject = projects => {
-      document.querySelector('#confirm-new-project-btn').addEventListener('click', () => {
-        const newProjectName = document.querySelector('#new-project-container').querySelector('input').value;
-        projectsContainer.newProject.renderConfirmCancelNewProject(projects, newProjectName);
-        projects.addList(newProjectName)
-      });
-    }
-
-    const cancelNewProject = () => {
-      document.querySelector('#cancel-new-project-btn').addEventListener('click', () => projectsContainer.newProject.renderConfirmCancelNewProject());
-    }
-
-    return { newProject, confirmNewProject, cancelNewProject }
-  })();
-
-  return { initialProjectsListener, projectPListener, editProjectListeners, newProjectListeners }
-})();
-
-export { projectsContainer, projectsEventHandler }
+export default projectsContainer;
