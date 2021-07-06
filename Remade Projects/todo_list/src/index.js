@@ -29,7 +29,6 @@ const eventHandlers = (() => {
   const projectsListener = (() => {
     const projectPListener = (projectP) => {
       projectP.addEventListener('click', () => {
-        console.log(projects);
         currentProjectContainer.rerenderTodoListContainer(projectP.textContent, projects[projectP.textContent]);
       });
     }
@@ -43,12 +42,13 @@ const eventHandlers = (() => {
           projectsContainer.editProject.renderEdit(selectedProject);
           confirmEditProject(projects, selectedProject, selectedProjectName);
           cancelEditProject(projects, selectedProject, selectedProjectName);
+          deleteProjectListener.deleteProject(selectedProjectName, selectedProject.querySelector('.delete-project-btn'));
         });
       }
   
       const confirmEditProject = (projects, selectedProject, oldProjectName) => {
         selectedProject.querySelector('.confirm-edit-project-btn').addEventListener('click', () => {
-          projectsContainer.editProject.renderConfirmCancelEdit(projects, selectedProject);
+          projectsContainer.editProject.renderConfirmCancelEdit(selectedProject);
   
           const newProjectNameContainer = selectedProject.querySelector('.project-name');
           const newProjectName = newProjectNameContainer.textContent;
@@ -61,7 +61,7 @@ const eventHandlers = (() => {
       
       const cancelEditProject = (projects, selectedProject, selectedProjectName) => {
         selectedProject.querySelector('.cancel-edit-project-btn').addEventListener('click', () => {
-          projectsContainer.editProject.renderConfirmCancelEdit(projects, selectedProject, selectedProjectName);
+          projectsContainer.editProject.renderConfirmCancelEdit(selectedProject, selectedProjectName);
           projectPListener(selectedProject.querySelector('.project-name'));
           editProject(selectedProject.querySelector('.edit-project-btn'));
         });
@@ -71,8 +71,22 @@ const eventHandlers = (() => {
     })();
 
     const deleteProjectListener = (() => {
-      // delete selected project
+      const deleteProject = (selectedProjectName, deleteBtn) => {
+        deleteBtn.addEventListener('click', () => {
+          const selectedProjectContainer = deleteBtn.parentElement;
+
+          projects.removeList(selectedProjectName);
+          projectsContainer.deleteProject(selectedProjectContainer);
+
+          if (document.querySelector('#current-project-name').textContent === selectedProjectName) {
+            const firstProject = Object.keys(projects)[0];
+            currentProjectContainer.rerenderTodoListContainer(firstProject, projects[firstProject]);
+          }
+        });
+
+      }
       // if the selected project is the currently displayed, display the first project in the projects list
+      return { deleteProject }
     })();
 
     const newProjectListeners = (() => {
@@ -88,13 +102,13 @@ const eventHandlers = (() => {
         document.querySelector('#confirm-new-project-btn').addEventListener('click', () => {
           const newProjectName = document.querySelector('#new-project-container').querySelector('input').value;
           
-          projectsContainer.newProject.renderConfirmCancelNewProject(projects, newProjectName);
+          projectsContainer.newProject.renderConfirmCancelNewProject(newProjectName);
           projects.addList(newProjectName)
 
           const projectContainers = [...document.querySelectorAll('.project-name')];
           const newProjectContainer = projectContainers[projectContainers.length - 1].parentElement;
           projectPListener(newProjectContainer.querySelector('.project-name'));
-          editListeners.editProject(newProjectContainer.querySelector('.edit-project-btn'));
+          editProjectListeners.editProject(newProjectContainer.querySelector('.edit-project-btn'));
           newProjectListener(document.querySelector('#new-project-btn'));
         });
       }

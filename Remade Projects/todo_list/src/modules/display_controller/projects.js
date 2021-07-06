@@ -1,5 +1,4 @@
 import '../../styles/projects_container/style.css';
-import currentProjectContainer from './todo_list';
 
 const projectsContainer = (() => {
   const projectsContainer = document.createElement('section');
@@ -15,7 +14,7 @@ const projectsContainer = (() => {
 
     projectsContainer.appendChild(projectsH2);
     renderProjectsList();
-    renderNewProjectContainer(projects);
+    renderNewProjectContainer();
 
     document.querySelector('body').appendChild(projectsContainer);
   }
@@ -38,7 +37,7 @@ const projectsContainer = (() => {
     projectsContainer.appendChild(projectsListContainer);
   }
 
-  const renderNewProjectContainer = projects => {
+  const renderNewProjectContainer = () => {
     const newProjectContainer = document.createElement('div');
     const newProjectBtn = document.createElement('button');
 
@@ -77,7 +76,7 @@ const projectsContainer = (() => {
       [projectNameInput, confirmBtn, cancelBtn, deleteBtn].forEach(el => selectedProject.appendChild(el));
     }
 
-    const renderConfirmCancelEdit = (projects, selectedProject, selectedProjectName = null) => {
+    const renderConfirmCancelEdit = (selectedProject, selectedProjectName = null) => {
       const newProjectNameP = document.createElement('p');
       const editBtn = document.createElement('i');
 
@@ -112,7 +111,7 @@ const projectsContainer = (() => {
       [newProjectInput, confirmBtn, cancelBtn].forEach(el => newProjectContainer.appendChild(el));
     }
 
-    const renderConfirmCancelNewProject = (projects, newProjectName) => {
+    const renderConfirmCancelNewProject = (newProjectName) => {
       const newProjectContainer = document.querySelector('#new-project-container');
       const newProjectBtn = document.createElement('button');
 
@@ -144,12 +143,11 @@ const projectsContainer = (() => {
     return { renderNewProject, renderConfirmCancelNewProject }
   })();
 
-  const removeProject = projectName => {
-    const projectP = [...projectsListContainer.children].filter(el => el.textContent === projectName)[0];
-    projectsListContainer.removeChild(projectP);
+  const deleteProject = selectedProjectContainer => {
+    projectsListContainer.removeChild(selectedProjectContainer);
   }
 
-  return { initialRender, renderProjectsList, editProject, newProject, removeProject }
+  return { initialRender, renderProjectsList, editProject, newProject, deleteProject }
 })();
 
 export default projectsContainer;

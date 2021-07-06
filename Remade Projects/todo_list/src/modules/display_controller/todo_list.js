@@ -13,6 +13,8 @@ const currentProjectContainer = (() => {
   }
 
   const renderTodoListContainer = (projectName, projectList) => {
+    if (!projectList) return;
+
     const todoListContainer = document.createElement('div');
     const todoListH2 = document.createElement('h2');
 
