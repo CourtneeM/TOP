@@ -25,7 +25,7 @@ const todoListContainer = (() => {
     todoListContainer.appendChild(todoListH2);
 
     for (let todo of projectList.list) {
-      todoListContainer.appendChild(todoContainer.render(todo));
+      todoListContainer.appendChild(todoContainer.render.todoContainer(todo));
     }
 
     currentProjectContainer.appendChild(todoListContainer);

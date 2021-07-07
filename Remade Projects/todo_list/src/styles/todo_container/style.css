@@ -1,6 +1,17 @@
 .todo-container {
   display: flex;
   justify-content: space-around;
+  align-items: center;
+  padding: 15px 5px;
+}
+.todo-container:nth-child(odd) {
+  background: #eee;
+}
+.todo-container .confirm-edit-todo-btn {
+  color: lime;
+}
+.todo-container .cancel-edit-todo-btn {
+  color: goldenrod;
 }
 
 .item-container {

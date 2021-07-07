@@ -5,6 +5,7 @@ import TodoList from './modules/todo_controller/todo_list';
 import Projects from './modules/todo_controller/projects';
 import projectsContainer from './modules/display_controller/projects';
 import todoListContainer from './modules/display_controller/todo_list';
+import todoContainer from './modules/display_controller/todo';
 
 // Test //
 const defaultList = new TodoList([new Todo('defaultTodo1', 'default todo 1', 'now', 1, 'notes', false),
@@ -194,11 +195,44 @@ const eventHandlers = (() => {
   })();
 
   const todosListener = (() => {
+    const editTodo = editBtn => {
+      editBtn.addEventListener('click', () => {
+        const selectedTodo = editBtn.parentElement;
+        const todoPs = selectedTodo.querySelectorAll('.todo-value');
 
+        todoContainer.render.editTodo.editTodoForm(selectedTodo, todoPs);
+
+        confirmEditTodo(selectedTodo);
+        cancelEditTodo(selectedTodo, todoPs);
+      });
+
+      const confirmEditTodo = selectedTodo => {
+        selectedTodo.querySelector('.confirm-edit-todo-btn').addEventListener('click', () => {
+          todoContainer.render.editTodo.confirmEditTodo(selectedTodo);
+          editTodo(selectedTodo.querySelector('edit-todo-btn'));
+        });
+      }
+
+      const cancelEditTodo = (selectedTodo, todoPs) => {
+        selectedTodo.querySelector('.cancel-edit-todo-btn').addEventListener('click', () => {
+         todoContainer.render.editTodo.cancelEditTodo(selectedTodo, todoPs);
+         editTodo(selectedTodo.querySelector('.edit-todo-btn'));
+        });
+      }
+    }
+
+    const initialTodoListeners = () => {
+      document.querySelectorAll('.edit-todo-btn').forEach(editBtn => {
+        editTodo(editBtn);
+      });
+    }
+
+    return { initialTodoListeners }
   })();
   
   const initialListeners = (() => {
     projectsListener.initialProjectsListener();
     todoListListener.initialTodoListListeners();
+    todosListener.initialTodoListeners();
   })();
 })();
