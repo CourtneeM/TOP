@@ -5,18 +5,55 @@
   text-align: center;
   border-right: 1px solid #000;
 }
+#projects-container h2 {
+  margin-bottom: 10px;
+}
+#projects-container #new-project-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+#projects-container #new-project-container #new-project-btn {
+  margin-top: 15px;
+  font-size: 1.6rem;
+  color: lime;
+  cursor: pointer;
+}
+#projects-container #new-project-container input {
+  margin-bottom: 10px;
+}
+#projects-container #new-project-container #confirm-new-project-btn {
+  flex-basis: 25%;
+  font-size: 1.2rem;
+  color: lime;
+}
+#projects-container #new-project-container #cancel-new-project-btn {
+  flex-basis: 25%;
+  font-size: 1.2rem;
+  color: goldenrod;
+}
 #projects-container .project-container {
   display: flex;
   justify-content: center;
 }
-#projects-container .project-container h2 {
-  margin-bottom: 15px;
-  margin-right: 15px;
+#projects-container .project-container .project-name {
+  margin-bottom: 20px;
+  margin-right: 8px;
   cursor: pointer;
 }
 #projects-container .project-container i {
-  margin-left: 15px;
+  margin-left: 8px;
   cursor: pointer;
+}
+#projects-container .project-container .confirm-edit-project-btn {
+  color: lime;
+}
+#projects-container .project-container .cancel-edit-project-btn {
+  color: goldenrod;
+}
+#projects-container .project-container .delete-project-btn {
+  color: red;
 }
 
 /*# sourceMappingURL=style.css.map */

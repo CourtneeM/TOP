@@ -39,11 +39,11 @@ const projectsContainer = (() => {
 
   const renderNewProjectContainer = () => {
     const newProjectContainer = document.createElement('div');
-    const newProjectBtn = document.createElement('button');
+    const newProjectBtn = document.createElement('i');
 
     newProjectContainer.id = 'new-project-container';
     newProjectBtn.id = 'new-project-btn';
-    newProjectBtn.textContent = 'New Project';
+    newProjectBtn.classList.add('far', 'fa-plus-square');
 
     newProjectContainer.appendChild(newProjectBtn);
     projectsContainer.appendChild(newProjectContainer);
@@ -97,6 +97,7 @@ const projectsContainer = (() => {
   const newProject = (() => {
     const renderNewProject = () => {
       const newProjectContainer = document.querySelector('#new-project-container');
+      const newProjectLabel = document.createElement('label');
       const newProjectInput = document.createElement('input');
       const confirmBtn = document.createElement('i');
       const cancelBtn = document.createElement('i');
@@ -105,19 +106,21 @@ const projectsContainer = (() => {
       cancelBtn.id = 'cancel-new-project-btn';
       confirmBtn.classList.add('far', 'fa-check-square');
       cancelBtn.classList.add('far', 'fa-window-close');
+      
+      newProjectLabel.textContent = 'Project Name:'
 
       newProjectContainer.removeChild(newProjectContainer.firstChild);
 
-      [newProjectInput, confirmBtn, cancelBtn].forEach(el => newProjectContainer.appendChild(el));
+      [newProjectLabel, newProjectInput, confirmBtn, cancelBtn].forEach(el => newProjectContainer.appendChild(el));
     }
 
     const renderConfirmCancelNewProject = (newProjectName) => {
       const newProjectContainer = document.querySelector('#new-project-container');
-      const newProjectBtn = document.createElement('button');
+      const newProjectBtn = document.createElement('i');
 
       newProjectContainer.id = 'new-project-container';
       newProjectBtn.id = 'new-project-btn';
-      newProjectBtn.textContent = 'New Project';
+      newProjectBtn.classList.add('far', 'fa-plus-square');
       
       while (newProjectContainer.firstChild) {
         newProjectContainer.removeChild(newProjectContainer.firstChild);
