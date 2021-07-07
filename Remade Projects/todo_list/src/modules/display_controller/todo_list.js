@@ -1,13 +1,13 @@
 import '../../styles/todo_list_container/style.css';
 import todoContainer from './todo';
 
-const currentProjectContainer = (() => {
+const todoListContainer = (() => {
   const currentProjectContainer = document.createElement('section');
   currentProjectContainer.id = 'current-project-container';
   
   const initialRender = (projectName, projectList) => {
     renderTodoListContainer(projectName, projectList);
-    renderNewTodoButton();
+    newTodo.renderNewTodoButton();
 
     document.querySelector('body').appendChild(currentProjectContainer);
   }
@@ -50,41 +50,54 @@ const currentProjectContainer = (() => {
 
   }
 
-  const renderNewTodoButton = () => {
-    const newTodoFormBtn = document.createElement('button');
+  const newTodo = (() => {
+    const renderNewTodoButton = () => {
+      const newTodoFormBtn = document.createElement('i');
 
-    newTodoFormBtn.id = 'new-todo-form-btn';
-    newTodoFormBtn.textContent = '+';
+      newTodoFormBtn.id = 'new-todo-form-btn';
+      newTodoFormBtn.classList.add('fas', 'fa-plus-circle');
 
-    currentProjectContainer.appendChild(newTodoFormBtn);
-  }
+      currentProjectContainer.appendChild(newTodoFormBtn);
+    }
 
-  const renderNewTodoForm = (projects) => {
-    const newTodoForm = document.createElement('div');
-    const currentProjectName = document.querySelector('#current-project-name').textContent;
-    const todoHeaders = Object.keys(projects[currentProjectName].list[0]);
-    const addTodoBtn = document.createElement('button');
+    const renderNewTodoForm = () => {
+      const newTodoForm = document.createElement('div');
+      const todoHeaders = ['Title', 'Description', 'Due Date', 'Priority', 'Notes', 'Completed'];
+      const addTodoBtn = document.createElement('i');
+      const cancelNewTodoBtn = document.createElement('i');
 
-    newTodoForm.id = 'new-todo-form';
-    addTodoBtn.id = 'add-todo-btn';
-    addTodoBtn.textContent = 'Add';
+      newTodoForm.id = 'new-todo-form';
+      addTodoBtn.id = 'add-todo-btn';
+      cancelNewTodoBtn.id = 'cancel-new-todo-btn';
+      addTodoBtn.classList.add('fas', 'fa-check-circle');
+      cancelNewTodoBtn.classList.add('fas', 'fa-times-circle');
+      
+      todoHeaders.forEach(todoHeader => {
+        const itemDiv = document.createElement('div');
+        const itemHeader = document.createElement('p');
+        const itemInput = document.createElement('input');
 
-    todoHeaders.forEach(todoHeader => {
-      const itemDiv = document.createElement('div');
-      const itemHeader = document.createElement('p');
-      const itemInput = document.createElement('input');
+        itemHeader.textContent = todoHeader;
 
-      itemHeader.textContent = todoHeader;
+        [itemHeader, itemInput].forEach(el => itemDiv.appendChild(el));
+        newTodoForm.appendChild(itemDiv);
+      });
 
-      [itemHeader, itemInput].forEach(el => itemDiv.appendChild(el));
-      newTodoForm.appendChild(itemDiv);
-    });
-    
-    newTodoForm.appendChild(addTodoBtn);
-    currentProjectContainer.appendChild(newTodoForm);
-  }
+      currentProjectContainer.removeChild(document.querySelector('#new-todo-form-btn'));
 
-  return { initialRender, rerenderTodoListContainer, addTodo, removeTodo, renderNewTodoForm }
+      newTodoForm.appendChild(addTodoBtn);
+      newTodoForm.appendChild(cancelNewTodoBtn);
+      currentProjectContainer.appendChild(newTodoForm);
+    }
+
+    const renderConfirmCancelNewTodo = () => {
+      currentProjectContainer.removeChild(document.querySelector('#new-todo-form'));
+    }
+
+    return { renderNewTodoButton, renderNewTodoForm, renderConfirmCancelNewTodo }
+  })();
+
+  return { initialRender, rerenderTodoListContainer, addTodo, removeTodo, newTodo }
 })();
 
-export default currentProjectContainer;
+export default todoListContainer;

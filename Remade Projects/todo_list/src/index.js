@@ -4,7 +4,7 @@ import Todo from './modules/todo_controller/todo';
 import TodoList from './modules/todo_controller/todo_list';
 import Projects from './modules/todo_controller/projects';
 import projectsContainer from './modules/display_controller/projects';
-import currentProjectContainer from './modules/display_controller/todo_list';
+import todoListContainer from './modules/display_controller/todo_list';
 
 // Test //
 const defaultList = new TodoList([new Todo('defaultTodo1', 'default todo 1', 'now', 1, 'notes', false),
@@ -21,15 +21,16 @@ projects.addList('Todo List 1', todoList1);
 // console.log(projects);
 
 const initialRender = (() => {
-  projectsContainer.initialRender(projects, currentProjectContainer);
-  currentProjectContainer.initialRender('Default List', projects['Default List']);
+  projectsContainer.initialRender(projects, todoListContainer);
+  todoListContainer.initialRender('Default List', projects['Default List']);
 })();
 
 const eventHandlers = (() => {
   const projectsListener = (() => {
     const projectPListener = (projectP) => {
       projectP.addEventListener('click', () => {
-        currentProjectContainer.rerenderTodoListContainer(projectP.textContent, projects[projectP.textContent]);
+        todoListContainer.rerenderTodoListContainer(projectP.textContent, projects[projectP.textContent]);
+        console.log(projects);
       });
     }
   
@@ -53,7 +54,7 @@ const eventHandlers = (() => {
           const newProjectNameContainer = selectedProject.querySelector('.project-name');
           const newProjectName = newProjectNameContainer.textContent;
           projects.editListName(oldProjectName, newProjectName);
-          currentProjectContainer.rerenderTodoListContainer(newProjectName, projects[newProjectName]);
+          todoListContainer.rerenderTodoListContainer(newProjectName, projects[newProjectName]);
           projectPListener(newProjectNameContainer);
           editProject(selectedProject.querySelector('.edit-project-btn'));
         });
@@ -80,7 +81,7 @@ const eventHandlers = (() => {
 
           if (document.querySelector('#current-project-name').textContent === selectedProjectName) {
             const firstProject = Object.keys(projects)[0];
-            currentProjectContainer.rerenderTodoListContainer(firstProject, projects[firstProject]);
+            todoListContainer.rerenderTodoListContainer(firstProject, projects[firstProject]);
           }
         });
 
@@ -101,7 +102,8 @@ const eventHandlers = (() => {
       const confirmNewProject = projects => {
         document.querySelector('#confirm-new-project-btn').addEventListener('click', () => {
           const newProjectName = document.querySelector('#new-project-container').querySelector('input').value;
-          
+          if (!newProjectName) return;
+
           projectsContainer.newProject.renderConfirmCancelNewProject(newProjectName);
           projects.addList(newProjectName)
 
@@ -123,7 +125,7 @@ const eventHandlers = (() => {
       return { newProjectListener }
     })();
 
-    const initialProjectsListener = (() => {
+    const initialProjectsListener = () => {
       const projectsListContainer = document.querySelector('#projects-list-container');
       const newProjectBtn = document.querySelector('#new-project-btn');
   
@@ -136,30 +138,65 @@ const eventHandlers = (() => {
       });
 
       newProjectListeners.newProjectListener(newProjectBtn);
-    })();
+    };
+
+    return { initialProjectsListener }
   })();
 
   const todoListListener = (() => {
 
     const newTodoBtnListener = (() => {
-      document.querySelector('#new-todo-form-btn').addEventListener('click', () => {
-        currentProjectContainer.renderNewTodoForm(projects);
+      const newTodoForm = () => {
+        document.querySelector('#new-todo-form-btn').addEventListener('click', () => {
+          todoListContainer.newTodo.renderNewTodoForm(projects);
+          confirmNewTodo();
+          cancelNewTodo();
+        });
+      }
+
+      const confirmNewTodo = () => {
         document.querySelector('#add-todo-btn').addEventListener('click', () => {
           const inputValues = [...document.querySelector('#new-todo-form').querySelectorAll('input')]
                               .map(input => input.value);
           const newTodo = new Todo(...inputValues);
           const currentProject = projects[document.querySelector('#current-project-name').textContent];
           
+          if (inputValues.some(value => !value)) return;
+
           currentProject.list.push(newTodo);
-          currentProjectContainer.addTodo(newTodo);
+          todoListContainer.addTodo(newTodo);
+          cancelConfirmNewTodo();
         });
-      });
+      }
+
+      const cancelNewTodo = () => {
+        document.querySelector('#cancel-new-todo-btn').addEventListener('click', () => {
+          cancelConfirmNewTodo();
+        });
+      }
+
+      const cancelConfirmNewTodo = () => {
+        todoListContainer.newTodo.renderConfirmCancelNewTodo();
+        todoListContainer.newTodo.renderNewTodoButton();
+        newTodoForm();
+      }
+
+      return { newTodoForm }
     })();
+
+    const initialTodoListListeners = () => {
+      newTodoBtnListener.newTodoForm();
+    }
+
+    return { initialTodoListListeners }
   })();
 
   const todosListener = (() => {
 
   })();
   
-  
+  const initialListeners = (() => {
+    projectsListener.initialProjectsListener();
+    todoListListener.initialTodoListListeners();
+  })();
 })();
