@@ -9,12 +9,9 @@
   position: absolute;
   bottom: 30px;
   right: 30px;
-  padding: 10px 15px;
-  font-size: 1.1rem;
+  font-size: 2.4rem;
   font-weight: 600;
-  background: lime;
-  border: 2px solid #000;
-  border-radius: 50%;
+  color: lime;
   cursor: pointer;
 }
 
@@ -24,14 +21,26 @@
   right: 0;
   display: flex;
   flex-wrap: wrap;
-  text-transform: capitalize;
+  justify-content: center;
 }
-#new-todo-form * {
+#new-todo-form div {
   flex-basis: 33.33%;
 }
 #new-todo-form #add-todo-btn {
-  margin: 0 auto;
-  flex-basis: 150px;
+  margin-top: 10px;
+  margin-right: 20px;
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: lime;
+  cursor: pointer;
+}
+#new-todo-form #cancel-new-todo-btn {
+  margin-top: 10px;
+  margin-left: 20px;
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: red;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=style.css.map */
