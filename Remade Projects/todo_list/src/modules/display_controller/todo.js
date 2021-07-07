@@ -12,7 +12,13 @@ const todoContainer = (() =>{
 
       itemDiv.classList.add('item-container');
       itemHeader.textContent = item;
-      itemContent.textContent = todo[item];
+
+      console.log(todo[item]);
+      if (item === 'completed') {
+        itemContent.textContent = todo[item] ? 'Yes' : 'No';
+      } else {
+        itemContent.textContent = todo[item];
+      }
       
       [itemHeader, itemContent].forEach(item => itemDiv.appendChild(item));
       todoContainer.appendChild(itemDiv);

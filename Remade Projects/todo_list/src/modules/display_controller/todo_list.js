@@ -75,9 +75,25 @@ const todoListContainer = (() => {
       todoHeaders.forEach(todoHeader => {
         const itemDiv = document.createElement('div');
         const itemHeader = document.createElement('p');
-        const itemInput = document.createElement('input');
+        let itemInput = document.createElement('input');
+
+        if (todoHeader === 'Due Date') itemInput.setAttribute('type', 'date');
+
+        if (todoHeader === 'Priority') {
+          itemInput = document.createElement('select');
+          const options = [1, 2, 3, 4, 5];
+          options.forEach(option => {
+            const optionEl = document.createElement('option');
+            optionEl.value = option;
+            optionEl.textContent = option;
+            itemInput.appendChild(optionEl);
+          });
+        }
+
+        if (todoHeader === 'Completed') itemInput.setAttribute('type', 'checkbox');
 
         itemHeader.textContent = todoHeader;
+        itemInput.classList.add('new-todo-form-input');
 
         [itemHeader, itemInput].forEach(el => itemDiv.appendChild(el));
         newTodoForm.appendChild(itemDiv);
