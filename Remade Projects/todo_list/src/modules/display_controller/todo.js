@@ -13,7 +13,6 @@ const todoContainer = (() =>{
       itemDiv.classList.add('item-container');
       itemHeader.textContent = item;
 
-      console.log(todo[item]);
       if (item === 'completed') {
         itemContent.textContent = todo[item] ? 'Yes' : 'No';
       } else {

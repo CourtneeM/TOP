@@ -159,12 +159,11 @@ const eventHandlers = (() => {
           const inputValues = [...document.querySelectorAll('.new-todo-form-input')].map(input => {
             return input.type === 'checkbox' ? input.checked : input.value
           });
+
+          if ([inputValues[0], inputValues[1], inputValues[2]].some(value => !value)) return;
+
           const newTodo = new Todo(...inputValues);
           const currentProject = projects[document.querySelector('#current-project-name').textContent];
-          console.log(inputValues, newTodo);
-
-          // don't check notes or completed //
-          if (inputValues.some(value => !value)) return;
 
           currentProject.list.push(newTodo);
           todoListContainer.addTodo(newTodo);
