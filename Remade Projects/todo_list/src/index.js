@@ -169,6 +169,7 @@ const eventHandlers = (() => {
           currentProject.list.push(newTodo);
           todoListContainer.addTodo(newTodo);
           cancelConfirmNewTodo();
+          todosListener.editTodo(document.querySelector('#todo-list-container').lastChild.querySelector('.edit-todo-btn'));
         });
       }
 
@@ -199,7 +200,7 @@ const eventHandlers = (() => {
       editBtn.addEventListener('click', () => {
         const selectedTodo = editBtn.parentElement;
         const todoPs = selectedTodo.querySelectorAll('.todo-value');
-
+        console.log(todoPs);
         todoContainer.render.editTodo.editTodoForm(selectedTodo, todoPs);
 
         confirmEditTodo(selectedTodo);
@@ -227,7 +228,7 @@ const eventHandlers = (() => {
       });
     }
 
-    return { initialTodoListeners }
+    return { editTodo, initialTodoListeners }
   })();
   
   const initialListeners = (() => {

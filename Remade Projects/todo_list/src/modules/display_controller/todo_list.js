@@ -42,7 +42,7 @@ const todoListContainer = (() => {
   }
 
   const addTodo = (newTodo) => {
-    const newTodoElement = todoContainer.render(newTodo);
+    const newTodoElement = todoContainer.render.todoContainer(newTodo);
     document.querySelector('#todo-list-container').appendChild(newTodoElement);
   }
 
