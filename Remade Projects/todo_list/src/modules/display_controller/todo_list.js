@@ -33,7 +33,9 @@ const todoListContainer = (() => {
 
   const clearTodoList = () => {
     const currentProjectContainer = document.querySelector('#current-project-container');
-    currentProjectContainer.removeChild(document.querySelector('#todo-list-container'));
+    if ([...currentProjectContainer.children].length > 1) {
+      currentProjectContainer.removeChild(document.querySelector('#todo-list-container'));
+    }
   }
   
   const rerenderTodoListContainer = (projectName, projectList) => {

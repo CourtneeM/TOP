@@ -105,13 +105,18 @@ const eventHandlers = (() => {
           if (!newProjectName) return;
 
           projectsContainer.newProject.renderConfirmCancelNewProject(newProjectName);
-          projects.addList(newProjectName)
+          projects.addList(newProjectName);
 
           const projectContainers = [...document.querySelectorAll('.project-name')];
           const newProjectContainer = projectContainers[projectContainers.length - 1].parentElement;
+
           projectPListener(newProjectContainer.querySelector('.project-name'));
           editProjectListeners.editProject(newProjectContainer.querySelector('.edit-project-btn'));
           newProjectListener(document.querySelector('#new-project-btn'));
+
+          if ([...document.querySelector('#projects-list-container').children].length === 1) {
+            todoListContainer.rerenderTodoListContainer(newProjectName, projects[newProjectName]);
+          }
         });
       }
       
