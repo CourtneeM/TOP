@@ -42,7 +42,7 @@ const todoContainer = (() =>{
 
       const generateDeleteTodoBtn = () => {
         const deleteTodoBtn = document.createElement('i');
-        deleteTodoBtn.classList.add('far', 'fa-trash-alt');
+        deleteTodoBtn.classList.add('far', 'fa-trash-alt', 'delete-todo-btn');
 
         return deleteTodoBtn;
       }
@@ -118,8 +118,25 @@ const todoContainer = (() =>{
         });
       }
 
-      const confirmEditTodo = selectedTodo => {
-        // start here
+      const confirmEditTodo = selectedTodoContainer => {
+        const editDeleteTodoBtnsContainer = todoControls.generateEditDeleteBtnsContainer();
+        const newTodoValues = [...selectedTodoContainer.querySelectorAll('.edit-todo-input')].map(input => {
+          if (input.type === 'checkbox') return input.checked ? 'Yes' : 'No';
+          return input.value
+        });
+
+        selectedTodoContainer.removeChild(selectedTodoContainer.querySelector('#confirm-cancel-todo-controls-container'));
+        selectedTodoContainer.insertBefore(editDeleteTodoBtnsContainer, selectedTodoContainer.firstChild);
+
+        [...selectedTodoContainer.querySelectorAll('.item-container')].forEach((itemContainer, i) => {
+          const itemContent = document.createElement('p');
+
+          itemContent.classList.add('todo-value');
+          itemContent.textContent = newTodoValues[i];
+
+          itemContainer.removeChild(itemContainer.querySelector('.edit-todo-input'));
+          itemContainer.appendChild(itemContent);
+        });
       }
 
       const cancelEditTodo = (selectedTodoContainer, todoPs) => {

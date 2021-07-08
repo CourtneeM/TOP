@@ -8,6 +8,16 @@ class Todo {
     this.completed = completed;
   }
 
+  edit(newValues) {
+    const [newTitle, newDescription, newDueDate, newPriority, newNotes, newCompleted] = [...newValues];
+    this.title = newTitle;
+    this.description = newDescription;
+    this['due date'] = newDueDate;
+    this.priority = newPriority;
+    this.notes = newNotes;
+    this.completed = newCompleted === 'Yes' ? true : false;
+  }
+
   editTitle(newTitle) {
     this.title = newTitle;
   }

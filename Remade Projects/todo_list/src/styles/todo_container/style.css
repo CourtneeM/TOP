@@ -8,17 +8,29 @@
 .todo-container:nth-child(odd) {
   background: #eee;
 }
+.todo-container i {
+  cursor: pointer;
+}
+.todo-container .edit-todo-btn {
+  margin-right: 12px;
+}
+.todo-container .delete-todo-btn {
+  margin-left: 12px;
+  font-size: 0.8rem;
+  color: red;
+}
 .todo-container .confirm-edit-todo-btn {
   color: lime;
+  margin-right: 8px;
 }
 .todo-container .cancel-edit-todo-btn {
   color: goldenrod;
+  margin-left: 8px;
 }
-
-.item-container {
-  flex-basis: 100%/6;
+.todo-container > * {
   text-align: center;
 }
+
 .item-container p:first-child {
   font-weight: 600;
   text-transform: capitalize;

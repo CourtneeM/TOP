@@ -46,8 +46,8 @@ const todoListContainer = (() => {
     document.querySelector('#todo-list-container').appendChild(newTodoElement);
   }
 
-  const removeTodo = index => {
-
+  const removeTodo = selectedTodoContainer => {
+    document.querySelector('#todo-list-container').removeChild(selectedTodoContainer);
   }
 
   const newTodo = (() => {

@@ -31,7 +31,6 @@ const eventHandlers = (() => {
     const projectPListener = (projectP) => {
       projectP.addEventListener('click', () => {
         todoListContainer.rerenderTodoListContainer(projectP.textContent, projects[projectP.textContent]);
-        console.log(projects);
       });
     }
   
@@ -170,6 +169,7 @@ const eventHandlers = (() => {
           todoListContainer.addTodo(newTodo);
           cancelConfirmNewTodo();
           todosListener.editTodo(document.querySelector('#todo-list-container').lastChild.querySelector('.edit-todo-btn'));
+          todosListener.deleteTodo(document.querySelector('#todo-list-container').lastChild.querySelector('.delete-todo-btn'));
         });
       }
 
@@ -207,9 +207,19 @@ const eventHandlers = (() => {
       });
 
       const confirmEditTodo = selectedTodo => {
+        
         selectedTodo.querySelector('.confirm-edit-todo-btn').addEventListener('click', () => {
+          const currentProjectName = document.querySelector('#current-project-name').textContent;
+          const selectedTodoIndex = [...selectedTodo.parentElement.querySelectorAll('.todo-container')].indexOf(selectedTodo);
+          
           todoContainer.render.editTodo.confirmEditTodo(selectedTodo);
-          editTodo(selectedTodo.querySelector('edit-todo-btn'));
+          editTodo(selectedTodo.querySelector('.edit-todo-btn'));
+          deleteTodo(selectedTodo.querySelector('.delete-todo-btn'));
+
+          const newValues = [...selectedTodo.querySelectorAll('.todo-value')]
+                            .map(todoValueEl => todoValueEl.textContent);
+
+          projects[currentProjectName].list[selectedTodoIndex].edit(newValues);
         });
       }
 
@@ -217,17 +227,33 @@ const eventHandlers = (() => {
         selectedTodo.querySelector('.cancel-edit-todo-btn').addEventListener('click', () => {
          todoContainer.render.editTodo.cancelEditTodo(selectedTodo, todoPs);
          editTodo(selectedTodo.querySelector('.edit-todo-btn'));
+         deleteTodo(selectedTodo.querySelector('.delete-todo-btn'));
         });
       }
+    }
+
+    const deleteTodo = deleteBtn => {
+      deleteBtn.addEventListener('click', () => {
+        const currentProjectName = document.querySelector('#current-project-name').textContent;
+        const selectedTodoContainer = deleteBtn.parentElement.parentElement;
+        const selectedTodoIndex = [...selectedTodoContainer.parentElement.querySelectorAll('.todo-container')].indexOf(selectedTodoContainer);
+
+        todoListContainer.removeTodo(selectedTodoContainer);
+        projects[currentProjectName].removeTodo(selectedTodoIndex);
+      });
     }
 
     const initialTodoListeners = () => {
       document.querySelectorAll('.edit-todo-btn').forEach(editBtn => {
         editTodo(editBtn);
       });
+
+      document.querySelectorAll('.delete-todo-btn').forEach(deleteBtn => {
+          deleteTodo(deleteBtn);
+      });
     }
 
-    return { editTodo, initialTodoListeners }
+    return { editTodo, deleteTodo, initialTodoListeners }
   })();
   
   const initialListeners = (() => {

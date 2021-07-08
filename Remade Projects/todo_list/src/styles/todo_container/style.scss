@@ -9,19 +9,32 @@
     background: #eee;
   }
 
+  i { cursor: pointer; }
+
+  .edit-todo-btn {
+    margin-right: 12px;
+  }
+
+  .delete-todo-btn {
+    margin-left: 12px;
+    font-size: 0.8rem;
+    color: red;
+  }
+
   .confirm-edit-todo-btn {
     color: lime;
+    margin-right: 8px;
   }
 
   .cancel-edit-todo-btn {
     color: goldenrod;
+    margin-left: 8px;
   }
+
+  > * { text-align: center; }
 }
 
 .item-container {
-  flex-basis: 100% / 6;
-  text-align: center;
-
   p:first-child {
     font-weight: 600;
     text-transform: capitalize;
