@@ -4,11 +4,11 @@ const todoContainer = (() =>{
   const render = (() => {
     const todoContainer = (todo) => {
       const todoContainer = document.createElement('div');
-      const editTodoBtn = todoControls.generateEditTodoBtn();
+      const editDeleteTodoBtnsContainer = todoControls.generateEditDeleteBtnsContainer();
       
       todoContainer.classList.add('todo-container');
 
-      todoContainer.appendChild(editTodoBtn);
+      todoContainer.appendChild(editDeleteTodoBtnsContainer);
 
       for (let item in todo) {
         const itemDiv = document.createElement('div');
@@ -54,31 +54,43 @@ const todoContainer = (() =>{
         return confirmEditTodoBtn;
       }
 
-      const cancelEditTodoBtn = () => {
+      const generateCancelEditTodoBtn = () => {
         const cancelEditTodoBtn = document.createElement('i');
         cancelEditTodoBtn.classList.add('far', 'fa-window-close', 'cancel-edit-todo-btn');
 
         return cancelEditTodoBtn;
       }
 
-      return { generateEditTodoBtn, generateDeleteTodoBtn, generateConfirmEditTodoBtn, cancelEditTodoBtn }
+      const generateEditDeleteBtnsContainer = () => {
+        const btnsContainer = document.createElement('div');
+        btnsContainer.id = 'edit-delete-todo-controls-container';
+        
+        [generateEditTodoBtn(), generateDeleteTodoBtn()].forEach(el => btnsContainer.appendChild(el));
+        return btnsContainer;
+      }
+      
+      const generateConfirmCancelBtnsContainer = () => {
+        const btnsContainer = document.createElement('div');
+        btnsContainer.id = 'confirm-cancel-todo-controls-container';
+        
+        [generateConfirmEditTodoBtn(), generateCancelEditTodoBtn()].forEach(el => btnsContainer.appendChild(el));
+        return btnsContainer;
+       }
+
+      return { generateEditDeleteBtnsContainer, generateConfirmCancelBtnsContainer }
     })();
 
     const editTodo = (() => {
       const editTodoForm = (selectedTodo, todoPs) => {
-        const confirmEditTodoBtn = todoControls.generateConfirmEditTodoBtn();
-        const cancelEditTodoBtn = todoControls.cancelEditTodoBtn();
+        const confirmCancelTodoBtnsContainer = todoControls.generateConfirmCancelBtnsContainer();
         const oldTodoValues = [...todoPs].map(el => el.textContent);
 
-        selectedTodo.removeChild(selectedTodo.querySelector('.edit-todo-btn'));
-        selectedTodo.insertBefore(cancelEditTodoBtn, selectedTodo.firstChild);
-        selectedTodo.insertBefore(confirmEditTodoBtn, selectedTodo.firstChild);
+        selectedTodo.removeChild(selectedTodo.querySelector('#edit-delete-todo-controls-container'));
+        selectedTodo.insertBefore(confirmCancelTodoBtnsContainer, selectedTodo.firstChild);
 
         [...selectedTodo.querySelectorAll('.item-container')].forEach((itemContainer, i) => {
           const todoHeader = [...itemContainer.children][0].textContent;
           let input = document.createElement('input');
-
-          console.log(todoHeader);
 
           if (todoHeader === 'due date') input.setAttribute('type', 'date');
 
@@ -111,11 +123,10 @@ const todoContainer = (() =>{
       }
 
       const cancelEditTodo = (selectedTodoContainer, todoPs) => {
-        const editTodoBtn = todoControls.generateEditTodoBtn();
+        const editDeleteTodoBtnsContainer = todoControls.generateEditDeleteBtnsContainer();
 
-        selectedTodoContainer.removeChild(selectedTodoContainer.querySelector('.confirm-edit-todo-btn'));
-        selectedTodoContainer.removeChild(selectedTodoContainer.querySelector('.cancel-edit-todo-btn'));
-        selectedTodoContainer.insertBefore(editTodoBtn, selectedTodoContainer.firstChild);
+        selectedTodoContainer.removeChild(selectedTodoContainer.querySelector('#confirm-cancel-todo-controls-container'));
+        selectedTodoContainer.insertBefore(editDeleteTodoBtnsContainer, selectedTodoContainer.firstChild);
 
         [...selectedTodoContainer.querySelectorAll('.item-container')].forEach((itemContainer, i) => {
           itemContainer.removeChild(itemContainer.querySelector('.edit-todo-input'));

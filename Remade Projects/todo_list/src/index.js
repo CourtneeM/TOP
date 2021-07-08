@@ -198,9 +198,8 @@ const eventHandlers = (() => {
   const todosListener = (() => {
     const editTodo = editBtn => {
       editBtn.addEventListener('click', () => {
-        const selectedTodo = editBtn.parentElement;
+        const selectedTodo = editBtn.parentElement.parentElement;
         const todoPs = selectedTodo.querySelectorAll('.todo-value');
-        console.log(todoPs);
         todoContainer.render.editTodo.editTodoForm(selectedTodo, todoPs);
 
         confirmEditTodo(selectedTodo);
