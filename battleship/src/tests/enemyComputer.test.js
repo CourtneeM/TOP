@@ -1,5 +1,5 @@
-const enemyComputer = require('../enemyComputer');
-const Gameboard = require('../gameboard');
+const enemyComputer = require('../modules/enemyComputer');
+const Gameboard = require('../modules/gameboard');
 
 test('randomAttack is added to previousAttacks', () => {
   const enemy = enemyComputer();
@@ -11,9 +11,8 @@ test('enemy is able to attack player gameboard', () => {
   const playerGameboard = new Gameboard();
   playerGameboard.generateGameboard();
   playerGameboard.generateShips();
-  playerGameboard.placeShip('patrol boat', 1, 1, 'vertical');
+  playerGameboard.placeShip('patrol boat', 1, 1, 'y');
   enemy.attackPlayerGameboard(playerGameboard, enemy.randomAttack());
-  console.log(playerGameboard.gameboard);
 
   expect(playerGameboard.gameboard.some(row => row.some(col => col === 'X'))).toBeTruthy();
 });

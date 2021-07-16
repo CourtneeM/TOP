@@ -1,12 +1,12 @@
-const player = require('../player');
-const Gameboard = require('../gameboard');
+const player = require('../modules/player');
+const Gameboard = require('../modules/gameboard');
 
 test('Expect enemy \'carrier\' ship numberOfHits to equal 1 after player attack', () => {
   const player1 = player();
   const enemyGameboard = new Gameboard();
   enemyGameboard.generateGameboard();
   enemyGameboard.generateShips();
-  enemyGameboard.placeShip('carrier', 1, 1, 'horizontal');
+  enemyGameboard.placeShip('carrier', 1, 1, 'x');
   player1.attackEnemyGameboard(enemyGameboard, 1, 3);
 
   expect(enemyGameboard.ships['carrier'].numberOfHits).toBe(1);
@@ -17,7 +17,7 @@ test('Expect enemy gameboard missed shots to equal a length of 3', () => {
   const enemyGameboard = new Gameboard();
   enemyGameboard.generateGameboard();
   enemyGameboard.generateShips();
-  enemyGameboard.placeShip('carrier', 1, 1, 'horizontal');
+  enemyGameboard.placeShip('carrier', 1, 1, 'x');
   player1.attackEnemyGameboard(enemyGameboard, 3, 3);
   player1.attackEnemyGameboard(enemyGameboard, 1, 9);
   player1.attackEnemyGameboard(enemyGameboard, 8, 3);
@@ -30,7 +30,7 @@ test('Expect enemy gameboard to record hits and misses', () => {
   const enemyGameboard = new Gameboard();
   enemyGameboard.generateGameboard();
   enemyGameboard.generateShips();
-  enemyGameboard.placeShip('carrier', 1, 1, 'horizontal');
+  enemyGameboard.placeShip('carrier', 1, 1, 'x');
   player1.attackEnemyGameboard(enemyGameboard, 1, 1);
   player1.attackEnemyGameboard(enemyGameboard, 3, 3);
   player1.attackEnemyGameboard(enemyGameboard, 1, 9);

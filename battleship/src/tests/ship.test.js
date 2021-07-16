@@ -1,4 +1,4 @@
-const Ship = require('../ship');
+const Ship = require('../modules/ship');
 
 test('Recieve an object with name, length, shipLayout, and numberOfHits' , () => {
   const ship1 = new Ship('carrier');

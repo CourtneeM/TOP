@@ -1,4 +1,4 @@
-const Gameboard = require('../gameboard');
+const Gameboard = require('../modules/gameboard');
 
 // test('Expect gameboard to return an array with 10 subarrays with 10 elements each', () => {
 //   const gameboard1 = new Gameboard();
@@ -34,7 +34,7 @@ const Gameboard = require('../gameboard');
 //   const playerGameboard = new Gameboard();
 //   playerGameboard.generateGameboard();
 //   playerGameboard.generateShips();
-//   playerGameboard.placeShip('carrier', 1, 1, 'horizontal');
+//   playerGameboard.placeShip('carrier', 1, 1, 'x');
 
 //   expect(playerGameboard.gameboard).toEqual([
 //     ['', '', '', '', '', '', '', '', '', ''],
@@ -54,8 +54,8 @@ const Gameboard = require('../gameboard');
 //   const playerGameboard = new Gameboard();
 //   playerGameboard.generateGameboard();
 //   playerGameboard.generateShips();
-//   playerGameboard.placeShip('submarine', 7, 8, 'vertical');
-//   playerGameboard.placeShip('patrol boat', 2, 2, 'vertical');
+//   playerGameboard.placeShip('submarine', 7, 8, 'y');
+//   playerGameboard.placeShip('patrol boat', 2, 2, 'y');
 
 //   expect(playerGameboard.gameboard).toEqual([
 //     ['', '', '', '', '', '', '', '', '', ''],
@@ -75,7 +75,7 @@ const Gameboard = require('../gameboard');
 //   const playerGameboard = new Gameboard();
 //   playerGameboard.generateGameboard();
 //   playerGameboard.generateShips();
-//   playerGameboard.placeShip('carrier', 1, 1, 'horizontal');
+//   playerGameboard.placeShip('carrier', 1, 1, 'x');
 //   playerGameboard.receiveAttack(1, 2);
 //   playerGameboard.receiveAttack(1, 4);
 
@@ -86,7 +86,7 @@ const Gameboard = require('../gameboard');
 //   const playerGameboard = new Gameboard();
 //   playerGameboard.generateGameboard();
 //   playerGameboard.generateShips();
-//   playerGameboard.placeShip('patrol boat', 2, 3, 'vertical');
+//   playerGameboard.placeShip('patrol boat', 2, 3, 'y');
 //   playerGameboard.receiveAttack(2, 3);
 //   playerGameboard.receiveAttack(3, 3);
 
@@ -97,7 +97,7 @@ const Gameboard = require('../gameboard');
 //   const playerGameboard = new Gameboard();
 //   playerGameboard.generateGameboard();
 //   playerGameboard.generateShips();
-//   playerGameboard.placeShip('patrol boat', 2, 3, 'vertical');
+//   playerGameboard.placeShip('patrol boat', 2, 3, 'y');
 //   playerGameboard.receiveAttack(1, 3);
 //   playerGameboard.receiveAttack(4, 7);
 
@@ -108,11 +108,11 @@ test('Records if all player\'s ships are sunk', () => {
   const playerGameboard = new Gameboard();
   playerGameboard.generateGameboard();
   playerGameboard.generateShips();
-  playerGameboard.placeShip('carrier', 1, 1, 'vertical');
-  playerGameboard.placeShip('battleship', 1, 3, 'horizontal');
-  playerGameboard.placeShip('destroyer', 3, 3, 'horizontal');
-  playerGameboard.placeShip('submarine', 6, 7, 'vertical');
-  playerGameboard.placeShip('patrol boat', 2, 3, 'vertical');
+  playerGameboard.placeShip('carrier', 1, 1, 'y');
+  playerGameboard.placeShip('battleship', 1, 3, 'x');
+  playerGameboard.placeShip('destroyer', 3, 3, 'x');
+  playerGameboard.placeShip('submarine', 6, 7, 'y');
+  playerGameboard.placeShip('patrol boat', 2, 3, 'y');
   // carrier
   playerGameboard.receiveAttack(1, 1);
   playerGameboard.receiveAttack(2, 1);
