@@ -11,12 +11,6 @@ const gameplay = (() => {
     enemyGameboard.generateGameboard();
     enemyGameboard.generateShips();
 
-    playerGameboard.placeShip('carrier', 0, 0, 'y');
-    playerGameboard.placeShip('battleship', 2, 4, 'x');
-    playerGameboard.placeShip('destroyer', 0, 7, 'x');
-    playerGameboard.placeShip('submarine', 7, 2, 'y');
-    playerGameboard.placeShip('patrol boat', 8, 6, 'x');
-
     enemyGameboard.randomShipPlacement('carrier');
     enemyGameboard.randomShipPlacement('battleship');
     enemyGameboard.randomShipPlacement('destroyer');

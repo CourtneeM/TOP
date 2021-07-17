@@ -8,7 +8,6 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
   height: 100vh;
   font-family: sans-serif;
 }
@@ -49,4 +48,9 @@ body {
 #winning-message-div {
   flex-basis: 100%;
   text-align: center;
+}
+
+.current-placement-ship-container {
+  display: flex;
+  justify-content: space-around;
 }

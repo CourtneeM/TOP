@@ -55,12 +55,12 @@ class Gameboard {
   }
 
   randomShipPlacement(shipName) {
-    let overlappingShips = true;
+    let invalidPlacement = true;
     let initialRow;
     let initialCol;
     let axis;
 
-    while (overlappingShips) {
+    while (invalidPlacement) {
       initialRow = Math.floor(Math.random() * 10);
       initialCol = Math.floor(Math.random() * 10);
       axis = ['x', 'y'][Math.floor(Math.random() * 2)];
@@ -84,32 +84,29 @@ class Gameboard {
         } 
       }
       
-      let takenSpots = [...Object.values(this.shipCoordinates)];
-      
-      overlappingShips = takenSpots.filter(shipCoordinates => {
-        let overlapCoordinates =  shipCoordinates.filter(coordinates => {
-          let matches = currentShipCoordinates.filter(currentCoordinates => {
-            const [currentRow, currentCol] = currentCoordinates;
-            const [takenRow, takenCol] = coordinates;
-            
-            return currentRow === takenRow && currentCol === takenCol;
-          });
-          
-          return matches.length > 0;
-        });
-        
-        return overlapCoordinates.length > 0;
-      }).length > 0;
-      console.log(overlappingShips);
+      invalidPlacement = this.isInvalidShipPlacement(currentShipCoordinates);
     }
     
-    console.log(initialRow, initialCol);
-
     this.placeShip(shipName, initialRow, initialCol, axis);
   }
 
-  validShipPlacement() {
+  isInvalidShipPlacement(currentShipCoordinates) {
+    let takenSpots = [...Object.values(this.shipCoordinates)];
 
+    return takenSpots.filter(shipCoordinates => {
+      let overlapCoordinates =  shipCoordinates.filter(coordinates => {
+        let matches = currentShipCoordinates.filter(currentCoordinates => {
+          const [currentRow, currentCol] = currentCoordinates;
+          const [takenRow, takenCol] = coordinates;
+          
+          if (currentRow === takenRow && currentCol === takenCol) return;
+        });
+        
+        return matches.length > 0;
+      });
+      
+      return overlapCoordinates.length > 0;
+    }).length > 0;
   }
 
   receiveAttack(row, col) {
