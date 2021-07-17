@@ -1,4 +1,4 @@
-class Battleship {
+class Ship {
   constructor(name) {
     this.name = name;
     this.length = this.getLength();
@@ -15,21 +15,21 @@ class Battleship {
     const ship = [];
     
     for (let i = 0; i < this.length; i++) {
-      ship.push('');
+      ship.push('O');
     }
 
     return ship;
   }
 
   updateNumberOfHits() {
-    this.numberOfHits = this.shipLayout.filter(spot => spot === 'x').length;
+    this.numberOfHits = this.shipLayout.filter(spot => spot === 'X').length;
   }
 
   takeHit(index) {
     if (!index && index !== 0) return;
-    if (this.shipLayout[index] === 'x') return;
+    if (this.shipLayout[index] === 'X') return;
     
-    this.shipLayout[index] = 'x';
+    this.shipLayout[index] = 'X';
     this.updateNumberOfHits();
   }
 
@@ -38,8 +38,10 @@ class Battleship {
   }
 }
 
-// export default Battleship;
-module.exports = Battleship;
+export default Ship;
+
+// for testing
+// module.exports = Ship;
 
 // carrier, 5
 // battleship, 4
