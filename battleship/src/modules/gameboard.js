@@ -99,12 +99,10 @@ class Gameboard {
           const [currentRow, currentCol] = currentCoordinates;
           const [takenRow, takenCol] = coordinates;
           
-          if (currentRow === takenRow && currentCol === takenCol) return;
+          return currentRow === takenRow && currentCol === takenCol;
         });
-        
         return matches.length > 0;
       });
-      
       return overlapCoordinates.length > 0;
     }).length > 0;
   }
