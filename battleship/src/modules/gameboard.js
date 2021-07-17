@@ -54,6 +54,25 @@ class Gameboard {
     }
   }
 
+  randomShipPlacement(shipName) {
+    let initialRow = Math.floor(Math.random() * 10);
+    let initialCol = Math.floor(Math.random() * 10);
+    let axis = ['x', 'y'][Math.floor(Math.random() * 2)];
+
+    while (initialRow > 9 - this.ships[shipName].length) {
+      initialRow = Math.floor(Math.random() * 10);
+    }
+
+    while (initialCol > 9 - this.ships[shipName].length) {
+      initialCol = Math.floor(Math.random() * 10);
+    }
+
+    console.log(this.shipCoordinates);
+    console.log(this.gameboard);
+
+    this.placeShip(shipName, initialRow, initialCol, axis);
+  }
+
   receiveAttack(row, col) {
     let hitShip = false;
 
