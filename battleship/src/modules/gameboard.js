@@ -55,22 +55,61 @@ class Gameboard {
   }
 
   randomShipPlacement(shipName) {
-    let initialRow = Math.floor(Math.random() * 10);
-    let initialCol = Math.floor(Math.random() * 10);
-    let axis = ['x', 'y'][Math.floor(Math.random() * 2)];
+    let overlappingShips = true;
+    let initialRow;
+    let initialCol;
+    let axis;
 
-    while (initialRow > 9 - this.ships[shipName].length) {
+    while (overlappingShips) {
       initialRow = Math.floor(Math.random() * 10);
-    }
-
-    while (initialCol > 9 - this.ships[shipName].length) {
       initialCol = Math.floor(Math.random() * 10);
-    }
+      axis = ['x', 'y'][Math.floor(Math.random() * 2)];
 
-    console.log(this.shipCoordinates);
-    console.log(this.gameboard);
+      while (initialRow > 9 - this.ships[shipName].length) {
+        initialRow = Math.floor(Math.random() * 10);
+      }
+      
+      while (initialCol > 9 - this.ships[shipName].length) {
+        initialCol = Math.floor(Math.random() * 10);
+      }
+      
+      let currentShipCoordinates = [];
+      if (axis === 'x') {
+        for (let i = initialCol; i < initialCol + this.ships[shipName].length; i++) {
+          currentShipCoordinates.push([initialRow, i]);
+        }
+      } else if (axis === 'y') {
+        for (let i = initialRow; i < initialRow + this.ships[shipName].length; i++) {
+          currentShipCoordinates.push([i, initialCol]);
+        } 
+      }
+      
+      let takenSpots = [...Object.values(this.shipCoordinates)];
+      
+      overlappingShips = takenSpots.filter(shipCoordinates => {
+        let overlapCoordinates =  shipCoordinates.filter(coordinates => {
+          let matches = currentShipCoordinates.filter(currentCoordinates => {
+            const [currentRow, currentCol] = currentCoordinates;
+            const [takenRow, takenCol] = coordinates;
+            
+            return currentRow === takenRow && currentCol === takenCol;
+          });
+          
+          return matches.length > 0;
+        });
+        
+        return overlapCoordinates.length > 0;
+      }).length > 0;
+      console.log(overlappingShips);
+    }
+    
+    console.log(initialRow, initialCol);
 
     this.placeShip(shipName, initialRow, initialCol, axis);
+  }
+
+  validShipPlacement() {
+
   }
 
   receiveAttack(row, col) {
