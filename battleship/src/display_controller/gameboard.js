@@ -35,6 +35,14 @@ const gameboard = (() => {
     });
   }
 
+  const renderShip = (gameboard, shipName) => {
+    console.log(gameboard);
+    gameboard.shipCoordinates[shipName.toLowerCase()].forEach(coordinate => {
+      const [row, col] = coordinate;
+      [...[...document.querySelectorAll('.gameboard-container')[0].children][row].children][col].textContent = shipName[0];
+    });
+  }
+
   const renderGameboardAttack = (col) => {
     if (col.textContent === 'X') return;
 
@@ -42,56 +50,55 @@ const gameboard = (() => {
     col.classList.add('attacked');
   }
 
-  const generatePlacePlayerShips = () => {
+  const generatePlaceShipContainer = (shipName) => {
     const placePlayerShipsDiv = document.createElement('div');
     const placePlayerShipsP = document.createElement('p');
-    const ships = ['Carrier', 'Battleship', 'Destroyer', 'Submarine', 'Patrol Boat'];
 
     placePlayerShipsDiv.id = 'place-player-ships-container';
-    placePlayerShipsP.textContent = 'Place your ships (select a ship and click a starting square on the board)';
+    placePlayerShipsP.textContent = 'Place your ships:';
 
-    const shipElements = ships.map(ship => {
-      const shipDiv = document.createElement('div');
-      const shipP = document.createElement('p');
-      const radioBtnsDiv = document.createElement('div');
-      const radioOptions = ['x-axis', 'y-axis'];
+    const shipDiv = document.createElement('div');
+    const shipP = document.createElement('p');
+    const radioBtnsDiv = document.createElement('div');
+    const radioOptions = ['x-axis', 'y-axis'];
 
-      shipDiv.classList.add('current-placement-ship-container');
-      shipP.classList.add('current-placement-ship-name');
+    shipDiv.classList.add('current-placement-ship-container');
+    shipP.classList.add('current-placement-ship-name');
+    radioBtnsDiv.id = 'orientation-btns-container';
 
-      shipDiv.draggable = true;
-      shipP.textContent = ship;
+    shipP.textContent = shipName;
 
-      radioOptions.forEach((option, i) => {
-        const label = document.createElement('label');
-        const radioBtn = document.createElement('input');
+    radioOptions.forEach((option, i) => {
+      const label = document.createElement('label');
+      const radioBtn = document.createElement('input');
 
-        label.classList.add(`${option}-option`);
-        radioBtn.classList.add(`${option}-option-btn`);
+      label.classList.add(`${option}-option`);
+      radioBtn.classList.add(`${option}-option-btn`);
 
-        label.textContent = option;
-        radioBtn.setAttribute('type', 'radio');
-        radioBtn.setAttribute('value', option[0]);
-        radioBtn.setAttribute('for', 'ship-placement');
+      label.textContent = option;
+      radioBtn.setAttribute('type', 'radio');
+      radioBtn.setAttribute('value', option[0]);
+      radioBtn.setAttribute('name', `place-ship`);
 
-        if (i === 0) radioBtn.checked = true;
-        
-        label.appendChild(radioBtn);
-        radioBtnsDiv.appendChild(label);
-      });
-
-      [shipP, radioBtnsDiv].forEach(el => shipDiv.appendChild(el));
-
-      return shipDiv;
+      if (i === 0) radioBtn.checked = true;
+      
+      label.appendChild(radioBtn);
+      radioBtnsDiv.appendChild(label);
     });
 
+    [shipP, radioBtnsDiv].forEach(el => shipDiv.appendChild(el));
+
     placePlayerShipsDiv.appendChild(placePlayerShipsP);
-    shipElements.forEach(el => placePlayerShipsDiv.appendChild(el));
+    placePlayerShipsDiv.appendChild(shipDiv);
     return placePlayerShipsDiv;
   }
 
-  const renderPlacePlayerShips = () => {
-    document.querySelectorAll('.gameboard-container')[0].appendChild(generatePlacePlayerShips());
+  const renderPlaceShipContainer = shipName => {
+    document.querySelectorAll('.gameboard-container')[0].appendChild(generatePlaceShipContainer(shipName));
+  }
+
+  const removePlaceShipContainer = () => {
+    document.querySelectorAll('.gameboard-container')[0].removeChild(document.querySelector('#place-player-ships-container'));
   }
 
   const generateWinningMessage = winner => {
@@ -111,7 +118,7 @@ const gameboard = (() => {
     document.querySelector('body').appendChild(generateWinningMessage(winner));
   }
 
-  return { renderGameboards, renderGameboardAttack, renderPlacePlayerShips, renderWinningMessage }
+  return { renderGameboards, renderShip, renderGameboardAttack, renderPlaceShipContainer, removePlaceShipContainer, renderWinningMessage }
 })();
 
 export default gameboard;

@@ -11,23 +11,32 @@ const [playerGameboard, enemyGameboard] = gameplay.generateGameboards();
 const initialSetup = (() => {
   gameplay.initialSetup(playerGameboard, enemyGameboard);
   gameboardDisplay.renderGameboards([playerGameboard.gameboard, enemyGameboard.gameboard]);
-  gameboardDisplay.renderPlacePlayerShips();
+  gameboardDisplay.renderPlaceShipContainer('Carrier');
 })();
 
 const eventHandlers = (() => {
-  const placeShips = (() => {
-    [...document.querySelectorAll('.current-placement-ship-container')].forEach(container => {
-      container.addEventListener('dragend', (e) => {
-        playerGameboardClick();
-      });
-    });
-  })();
+  const playerGameboardClick = (() => {
+    const shipsToPlace = ['Battleship', 'Destroyer', 'Submarine', 'Patrol Boat'];
+    const playerGameboardCols = [...document.querySelectorAll('.gameboard-container')[0].querySelectorAll('.col-container')];
 
-  const playerGameboardClick = () => {
-    [...document.querySelectorAll('.gameboard-container')[0].querySelectorAll('.col-container')].forEach(col => {
-      col.addEventListener('drop', e => {
-        e.preventDefault();
-        console.log('ayy');
+    playerGameboardCols.forEach(col => {
+      col.addEventListener('click', e => {
+        if (Object.keys(playerGameboard.shipCoordinates).length === 5) return;
+
+        let shipName = document.querySelector('.current-placement-ship-name').textContent.toLowerCase();
+        let clickedRow = [...col.parentElement.parentElement.children].indexOf(col.parentElement);
+        let clickedCol = [...col.parentElement.children].indexOf(col);
+        let [xAxisBtn, yAxisBtn] = [...document.querySelectorAll('#orientation-btns-container input')];
+        let orientation = xAxisBtn.checked ? xAxisBtn.value : yAxisBtn.value;
+
+        playerGameboard.placeShip(shipName, clickedRow, clickedCol, orientation);
+        gameboardDisplay.renderShip(playerGameboard, shipName);
+
+        shipName = shipsToPlace.shift();
+        
+        gameboardDisplay.removePlaceShipContainer();
+
+        if (Object.keys(playerGameboard.shipCoordinates).length < 5) gameboardDisplay.renderPlaceShipContainer(shipName);
       });
     });
     // on load display the first ship to place, below the gameboard
@@ -47,7 +56,7 @@ const eventHandlers = (() => {
     // playerGameboard.placeShip('destroyer', 0, 7, 'x');
     // playerGameboard.placeShip('submarine', 7, 2, 'y');
     // playerGameboard.placeShip('patrol boat', 8, 6, 'x');
-  };
+  })();
 
   const enemyGameboardClick = (() => {
     const enemyGameboardListener = () => {
