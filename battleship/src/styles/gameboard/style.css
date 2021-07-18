@@ -55,4 +55,8 @@ body {
   justify-content: space-around;
 }
 
+#ship-placement-error-msg {
+  color: red;
+}
+
 /*# sourceMappingURL=style.css.map */

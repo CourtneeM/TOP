@@ -65,11 +65,11 @@ class Gameboard {
       initialCol = Math.floor(Math.random() * 10);
       axis = ['x', 'y'][Math.floor(Math.random() * 2)];
 
-      while (initialRow > 9 - this.ships[shipName].length) {
+      while (initialRow > 10 - this.ships[shipName].length && axis === 'y') {
         initialRow = Math.floor(Math.random() * 10);
       }
       
-      while (initialCol > 9 - this.ships[shipName].length) {
+      while (initialCol > 10 - this.ships[shipName].length && axis === 'x') {
         initialCol = Math.floor(Math.random() * 10);
       }
       
@@ -90,8 +90,18 @@ class Gameboard {
     this.placeShip(shipName, initialRow, initialCol, axis);
   }
 
-  isInvalidShipPlacement(currentShipCoordinates) {
-    let takenSpots = [...Object.values(this.shipCoordinates)];
+  isInvalidShipPlacement(currentShipCoordinates, orientation, gameboard = undefined, shipName = undefined ) {
+    let takenSpots;
+    if (gameboard) {
+      let [initialRow, initialCol] = currentShipCoordinates[0];
+
+      takenSpots = [...Object.values(gameboard.shipCoordinates)];
+
+      if (initialRow > 10 - gameboard.ships[shipName].length && orientation === 'y') return true;
+      if (initialCol > 10 - gameboard.ships[shipName].length && orientation === 'x') return true;
+    } else {
+      takenSpots = [...Object.values(this.shipCoordinates)];
+    }
 
     return takenSpots.filter(shipCoordinates => {
       let overlapCoordinates =  shipCoordinates.filter(coordinates => {
@@ -101,6 +111,8 @@ class Gameboard {
           
           return currentRow === takenRow && currentCol === takenCol;
         });
+
+        console.log(matches);
         return matches.length > 0;
       });
       return overlapCoordinates.length > 0;

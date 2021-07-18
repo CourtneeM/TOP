@@ -24,10 +24,29 @@ const eventHandlers = (() => {
         if (Object.keys(playerGameboard.shipCoordinates).length === 5) return;
 
         let shipName = document.querySelector('.current-placement-ship-name').textContent.toLowerCase();
-        let clickedRow = [...col.parentElement.parentElement.children].indexOf(col.parentElement);
+        let clickedRow = [...col.parentElement.parentElement.children].indexOf(col.parentElement) - 1;
         let clickedCol = [...col.parentElement.children].indexOf(col);
         let [xAxisBtn, yAxisBtn] = [...document.querySelectorAll('#orientation-btns-container input')];
         let orientation = xAxisBtn.checked ? xAxisBtn.value : yAxisBtn.value;
+
+console.log(clickedRow, clickedCol);
+        let currentShipCoordinates = [];
+        if (orientation === 'x') {
+          for (let i = clickedCol; i < clickedCol + playerGameboard.ships[shipName].length; i++) {
+            currentShipCoordinates.push([clickedRow, i]);
+          }
+        } else if (orientation === 'y') {
+          for (let i = clickedRow; i < clickedRow + playerGameboard.ships[shipName].length; i++) {
+            currentShipCoordinates.push([i, clickedCol]);
+          } 
+        }
+
+        if (document.querySelector('#ship-placement-error-msg')) gameboardDisplay.removeShipPlacementError();
+      
+        if (playerGameboard.isInvalidShipPlacement(currentShipCoordinates, orientation, playerGameboard, shipName)) {
+          gameboardDisplay.renderShipPlacementError();
+          return;
+        }
 
         playerGameboard.placeShip(shipName, clickedRow, clickedCol, orientation);
         gameboardDisplay.renderShip(playerGameboard, shipName);

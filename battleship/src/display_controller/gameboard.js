@@ -36,10 +36,10 @@ const gameboard = (() => {
   }
 
   const renderShip = (gameboard, shipName) => {
-    console.log(gameboard);
     gameboard.shipCoordinates[shipName.toLowerCase()].forEach(coordinate => {
       const [row, col] = coordinate;
-      [...[...document.querySelectorAll('.gameboard-container')[0].children][row].children][col].textContent = shipName[0];
+      console.log(row ,col);
+      [...[...document.querySelectorAll('.gameboard-container')[0].querySelectorAll('.row-container')][row].children][col].textContent = shipName[0];
     });
   }
 
@@ -101,6 +101,23 @@ const gameboard = (() => {
     document.querySelectorAll('.gameboard-container')[0].removeChild(document.querySelector('#place-player-ships-container'));
   }
 
+  const generateShipPlacementError = () => {
+    const shipPlacementErrorMsg = document.createElement('p');
+
+    shipPlacementErrorMsg.id = 'ship-placement-error-msg';
+    shipPlacementErrorMsg.textContent = 'Invalid ship placement. Try again.';
+
+    return shipPlacementErrorMsg;
+  }
+
+  const renderShipPlacementError = () => {
+    document.querySelector('#place-player-ships-container').appendChild(generateShipPlacementError());
+  }
+  
+  const removeShipPlacementError = () => {
+    document.querySelector('#place-player-ships-container').removeChild(document.querySelector('#ship-placement-error-msg'));
+  }
+
   const generateWinningMessage = winner => {
     const winningMessageDiv = document.createElement('div');
     const winningMessageP = document.createElement('p');
@@ -118,7 +135,7 @@ const gameboard = (() => {
     document.querySelector('body').appendChild(generateWinningMessage(winner));
   }
 
-  return { renderGameboards, renderShip, renderGameboardAttack, renderPlaceShipContainer, removePlaceShipContainer, renderWinningMessage }
+  return { renderGameboards, renderShip, renderGameboardAttack, renderPlaceShipContainer, removePlaceShipContainer, renderShipPlacementError, removeShipPlacementError, renderWinningMessage }
 })();
 
 export default gameboard;
