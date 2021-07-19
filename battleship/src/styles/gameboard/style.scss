@@ -40,8 +40,12 @@ body {
   border: 1px solid #000
 }
 
-.attacked {
+.hit {
   color: red;
+  background: #ccc;
+}
+
+.missed {
   background: #ccc;
 }
 
@@ -62,5 +66,9 @@ body {
 .gameboard-container:nth-child(3) {
   .col-container {
     color: rgba(255, 255, 255, 0);
+  }
+
+  .hit {
+    color: red;
   }
 }

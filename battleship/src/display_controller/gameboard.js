@@ -45,9 +45,13 @@ const gameboard = (() => {
 
   const renderGameboardAttack = (col) => {
     if (col.textContent === 'X') return;
-
-    col.textContent = 'X';
-    col.classList.add('attacked');
+    
+    if (col.textContent) {
+      col.textContent = 'X';
+      col.classList.add('hit');
+    } else {
+      col.classList.add('missed');
+    }
   }
 
   const generatePlaceShipContainer = (shipName) => {
