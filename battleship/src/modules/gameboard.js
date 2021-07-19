@@ -112,7 +112,6 @@ class Gameboard {
           return currentRow === takenRow && currentCol === takenCol;
         });
 
-        console.log(matches);
         return matches.length > 0;
       });
       return overlapCoordinates.length > 0;

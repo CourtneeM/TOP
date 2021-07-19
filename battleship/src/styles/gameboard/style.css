@@ -59,4 +59,8 @@ body {
   color: red;
 }
 
+.gameboard-container:nth-child(3) .col-container {
+  color: rgba(255, 255, 255, 0);
+}
+
 /*# sourceMappingURL=style.css.map */

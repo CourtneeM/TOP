@@ -58,3 +58,9 @@ body {
 #ship-placement-error-msg {
   color: red;
 }
+
+.gameboard-container:nth-child(3) {
+  .col-container {
+    color: rgba(255, 255, 255, 0);
+  }
+}

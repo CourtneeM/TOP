@@ -40,7 +40,6 @@ const gameplay = (() => {
     enemyGameboardContainer.style.pointerEvents = 'none';
 
     if (enemyGameboard.allShipsSunk) {
-      console.log('player')
       gameboardDisplay.renderWinningMessage('Player');
       return;
     }
@@ -52,7 +51,6 @@ const gameplay = (() => {
       enemyGameboardContainer.style.pointerEvents = 'auto';
 
       if (playerGameboard.allShipsSunk) {
-        console.log('enemy')
         gameboardDisplay.renderWinningMessage('Enemy');
       }
     }, 1200);

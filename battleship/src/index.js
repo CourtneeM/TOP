@@ -12,6 +12,9 @@ const initialSetup = (() => {
   gameplay.initialSetup(playerGameboard, enemyGameboard);
   gameboardDisplay.renderGameboards([playerGameboard.gameboard, enemyGameboard.gameboard]);
   gameboardDisplay.renderPlaceShipContainer('Carrier');
+
+  // disable enemy board until player ships are placed
+  document.querySelectorAll('.gameboard-container')[1].style.pointerEvents = 'none';
 })();
 
 const eventHandlers = (() => {
@@ -29,7 +32,6 @@ const eventHandlers = (() => {
         let [xAxisBtn, yAxisBtn] = [...document.querySelectorAll('#orientation-btns-container input')];
         let orientation = xAxisBtn.checked ? xAxisBtn.value : yAxisBtn.value;
 
-console.log(clickedRow, clickedCol);
         let currentShipCoordinates = [];
         if (orientation === 'x') {
           for (let i = clickedCol; i < clickedCol + playerGameboard.ships[shipName].length; i++) {
@@ -56,6 +58,8 @@ console.log(clickedRow, clickedCol);
         gameboardDisplay.removePlaceShipContainer();
 
         if (Object.keys(playerGameboard.shipCoordinates).length < 5) gameboardDisplay.renderPlaceShipContainer(shipName);
+
+        if (Object.keys(playerGameboard.shipCoordinates).length === 5) document.querySelectorAll('.gameboard-container')[1].style.pointerEvents = 'auto';
       });
     });
     // on load display the first ship to place, below the gameboard
