@@ -18,8 +18,9 @@ body {
 }
 
 .gameboard-header {
+  margin-top: 60px;
   margin-bottom: 30px;
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 600;
   text-align: center;
 }
@@ -32,9 +33,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50px;
-  height: 50px;
-  font-size: 1.2rem;
+  width: 30px;
+  height: 30px;
   font-weight: 600;
   text-transform: uppercase;
   border: 1px solid #000
@@ -54,12 +54,27 @@ body {
   text-align: center;
 }
 
+#place-player-ships-container {
+  margin-top: 30px;
+  text-align: center;
+}
+
 .current-placement-ship-container {
   display: flex;
   justify-content: space-around;
+  margin: 10px auto 30px;
+}
+
+#orientation-btns-container {
+  label {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 }
 
 #ship-placement-error-msg {
+  text-align: center;
+  font-weight: 600;
   color: red;
 }
 

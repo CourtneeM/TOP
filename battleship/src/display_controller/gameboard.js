@@ -38,14 +38,13 @@ const gameboard = (() => {
   const renderShip = (gameboard, shipName) => {
     gameboard.shipCoordinates[shipName.toLowerCase()].forEach(coordinate => {
       const [row, col] = coordinate;
-      console.log(row ,col);
       [...[...document.querySelectorAll('.gameboard-container')[0].querySelectorAll('.row-container')][row].children][col].textContent = shipName[0];
     });
   }
-
+  
   const renderGameboardAttack = (col) => {
     if (col.textContent === 'X') return;
-    
+
     if (col.textContent) {
       col.textContent = 'X';
       col.classList.add('hit');
