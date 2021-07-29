@@ -13,6 +13,8 @@ class App extends Component {
       },
       tasks: [],
     }
+
+    this.handleDeleteTask = this.handleDeleteTask.bind(this);
   }
 
   handleInputChange(e) {
@@ -34,6 +36,15 @@ class App extends Component {
     }));
   }
 
+  handleDeleteTask(index) {
+    const tasksCopy = [...this.state.tasks];
+    tasksCopy.splice(index, 1);
+
+    this.setState({
+      tasks: tasksCopy,
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -47,7 +58,7 @@ class App extends Component {
           />
         </label>
 
-        <Overview tasks={this.state.tasks} />
+        <Overview tasks={this.state.tasks} deleteTask={this.handleDeleteTask}/>
 
         <button onClick={() => this.addTask()}>Submit</button>
       </div>
