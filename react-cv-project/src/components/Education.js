@@ -1,36 +1,48 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-function Education(props) {
-  return (
-    <div>
-      <h2>Educational Experience</h2>
-      
-      <div>
-        {props.editForm ? editInformation('School Name') : displayInformation('School Name')}
-      </div>
-      
-      <div>
-        {props.editForm ? editInformation('Title of Study') : displayInformation('Title of Study')}
-      </div>
-      
-      <div>
-        {props.editForm ? editInformation('Date') : displayInformation('Date') }
-      </div>
-    </div>
-  );
-}
+class Education extends Component {
+  constructor(props) {
+    super(props);
 
-function editInformation(value) {
-  return (
-    <label>
-      {value}
-      <input type="text" />
-    </label>
-  );
-}
+    this.state = {
+      'School Name': '',
+      'Title of Study': '',
+      Date: ''
+    }
+  }
 
-function displayInformation(value) {
-  return <p>{value}</p>
+  editInformation(value) {
+    return (
+      <label>
+        {value}:
+        <input type="text" value={this.state[value]} onChange={e => this.setState({[value]: e.target.value})} />
+      </label>
+    );
+  }
+
+  displayInformation(value) {
+    return <p>{this.state[value]}</p>
+  }
+
+  render() {
+    const fields = Object.keys(this.state);
+
+    return (
+      <div>
+        <h2>Educational Experience</h2>
+
+        {
+          fields.map(field => {
+            return (
+              <div>
+                {this.props.editForm ? this.editInformation(field) : this.displayInformation(field)}
+              </div>
+            );
+          })
+        }
+      </div>
+    );
+  }
 }
 
 export default Education;

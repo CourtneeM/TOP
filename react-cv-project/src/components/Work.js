@@ -1,44 +1,50 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-function Work(props) {
-  return (
-    <div>
-      <h2>Work Experience</h2>
-      
-      <div>
-        {props.editForm ? editInformation('Company Name') : displayInformation('Company Name')}
-      </div>
-      
-      <div>
-        {props.editForm ? editInformation('Job Title') : displayInformation('Job Title')}
-      </div>
-      
-      <div>
-        {props.editForm ? editInformation('Main Tasks') : displayInformation('Main Tasks')}
-      </div>
-      
-      <div>
-        {props.editForm ? editInformation('Start Date') : displayInformation('Start Date')}
-      </div>
-      
-      <div>
-        {props.editForm ? editInformation('End Date') : displayInformation('End Date')}
-      </div>
-    </div>
-  );
-}
+class Work extends Component {
+  constructor(props) {
+    super(props);
 
-function editInformation(value) {
-  return (
-    <label>
-      {value}:
-      <input type="text" />
-    </label>
-  );
-}
+    this.state = {
+      'Company Name': '',
+      'Job Title': '',
+      'Main Tasks': '',
+      'Start Date': '',
+      'End Date': ''
+    }
+  }
 
-function displayInformation(value) {
-  return <p>{value}</p>
+  editInformation(value) {
+    return (
+      <label>
+        {value}:
+        <input type="text" value={this.state[value]} onChange={e => this.setState({[value]: e.target.value})} />
+      </label>
+    );
+  }
+
+  displayInformation(value) {
+    return <p>{this.state[value]}</p>
+  }
+
+  render() {
+    const fields = Object.keys(this.state);
+
+    return (
+      <div>
+        <h2>Work Experience</h2>
+
+        {
+          fields.map(field => {
+            return (
+              <div>
+                {this.props.editForm ? this.editInformation(field) : this.displayInformation(field)}
+              </div>
+            );
+          })
+        }
+      </div>
+    );
+  }
 }
 
 export default Work;
