@@ -15,7 +15,7 @@ class GeneralInfo extends Component {
     return (
       <label>
         {value}:
-        <input type="text" value={this.state[value]} onChange={e => this.setState({[value]: e.target.value})} />
+        <input type="text" value={this.state[value]} onChange={e => this.setState({[value]: e.target.value})} style={styles.input} />
       </label>
     );
   }
@@ -32,9 +32,9 @@ class GeneralInfo extends Component {
         <h2>General Information</h2>
 
         {
-          fields.map(field => {
+          fields.map((field, index) => {
             return (
-              <div>
+              <div key={index} style={styles.div}>
                 {this.props.editForm ? this.editInformation(field) : this.displayInformation(field)}  
               </div>
             );
@@ -46,8 +46,12 @@ class GeneralInfo extends Component {
 }
 
 const styles = {
-  h2: {
-    
+  div: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  input: {
+    display: 'block',
   }
 }
 

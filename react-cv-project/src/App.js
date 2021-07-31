@@ -16,6 +16,8 @@ class App extends Component {
   }
 
   handleClick() {
+    if (![...document.querySelectorAll('input')].every(input => input.value !== '')) return;
+
     this.setState({
       editForm: !this.state.editForm
     });
@@ -23,13 +25,20 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div style={styles.div}>
         <GeneralInfo editForm={this.state.editForm} />
         <Education editForm={this.state.editForm} />
         <Work editForm={this.state.editForm} />
         <ModifyForm editForm={this.state.editForm} handleClick={this.handleClick} />
       </div>
     );
+  }
+}
+
+const styles = {
+  div: {
+    fontFamily: 'sans-serif',
+    textAlign: 'center'
   }
 }
 

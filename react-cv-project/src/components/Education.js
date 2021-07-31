@@ -15,7 +15,7 @@ class Education extends Component {
     return (
       <label>
         {value}:
-        <input type="text" value={this.state[value]} onChange={e => this.setState({[value]: e.target.value})} />
+        <input type="text" value={this.state[value]} onChange={e => this.setState({[value]: e.target.value})} style={styles.input} />
       </label>
     );
   }
@@ -32,9 +32,9 @@ class Education extends Component {
         <h2>Educational Experience</h2>
 
         {
-          fields.map(field => {
+          fields.map((field, index) => {
             return (
-              <div>
+              <div key={index} style={styles.div}>
                 {this.props.editForm ? this.editInformation(field) : this.displayInformation(field)}
               </div>
             );
@@ -42,6 +42,16 @@ class Education extends Component {
         }
       </div>
     );
+  }
+}
+
+const styles = {
+  div: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  input: {
+    display: 'block',
   }
 }
 
