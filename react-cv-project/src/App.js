@@ -1,38 +1,28 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import GeneralInfo from './components/GeneralInfo';
 import Education from './components/Education';
 import Work from './components/Work';
 import ModifyForm from './components/ModifyForm';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+function App() {
+  // this.handleClick = this.handleClick.bind(this);
 
-    this.state = {
-      editForm: true,
-    }
+  const [editForm, setEditForm] = useState(true);
 
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
+  const handleClick = () => {
     if (![...document.querySelectorAll('input')].every(input => input.value !== '')) return;
-
-    this.setState({
-      editForm: !this.state.editForm
-    });
+    
+    setEditForm(!editForm)
   }
 
-  render() {
-    return (
-      <div style={styles.div}>
-        <GeneralInfo editForm={this.state.editForm} />
-        <Education editForm={this.state.editForm} />
-        <Work editForm={this.state.editForm} />
-        <ModifyForm editForm={this.state.editForm} handleClick={this.handleClick} />
-      </div>
-    );
-  }
+  return (
+    <div style={styles.div}>
+      <GeneralInfo editForm={editForm} />
+      <Education editForm={editForm} />
+      <Work editForm={editForm} />
+      <ModifyForm editForm={editForm} handleClick={handleClick} />
+    </div>
+  );
 }
 
 const styles = {

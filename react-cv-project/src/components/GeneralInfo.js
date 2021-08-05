@@ -1,48 +1,45 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-class GeneralInfo extends Component {
-  constructor(props) {
-    super(props);
+function GeneralInfo(props) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
 
-    this.state = {
-      Name: '',
-      Email: '',
-      Phone: '',
-    }
-  }
-
-  editInformation(value) {
-    return (
-      <label>
-        {value}:
-        <input type="text" value={this.state[value]} onChange={e => this.setState({[value]: e.target.value})} style={styles.input} />
-      </label>
-    );
-  }
-
-  displayInformation(value) {
-    return <p>{this.state[value]}</p>
-  }
-
-  render() {
-    const fields = Object.keys(this.state);
-
-    return (
-      <div>
-        <h2>General Information</h2>
-
+  return (
+    <div>
+      <h2>General Information</h2>
+      <div key={0} style={styles.div}>
         {
-          fields.map((field, index) => {
-            return (
-              <div key={index} style={styles.div}>
-                {this.props.editForm ? this.editInformation(field) : this.displayInformation(field)}  
-              </div>
-            );
-          })
-        }
+          props.editForm ?
+          <label>
+            Name:
+            <input type="text" value={name} onChange={e => setName(e.target.value)} style={styles.input}/>
+          </label> :
+          <p>{name}</p>
+        }  
       </div>
-    );
-  }
+      <div key={1} style={styles.div}>
+        {
+          props.editForm ?
+          <label>
+            Email:
+            <input type="text" value={email} onChange={e => setEmail(e.target.value)} style={styles.input}/>
+          </label> :
+          <p>{email}</p>
+        }  
+      </div>
+      <div key={2} style={styles.div}>
+        {
+          props.editForm ?
+          <label>
+            Phone:
+            <input type="text" value={phone} onChange={e => setPhone(e.target.value)} style={styles.input}/>
+          </label> :
+          <p>{phone}</p>
+        }  
+      </div>
+    </div>
+  );
 }
 
 const styles = {

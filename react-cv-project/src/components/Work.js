@@ -1,50 +1,68 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-class Work extends Component {
-  constructor(props) {
-    super(props);
+function Work(props) {
+  const [companyName, setCompanyName] = useState('');
+  const [jobTitle, setJobTitle] = useState('');
+  const [mainTasks, setMainTasks] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
-    this.state = {
-      'Company Name': '',
-      'Job Title': '',
-      'Main Tasks': '',
-      'Start Date': '',
-      'End Date': ''
-    }
-  }
-
-  editInformation(value) {
-    return (
-      <label>
-        {value}:
-        <input type="text" value={this.state[value]} onChange={e => this.setState({[value]: e.target.value})} style={styles.input} />
-      </label>
-    );
-  }
-
-  displayInformation(value) {
-    return <p>{this.state[value]}</p>
-  }
-
-  render() {
-    const fields = Object.keys(this.state);
-
-    return (
-      <div>
-        <h2>Work Experience</h2>
-
+  return (
+    <div>
+      <h2>Work Experience</h2>
+      
+      <div key={0} style={styles.div} >
         {
-          fields.map((field, index) => {
-            return (
-              <div key={index} style={styles.div} >
-                {this.props.editForm ? this.editInformation(field) : this.displayInformation(field)}
-              </div>
-            );
-          })
+          props.editForm ?
+          <label>
+            Job Title:
+            <input type="text" value={companyName} onChange={e => setCompanyName(e.target.value)} style={styles.input} />
+          </label> :
+          <p>{companyName}</p>
         }
       </div>
-    );
-  }
+      <div key={1} style={styles.div} >
+        {
+          props.editForm ?
+          <label>
+            Job Title:
+            <input type="text" value={jobTitle} onChange={e => setJobTitle(e.target.value)} style={styles.input} />
+          </label> :
+          <p>{jobTitle}</p>
+        }
+      </div>
+      <div key={2} style={styles.div} >
+        {
+          props.editForm ?
+          <label>
+            Job Title:
+            <input type="text" value={mainTasks} onChange={e => setMainTasks(e.target.value)} style={styles.input} />
+          </label> :
+          <p>{mainTasks}</p>
+        }
+      </div>
+      <div key={3} style={styles.div} >
+        {
+          props.editForm ?
+          <label>
+            Job Title:
+            <input type="text" value={startDate} onChange={e => setStartDate(e.target.value)} style={styles.input} />
+          </label> :
+          <p>{startDate}</p>
+        }
+      </div>
+      <div key={4} style={styles.div} >
+        {
+          props.editForm ?
+          <label>
+            Job Title:
+            <input type="text" value={endDate} onChange={e => setEndDate(e.target.value)} style={styles.input} />
+          </label> :
+          <p>{endDate}</p>
+        }
+      </div>
+    </div>
+  );
 }
 
 const styles = {

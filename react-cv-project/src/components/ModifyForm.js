@@ -4,9 +4,9 @@ function ModifyForm(props) {
   return (
     <div>
       {
-        props.editForm
-        ? <button onClick={() => props.handleClick()} style={styles.button}>Submit</button>
-        : <button onClick={() => props.handleClick()} style={styles.button}>Edit</button>
+        props.editForm ?
+        <button onClick={() => props.handleClick()} style={styles.button}>Submit</button> :
+        <button onClick={() => props.handleClick()} style={styles.button}>Edit</button>
       }
     </div>
   );
