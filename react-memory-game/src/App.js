@@ -11,7 +11,6 @@ function App() {
   const [highScore, setHighScore] = useState(0);
   const [gameWon, setGameWon] = useState(false);
   const [clickedCards, setClickedCards] = useState([]);
-  
   const [cards, setCards] = useState(initialCards)
 
   const incrementScore = () => setScore(score + 1);
@@ -35,6 +34,7 @@ function App() {
     if (clickedCards.includes(card)) {
       resetScore();
       setClickedCards([]);
+      setCards(initialCards);
     } else {
       const clickedCardsCopy = [...clickedCards];
 
@@ -81,6 +81,7 @@ const styles = {
   header: {
     display: 'flex',
     justifyContent: 'space-around',
+    alignItems: 'center',
     marginBottom: '80px',
     borderBottom: '1px solid #000',
   }
