@@ -15,11 +15,12 @@ function Cards(props) {
 const styles = {
   div: {
     display: 'flex',
+    justifyContent: 'center',
   },
   card: {
     width: '50px',
     height: '50px',
-    margin: '5px',
+    margin: '5px 10px 60px',
     textAlign: 'center',
     background: 'red',
     border: '2px solid #000',

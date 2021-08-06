@@ -64,7 +64,7 @@ function App() {
 
   return (
     <div>
-      <header>
+      <header style={styles.header}>
         <h1>Memory Game</h1>
         <Score score={score} highScore={highScore} />
       </header>
@@ -75,6 +75,15 @@ function App() {
       </div>
     </div>
   );
+}
+
+const styles = {
+  header: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    marginBottom: '80px',
+    borderBottom: '1px solid #000',
+  }
 }
 
 export default App;
