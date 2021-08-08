@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
+import ItemCard from './components/ItemCard';
 
 function Shop() {
   const [cart, setCart] = useState([]);
-  const [cartCount, setCartCount] = useState(0);
   
   const items = {
                   'ice': {id: 1, price: 0.99},
@@ -20,29 +20,26 @@ function Shop() {
       <div style={styles.items}>
         {
           Object.keys(items).map(itemName => {
-            return (
-              <div style={styles.itemCard}>
-                <p>{itemName}</p>
-                <p>${items[itemName].price}</p>
-                <div className="adjust-quantity-container" style={styles.adjustQuantityContainer}>
-                  <button onClick={() => removeItemFromCart(itemName)}>-</button>
-                  <p>[ item count ]</p>
-                  <button onClick={() => addItemToCart(itemName)}>+</button>
-                </div>
-              </div>
-            );
+            return <ItemCard
+                      items={items}
+                      itemName={itemName}
+                      addItemToCart={addItemToCart}
+                      removeItemFromCart={removeItemFromCart}
+                    />
           })
         }
       </div>
     );
   }
 
-  const addItemToCart = (itemName) => {
+  const addItemToCart = (itemName, itemCount) => {
     const cartCopy = [...cart];
-    cartCopy.push({[itemName]: items[itemName]});
+
+    for (let i = 0; i < itemCount; i++) {
+      cartCopy.push({[itemName]: items[itemName]});
+    }
 
     setCart(cartCopy);
-    incrementCart();
   }
 
   const removeItemFromCart = (itemName) => {
@@ -55,15 +52,11 @@ function Shop() {
     cartCopy.splice(index, 1);
 
     setCart(cartCopy);
-    decrementCart();
   }
-
-  const incrementCart = () => setCartCount(cartCount + 1);
-  const decrementCart = () => setCartCount(cartCount - 1);
 
   return (
     <div>
-      <Navbar cartCount={cartCount} />
+      <Navbar cartCount={cart.length} />
       <h1>Shop</h1>
       { displayItems() }
     </div>
@@ -75,16 +68,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
   },
-  itemCard: {
-    width: '150px',
-    textAlign: 'center',
-    border: '1px solid #000',
-  },
-  adjustQuantityContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
+  
 }
 
 export default Shop;

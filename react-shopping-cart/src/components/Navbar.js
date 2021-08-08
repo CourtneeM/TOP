@@ -13,7 +13,9 @@ function Navbar(props) {
         <Link to='/shop' style={styles.shopLink}>Shop</Link>
       </div>
       {
-        location.pathname === '/' ? null : <p>Cart: {props.cartCount}</p>
+        location.pathname === '/' ?
+        null :
+        <p><Link to='/shopping-cart'>Cart: {props.cartCount}</Link></p>
       }
     </nav>
   );
