@@ -20,22 +20,18 @@ const Routes = () => {
     setCart(cartCopy);
   }
 
-  const removeItemFromCart = (itemName) => {
-    // NEED TO CHANGE
-    const itemNames = cart.map(itemObj => Object.keys(itemObj)[0]);
-    const index = itemNames.indexOf(itemName);
-
-    if (index === -1) return;
-
+  const removeItemFromCart = (index) => {
     const cartCopy = [...cart];
-    cartCopy.splice(index, 1);
 
-    // change
+    cartCopy.splice(index, 1);
     setCart(cartCopy);
   }
 
-  const changeQuantity = () => {
-    
+  const changeQuantity = (inputQuantity, itemName, index) => {
+    const cartCopy = [...cart];
+
+    cartCopy[index][itemName].quantity = inputQuantity;
+    setCart(cartCopy);
   }
 
   return (
@@ -59,6 +55,7 @@ const Routes = () => {
             path='/shopping-cart'
             render={(props) => (
               <ShoppingCart
+                {...props}
                 cart={cart}
                 changeQuantity={changeQuantity}
                 removeItemFromCart={removeItemFromCart}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
-import ItemCard from './components/ItemCard';
+import ShopItemCard from './components/ShopItemCard';
 
 function Shop(props) {  
   const items = {
@@ -18,7 +18,7 @@ function Shop(props) {
       <div style={styles.items}>
         {
           Object.keys(items).map(itemName => {
-            return <ItemCard
+            return <ShopItemCard
                       items={items}
                       itemName={itemName}
                       addItemToCart={addItemToCart}
@@ -31,10 +31,6 @@ function Shop(props) {
 
   const addItemToCart = (itemName, itemCount) => {
     props.addItemToCart(items, itemName, itemCount);
-  }
-
-  const removeItemFromCart = (itemName) => {
-    
   }
 
   return (
