@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import ItemCard from './components/ItemCard';
 
-function Shop() {
-  const [cart, setCart] = useState([]);
-  
+function Shop(props) {  
   const items = {
                   'ice': {id: 1, price: 0.99},
                   'bread': {id: 2, price: 1.99},
@@ -24,7 +22,6 @@ function Shop() {
                       items={items}
                       itemName={itemName}
                       addItemToCart={addItemToCart}
-                      removeItemFromCart={removeItemFromCart}
                     />
           })
         }
@@ -33,30 +30,16 @@ function Shop() {
   }
 
   const addItemToCart = (itemName, itemCount) => {
-    const cartCopy = [...cart];
-
-    for (let i = 0; i < itemCount; i++) {
-      cartCopy.push({[itemName]: items[itemName]});
-    }
-
-    setCart(cartCopy);
+    props.addItemToCart(items, itemName, itemCount);
   }
 
   const removeItemFromCart = (itemName) => {
-    const itemNames = cart.map(itemObj => Object.keys(itemObj)[0]);
-    const index = itemNames.indexOf(itemName);
-
-    if (index === -1) return;
-
-    const cartCopy = [...cart];
-    cartCopy.splice(index, 1);
-
-    setCart(cartCopy);
+    
   }
 
   return (
     <div>
-      <Navbar cartCount={cart.length} />
+      <Navbar cart={props.cart} />
       <h1>Shop</h1>
       { displayItems() }
     </div>

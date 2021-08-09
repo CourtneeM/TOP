@@ -7,11 +7,13 @@ function ItemCard(props) {
   const incrementItemCount = () => setItemCount(itemCount + 1);
   
   const decrementItemCount = () => {
-    if (itemCount === 0) return;
+    if (itemCount <= 0) return;
     setItemCount(itemCount - 1);
   }
 
   const addItemToCart = () => {
+    if (itemCount <= 0) return;
+
     props.addItemToCart(itemName, itemCount);
     setItemCount(0);
   }

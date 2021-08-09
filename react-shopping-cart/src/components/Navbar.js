@@ -4,6 +4,9 @@ import { useLocation } from 'react-router-dom';
 
 function Navbar(props) {
   const location = useLocation();
+  const cartCount = props.cart && props.cart.length > 0 ?
+                    props.cart.reduce((accum, currentItem) => accum + Object.values(currentItem)[0].quantity, 0) :
+                    0;
 
   return (
     <nav style={styles.nav}>
@@ -15,7 +18,7 @@ function Navbar(props) {
       {
         location.pathname === '/' ?
         null :
-        <p><Link to='/shopping-cart'>Cart: {props.cartCount}</Link></p>
+        <p><Link to={{pathname: '/shopping-cart', cart: props.cart}}>Cart: {cartCount}</Link></p>
       }
     </nav>
   );
