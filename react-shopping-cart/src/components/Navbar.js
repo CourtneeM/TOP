@@ -5,20 +5,16 @@ import { useLocation } from 'react-router-dom';
 function Navbar(props) {
   const location = useLocation();
   const cartCount = props.cart && props.cart.length > 0 ?
-                    props.cart.reduce((accum, currentItem) => accum + Object.values(currentItem)[0].quantity, 0) :
+                    props.cart.reduce((accum, currentItem) => accum + Number(Object.values(currentItem)[0].quantity), 0) :
                     0;
 
   return (
     <nav style={styles.nav}>
-      <h1 style={styles.logo}>Shop Name</h1>
-      <div style={styles.linksContainer}>
-        <Link to='/' style={styles.homeLink}>Home</Link>
-        <Link to='/shop' style={styles.shopLink}>Shop</Link>
-      </div>
+      <h1 style={styles.logo}><Link to='/' style={styles.homeLink}>Shop Name</Link></h1>
       {
-        location.pathname === '/' ?
-        null :
-        <p><Link to={{pathname: '/shopping-cart', cart: props.cart}}>Cart: {cartCount}</Link></p>
+        location.pathname === '/' || location.pathname === '/summary' ?
+        <p><Link to='/shop' style={styles.shopLink}>Shop</Link></p> :
+        <p><Link to='/shopping-cart'>Cart: {cartCount}</Link></p>
       }
     </nav>
   );

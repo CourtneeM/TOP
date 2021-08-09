@@ -25,7 +25,8 @@ function ItemCard(props) {
       <div className="adjust-quantity-container" style={styles.adjustQuantityContainer}>
         <button onClick={() => decrementItemCount()}>-</button>
         <input
-          type="text"
+          type="number"
+          min={0}
           value={itemCount}
           onChange={e => setItemCount(e.target.value)}
           style={styles.quantityInput}
@@ -49,7 +50,7 @@ const styles = {
     alignItems: 'center',
   },
   quantityInput: {
-    width: '32px',
+    width: '50px',
     textAlign: 'center',
   }
 }

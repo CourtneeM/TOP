@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './Home';
 import Shop from './Shop';
 import ShoppingCart from './ShoppingCart';
+import Summary from './Summary';
 
 const Routes = () => {
   const [cart, setCart] = useState([]);
@@ -34,6 +35,10 @@ const Routes = () => {
     setCart(cartCopy);
   }
 
+  const clearCart = () => {
+    setCart([]);
+  }
+
   return (
     <div>
       <Router>
@@ -59,6 +64,17 @@ const Routes = () => {
                 cart={cart}
                 changeQuantity={changeQuantity}
                 removeItemFromCart={removeItemFromCart}
+                clearCart={clearCart}
+              />
+            )}
+          />
+          <Route
+            exact
+            path='/summary'
+            render={(props) => (
+              <Summary
+                {...props}
+                cart={cart}
               />
             )}
           />
