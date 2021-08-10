@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import '../styles/shopItemCard/shopItemCard.css';
+
 function ItemCard(props) {
   const [itemCount, setItemCount] = useState(0);
   const {items, itemName } = props;
@@ -19,40 +21,23 @@ function ItemCard(props) {
   }
 
   return (
-    <div style={styles.itemCard}>
-      <p>{itemName}</p>
-      <p>${items[itemName].price}</p>
-      <div className="adjust-quantity-container" style={styles.adjustQuantityContainer}>
-        <button onClick={() => decrementItemCount()}>-</button>
+    <div className='item-card'>
+      <p className='item-name'>{itemName}</p>
+      <p className='item-price'>${items[itemName].price}</p>
+      <div className='adjust-quantity-container'>
+        <button onClick={() => decrementItemCount()} className='quantity-btn'>-</button>
         <input
           type="number"
           min={0}
           value={itemCount}
           onChange={e => setItemCount(e.target.value)}
-          style={styles.quantityInput}
+          className='quantity-input'
         />
-        <button onClick={() => incrementItemCount()}>+</button>
+        <button onClick={() => incrementItemCount()} className='quantity-btn'>+</button>
       </div>
-      <button onClick={() => addItemToCart(itemName)}>Add to Cart</button>
+      <button onClick={() => addItemToCart(itemName)} className='add-cart-btn'>Add to Cart</button>
     </div>
   );
-}
-
-const styles = {
-  itemCard: {
-    width: '150px',
-    textAlign: 'center',
-    border: '1px solid #000',
-  },
-  adjustQuantityContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  quantityInput: {
-    width: '50px',
-    textAlign: 'center',
-  }
 }
 
 export default ItemCard;

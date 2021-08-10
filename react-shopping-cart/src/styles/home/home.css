@@ -1,0 +1,12 @@
+.welcome-message-container {
+  margin-top: 100px;
+  text-align: center;
+}
+.welcome-message-container h1 {
+  margin-bottom: 40px;
+}
+.welcome-message-container p {
+  margin-bottom: 20px;
+}
+
+/*# sourceMappingURL=home.css.map */

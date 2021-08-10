@@ -1,0 +1,35 @@
+.checkout-item-card {
+  padding: 30px 0;
+  border-bottom: 1px solid #ccc;
+
+  .checkout-item-name {
+    display: inline;
+    text-transform: capitalize;
+  }
+
+  .checkout-item-input {
+    width: 40px;
+    text-align: center;
+  }
+
+  .price-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0 15px;
+
+    .price-per-item {
+      margin-left: 5px;
+      font-size: 0.7rem;
+    }
+  }
+
+  .edit-item-container {
+    button {
+      margin: 0 8px;
+      padding: 5px 12px;
+      font-size: 0.8rem;
+    }
+  }
+}
+

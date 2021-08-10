@@ -1,0 +1,19 @@
+.cart-container {
+  text-align: center;
+}
+
+.total-cost {
+  margin: 40px 0 20px;
+  font-weight: 600;
+}
+
+.pay-now-btn {
+  padding: 5px 25px;
+}
+
+.pay-now-link {
+  color: #000;
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=shoppingCart.css.map */

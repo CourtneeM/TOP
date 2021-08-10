@@ -1,0 +1,41 @@
+.item-card {
+  width: 195px;
+  margin: 2px;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+.item-card .item-name {
+  margin-bottom: 8px;
+  text-transform: capitalize;
+}
+.item-card .item-price {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.item-card .adjust-quantity-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.item-card .quantity-input {
+  width: 50px;
+  text-align: center;
+}
+.item-card .quantity-btn {
+  width: 20px;
+  margin: 0 12px;
+  padding: 1px 0;
+  border: 1px solid #666;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.item-card .add-cart-btn {
+  margin-top: 16px;
+  padding: 5px 21px;
+  background: lime;
+  border: 1px solid #000;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=shopItemCard.css.map */

@@ -1,0 +1,20 @@
+nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px 0;
+}
+nav .nav-link {
+  text-decoration: none;
+}
+nav .cart-link {
+  padding: 7px 25px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #000;
+  background: #ccc;
+  border: 1px solid #000;
+  border-radius: 3px;
+}
+
+/*# sourceMappingURL=navbar.css.map */

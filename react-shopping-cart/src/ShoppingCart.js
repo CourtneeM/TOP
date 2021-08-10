@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import CheckoutItemCard from './components/CheckoutItemCard';
 import Navbar from './components/Navbar';
 
+import './styles/shoppingCart/shoppingCart.css';
+
 function ShoppingCart(props) {
   const [totalCost, setTotalCost] = useState(0);
 
@@ -22,7 +24,7 @@ function ShoppingCart(props) {
 
   const emptyCartMsg = () => {
     return (
-      <div>
+      <div className='cart-container'>
         <p>Your cart is currently empty!</p>
         <p><Link to='/shop'>Return to the shop</Link> and add some items.</p>
       </div>
@@ -31,7 +33,7 @@ function ShoppingCart(props) {
 
   const displayCart = () => {
     return (
-      <div>
+      <div className='cart-container'>
         {
           props.cart.map((item, index) => {
             return (
@@ -44,8 +46,8 @@ function ShoppingCart(props) {
             )
           })
         }
-        <p>Total: ${totalCost.toFixed(2)}</p>
-        <button onClick={props.clearCart}><Link to={{pathname: '/summary', totalCost: totalCost}} style={styles.payNowLink}>Pay Now</Link></button>
+        <p className='total-cost'>Total: ${totalCost.toFixed(2)}</p>
+        <button onClick={props.clearCart} className='pay-now-btn'><Link to={{pathname: '/summary', totalCost: totalCost}} className='pay-now-link'>Pay Now</Link></button>
       </div>
     );
   }
@@ -53,6 +55,7 @@ function ShoppingCart(props) {
   return (
     <div>
       <Navbar cart={props.cart} />
+      <h1 class='page-title'>Shopping Cart</h1>
       {
         props.cart.length === 0 ?
         emptyCartMsg() :
@@ -60,13 +63,6 @@ function ShoppingCart(props) {
       }
     </div>
   );
-}
-
-const styles = {
-  payNowLink: {
-    color: '#000',
-    textDecoration: 'none',
-  }
 }
 
 export default ShoppingCart;

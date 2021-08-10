@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Navbar from './components/Navbar';
 import ShopItemCard from './components/ShopItemCard';
+
+import './styles/shop/shop.css';
 
 function Shop(props) {  
   const items = {
@@ -15,7 +17,7 @@ function Shop(props) {
 
   const displayItems = () =>{
     return (
-      <div style={styles.items}>
+      <div className='items-container'>
         {
           Object.keys(items).map(itemName => {
             return <ShopItemCard
@@ -29,25 +31,15 @@ function Shop(props) {
     );
   }
 
-  const addItemToCart = (itemName, itemCount) => {
-    props.addItemToCart(items, itemName, itemCount);
-  }
+  const addItemToCart = (itemName, itemCount) => props.addItemToCart(items, itemName, itemCount);
 
   return (
     <div>
       <Navbar cart={props.cart} />
-      <h1>Shop</h1>
+      <h1 className='page-title'>Shop</h1>
       { displayItems() }
     </div>
   );
-}
-
-const styles = {
-  items: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  
 }
 
 export default Shop;
